@@ -28,8 +28,11 @@ class Era2030 {
     this.convPanel = convPanel;
     this._render();
     this._setStatus('idle', 'Incoming call — from National Bank AI');
-    // Auto-ring after brief pause for drama
-    setTimeout(() => this._startRinging(), 1200);
+    
+    // Auto-ring after brief pause (wait for theater mode splash if active)
+    const isTheater = document.body.classList.contains('theater-mode');
+    const ringDelay = isTheater ? 5500 : 1200;
+    this.ringtoneTimer = setTimeout(() => this._startRinging(), ringDelay);
   }
 
   destroy() {

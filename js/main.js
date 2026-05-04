@@ -115,11 +115,11 @@
       const phoneStage = document.querySelector('.phone-stage');
       
       const renders = {
-        '2000': 'phones/2000s.png',
-        '2010': 'phones/2010s.png',
-        '2020': 'phones/2020s.png',
-        'now': 'phones/2020s.png',
-        '2030': 'phones/2020s.png'
+        '2000': 'phones/2000s.png?v=17',
+        '2010': 'phones/2010s.png?v=17',
+        '2020': 'phones/2020s.png?v=17',
+        'now': 'phones/now.png?v=17',
+        '2030': 'phones/2030s.png?v=17'
       };
 
       if (document.body.classList.contains('theater-mode') && renders[eraId]) {
@@ -200,8 +200,13 @@
     );
 
     document.getElementById('theater-btn').addEventListener('click', () => {
-      document.body.classList.toggle('theater-mode');
+      const isEnteringTheater = document.body.classList.toggle('theater-mode');
       document.getElementById('theater-btn').classList.toggle('active');
+      
+      if (isEnteringTheater) {
+        // Always start the presentation from the beginning with the Nokia intro
+        switchEra('2000', true);
+      }
     });
 
     document.getElementById('settings-btn').addEventListener('click', openSettings);

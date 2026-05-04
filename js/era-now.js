@@ -406,9 +406,11 @@ class EraNow {
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0, 0, w, h);
       this.wavePhase += 0.08;
-      const amp = this.isConnected ? 5 : 1.5;
+      const amp = this.isConnected ? 5 : 0;
+      if (amp === 0) return; // Empty pill if not connected
+      
       ctx.beginPath();
-      ctx.strokeStyle = this.isConnected ? '#34C759' : 'rgba(255,255,255,0.4)';
+      ctx.strokeStyle = '#34C759';
       ctx.lineWidth = 1.5;
       for (let x = 0; x < w; x++) {
         const y = h/2 + Math.sin(x * 0.3 + this.wavePhase) * amp

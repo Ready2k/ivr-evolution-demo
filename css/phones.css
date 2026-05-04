@@ -47,12 +47,46 @@
   font-size: 9px;
 }
 .ip7-ai-panel .ip7-slot {
-  padding: 3px 0;
-  color: rgba(144,202,249,0.55);
-  font-size: 10px;
+  padding: 5px 8px;
+  margin: 3px 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
-.ip7-ai-panel .ip7-slot.filled { color: #66BB6A; }
-.ip7-ai-panel .ip7-slot.active { color: #42A5F5; }
+.ip7-ai-panel .ip7-slot.filled { 
+  color: #4ade80; 
+  background: rgba(74, 222, 128, 0.1);
+  font-weight: 600;
+}
+.ip7-ai-panel .ip7-slot.active { 
+  color: #fbbf24; 
+  background: rgba(251, 191, 36, 0.1);
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+}
+.ip7-ai-panel .ip7-slot.pending { 
+  color: #f87171; 
+  opacity: 0.8;
+}
+.ip7-slot-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.filled .ip7-slot-dot { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+.active .ip7-slot-dot { background: #fbbf24; animation: pulse-yellow 1.5s infinite; }
+.pending .ip7-slot-dot { background: #f87171; border: 1px solid rgba(248, 113, 113, 0.5); }
+
+@keyframes pulse-yellow {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
 
 /* ---- Shared phone wrapper ---- */
 .phone {
@@ -61,10 +95,10 @@
   flex-direction: column;
   align-items: center;
   user-select: none;
-  transform: scale(0.95);
+  transform: scale(0.8); /* Zoomed out globally for better fitting */
   transform-origin: center center;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 /* ============================================================
@@ -602,71 +636,78 @@
 }
 
 /* ============================================================
-   PIXEL — 2020s era
+   PIXEL — 2020s era (Premium Design)
    ============================================================ */
 .phone-pixel {
-  width: 276px;
-  background: linear-gradient(160deg, #3a3f45 0%, #202428 100%);
-  border-radius: 30px;
-  padding: 8px 6px;
+  width: 320px;
+  min-width: 320px;
+  background: #222224; /* Thin dark metallic rim */
+  border-radius: 48px;
+  padding: 4px; /* Thin rim thickness */
   box-shadow:
-    0 20px 60px rgba(0,0,0,0.5),
-    0 4px 10px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.4),
-    inset 0 -1px 0 rgba(0,0,0,0.6);
+    0 0 0 1px #555,
+    inset 0 0 0 1px #000,
+    0 30px 60px rgba(0,0,0,0.6),
+    0 10px 20px rgba(0,0,0,0.4);
   position: relative;
+  display: block; /* Ensure it's not shrinking as a flex item */
 }
 .pixel-side-btn {
   position: absolute;
   right: -3px;
   width: 3px;
-  background: linear-gradient(160deg, #555, #333);
+  background: #111;
   border-radius: 2px;
+  box-shadow: inset 1px 0 2px rgba(255,255,255,0.2);
 }
-.pixel-power { top: 120px; height: 40px; }
-.pixel-vol { top: 170px; height: 80px; }
+.pixel-power { top: 140px; height: 50px; }
+.pixel-vol { top: 210px; height: 90px; }
 
 .pixel-screen-frame {
-  background: #000;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: inset 0 0 0 2px #111;
+  background: #000; /* The black bezel */
+  border-radius: 44px;
+  padding: 10px; /* Bezel thickness */
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 .pixel-screen {
-  background: #F8F9FA;
-  width: 264px;
-  height: 520px;
+  background: #FFFFFF;
+  width: 100%;
+  height: 640px;
+  border-radius: 34px; /* Inner screen corner radius */
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  font-family: 'Roboto', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #111;
+  box-sizing: border-box;
+}
+.pixel-screen::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 30%);
+  pointer-events: none;
+  z-index: 100;
 }
 .pixel-hole-punch {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 14px;
-  height: 14px;
-  background: radial-gradient(circle at 35% 35%, #1A1A1A, #000);
-  border-radius: 50%;
-  z-index: 10;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+  display: none; /* Hidden inside the black status bar */
 }
 .pixel-status-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px 2px;
-  background: transparent;
-  font-size: 11px;
-  font-weight: 500;
-  color: #000;
+  padding: 14px 20px 8px;
+  background: #000; /* status bar area */
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
   flex-shrink: 0;
-  height: 28px;
+  height: 42px;
 }
-.pixel-time { font-size: 12px; margin-left: 2px; }
+.pixel-time { font-size: 14px; margin-left: 2px; font-weight: 700; }
 .pixel-icons { display: flex; gap: 4px; }
 
 .ip7-bubble {
@@ -694,14 +735,15 @@
 /* Intent + slot chips */
 .ip7-intent-bar {
   padding: 8px 12px;
-  background: #fff;
-  border-top: 1px solid #E5E5EA;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.1);
   display: flex;
   flex-direction: column;
   gap: 5px;
   flex-shrink: 0;
 }
-.ip7-intent-label { font-size: 10px; font-family: -apple-system, sans-serif; color: #8E8E93; font-weight: 600; }
+.ip7-intent-label { font-size: 10px; font-family: -apple-system, sans-serif; color: rgba(255,255,255,0.7); font-weight: 600; }
 .ip7-intent-chip {
   display: inline-flex;
   align-items: center;
@@ -766,16 +808,18 @@
    iPHONE 16 PRO — Now era
    ============================================================ */
 .phone-iphone16 {
-  width: 282px;
-  background: linear-gradient(160deg, #9A9080 0%, #7A7068 40%, #6A6058 100%);
-  border-radius: 50px;
-  padding: 10px 8px;
+  width: 320px;
+  min-width: 320px;
+  background: #222224; /* Thin dark metallic rim */
+  border-radius: 48px;
+  padding: 4px; /* Thin rim thickness */
   box-shadow:
-    0 20px 60px rgba(0,0,0,0.5),
-    0 4px 10px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.25),
-    inset 0 -1px 0 rgba(0,0,0,0.2);
+    0 0 0 1px #555,
+    inset 0 0 0 1px #000,
+    0 30px 60px rgba(0,0,0,0.6),
+    0 10px 20px rgba(0,0,0,0.4);
   position: relative;
+  display: block; /* Ensure it's not shrinking as a flex item */
 }
 
 /* Side buttons */
@@ -792,20 +836,32 @@
 .ip16-power { top: 100px; height: 56px; right: -4px; }
 
 .ip16-screen-frame {
-  background: #000;
-  border-radius: 42px;
-  overflow: hidden;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+  background: #000; /* The black bezel */
+  border-radius: 44px;
+  padding: 10px; /* Bezel thickness */
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 .ip16-screen {
-  width: 266px;
-  height: 520px;
-  background: #000;
-  border-radius: 42px;
+  width: 100%;
+  height: 640px;
+  background: #FFFFFF;
+  border-radius: 34px; /* Inner screen corner radius */
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
+  color: #111;
+  box-sizing: border-box;
+}
+.ip16-screen::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 40%);
+  pointer-events: none;
+  z-index: 100;
 }
 
 /* Dynamic Island */
@@ -854,17 +910,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px 0;
-  color: #fff;
+  padding: 14px 24px 0;
+  color: #000; /* Dark text on white background */
   flex-shrink: 0;
-  height: 44px;
+  height: 48px;
+  font-weight: 600;
+  background: #FFFFFF; /* Ensures island area blends correctly */
 }
 .ip16-time { font-size: 15px; font-weight: 700; font-family: -apple-system, sans-serif; }
-.ip16-icons { font-size: 12px; opacity: 0.9; letter-spacing: 2px; }
+.ip16-icons { font-size: 13px; opacity: 0.9; letter-spacing: 2px; }
 
 .ip16-call-info {
   text-align: center;
-  color: #fff;
+  color: #111;
   padding: 4px 0 10px;
   flex-shrink: 0;
 }
@@ -890,11 +948,10 @@
   animation: fadeIn 0.25s ease;
 }
 .ip16-bubble.ivr {
-  background: rgba(255,255,255,0.12);
-  color: #fff;
+  background: #F1F1F1;
+  color: #111;
   border-bottom-left-radius: 4px;
   align-self: flex-start;
-  backdrop-filter: blur(8px);
 }
 .ip16-bubble.user {
   background: #007AFF;
@@ -925,9 +982,9 @@
   transition: transform 0.15s;
 }
 .ip16-ctrl-btn:active { transform: scale(0.93); }
-.ip16-ctrl-btn span { font-size: 9px; font-family: -apple-system, sans-serif; color: rgba(255,255,255,0.7); }
-.ip16-ctrl-btn.mute    { background: rgba(255,255,255,0.15); color: #fff; }
-.ip16-ctrl-btn.speaker { background: rgba(255,255,255,0.15); color: #fff; }
+.ip16-ctrl-btn span { font-size: 9px; font-family: -apple-system, sans-serif; color: #555; }
+.ip16-ctrl-btn.mute    { background: #F1F1F1; color: #111; }
+.ip16-ctrl-btn.speaker { background: #F1F1F1; color: #111; }
 .ip16-ctrl-btn.end     { background: #FF3B30; color: #fff; }
 .ip16-ctrl-btn.mic-active { background: #FF3B30; color: #fff; box-shadow: 0 0 0 0 rgba(255,59,48,0.5); animation: mic-ring 1s infinite; }
 
@@ -935,7 +992,7 @@
 .ip16-screen-bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 20%, #1a2a4a 0%, #000 70%);
+  background: #FFFFFF; /* Clean white background */
   z-index: 0;
 }
 .ip16-screen > *:not(.ip16-screen-bg):not(.ip16-dynamic-island) { position: relative; z-index: 1; }
@@ -1108,8 +1165,13 @@
 .future-bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 10%, #00192E 0%, #000A14 60%, #000508 100%);
+  background: radial-gradient(ellipse at 50% 10%, #FF007F 0%, #00F0FF 60%, #000508 100%);
   z-index: 0;
+  animation: hologram-pulse 8s infinite alternate ease-in-out;
+}
+@keyframes hologram-pulse {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  100% { filter: hue-rotate(30deg) brightness(1.2); }
 }
 .phone-future .ip16-screen > *:not(.ip16-screen-bg):not(.ip16-dynamic-island) {
   position: relative;
@@ -1239,12 +1301,14 @@
 
 /* ---- Autonomous actions checklist ---- */
 .future-checklist {
-  margin: 4px 12px 6px;
-  padding: 10px 12px;
-  background: rgba(0,212,255,0.06);
-  border: 1px solid rgba(0,212,255,0.15);
-  border-radius: 12px;
+  margin: 12px 12px 8px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 16px;
   flex-shrink: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 .future-checklist-title {
   font-size: 10px;
@@ -1302,17 +1366,21 @@
   animation: fadeIn 0.2s ease;
 }
 .future-bubble.ivr {
-  background: rgba(0,212,255,0.12);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px);
   color: #fff;
   border-bottom-left-radius: 4px;
   align-self: flex-start;
-  border: 1px solid rgba(0,212,255,0.2);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 .future-bubble.user {
-  background: rgba(0,122,255,0.6);
+  background: rgba(0, 122, 255, 0.7);
+  backdrop-filter: blur(10px);
   color: #fff;
   border-bottom-right-radius: 4px;
   align-self: flex-end;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* ---- Response buttons ---- */
@@ -1324,18 +1392,20 @@
   flex-shrink: 0;
 }
 .future-resp-btn {
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,212,255,0.3);
-  background: rgba(0,212,255,0.08);
-  color: #C8F0FF;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(15px);
+  color: #fff;
   font-size: 11px;
   font-family: -apple-system, sans-serif;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s, border-color 0.15s;
-  line-height: 1.4;
+  transition: all 0.2s;
+  line-height: 1.45;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 .future-resp-btn:hover {
   background: rgba(0,212,255,0.15);

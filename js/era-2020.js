@@ -159,7 +159,13 @@ class Era2020 {
     }
     const line = script[idx];
     const isAI = line.role === 'ai';
-    const next = () => setTimeout(() => this._playDemoStep(idx + 1), isAI ? 600 : 400);
+    const next = () => {
+      this._setStatus('processing', 'AI is thinking...');
+      setTimeout(() => {
+        if (this.state !== 'active') return;
+        this._playDemoStep(idx + 1);
+      }, 1400); // Lambda latency simulation
+    };
 
     if (isAI) {
       const playLine = () => {
@@ -167,7 +173,7 @@ class Era2020 {
         this._log('ivr', line.text);
         this._setStatus('speaking', 'Virtual assistant speaking...');
 
-        const done = () => { this._setStatus('active', 'Listening...'); setTimeout(() => this._playDemoStep(idx + 1), 600); };
+        const done = () => { this._setStatus('active', 'Listening...'); next(); };
 
         // Try pre-recorded WAV first; fall back to Samantha TTS if file missing
         let ivrFallbackUsed = false;
@@ -297,6 +303,7 @@ class Era2020 {
     this._stopListening();
     if (this.state === 'idle' || this.state === 'done') return;
     this.state = 'processing';
+    this._setStatus('processing', 'Processing request...');
     this._log('user', text);
 
     const lower = text.toLowerCase();
@@ -314,20 +321,20 @@ class Era2020 {
             this.state = 'done';
             this._showIntentBadge('REPORT_LOST_CARD', 99);
             this._playIVR(this.cfg.prompts.complete, () => this._showExtensionOptions());
-          }, 400);
+          }, 1500);
         } else {
           const nextSlot = this.slotQueue[0];
           setTimeout(() => {
             this.state = 'active';
             this._playIVR(nextSlot.prompt, () => this._listen());
-          }, 400);
+          }, 1200);
         }
         return;
       } else {
         setTimeout(() => {
           this.state = 'active';
           this._playIVR("I'm sorry, I didn't quite get that. " + slot.prompt, () => this._listen());
-        }, 300);
+        }, 1200);
         return;
       }
     }
@@ -354,7 +361,7 @@ class Era2020 {
         this.state = 'active';
         this._playIVR(this.cfg.prompts.notUnderstood, () => this._listen());
       }
-    }, 600);
+    }, 1800); // NLU + Lambda latency
   }
 
   // ---- 2020s extension scenarios ----
@@ -465,9 +472,13 @@ class Era2020 {
     container.innerHTML = this.cfg.slots.map(slot => {
       const filled = this.slots[slot.key] !== undefined;
       const active = !filled && this.slotQueue[0]?.key === slot.key;
-      const cls = filled ? 'filled' : active ? 'active' : '';
-      const icon = filled ? '✓' : active ? '…' : '○';
-      return `<div class="ip7-slot ${cls}">${icon} ${slot.label}</div>`;
+      const cls = filled ? 'filled' : active ? 'active' : 'pending';
+      const icon = filled ? '✓' : '';
+      return `
+        <div class="ip7-slot ${cls}">
+          <div class="ip7-slot-dot">${icon}</div>
+          ${slot.label}
+        </div>`;
     }).join('');
   }
 
