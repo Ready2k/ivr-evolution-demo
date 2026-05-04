@@ -1,0 +1,1352 @@
+/* ============================================================
+   IVR Evolution Demo — Phone Frame CSS
+   Each era renders a different phone style
+   ============================================================ */
+
+/* ---- 2020s AI analysis panel (outside phone, presenter-facing) ---- */
+.ip7-ai-panel {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(0,20,50,0.55);
+  border: 1px solid rgba(66,165,245,0.25);
+  border-radius: 10px;
+  font-size: 10px;
+  font-family: 'SF Mono', 'Fira Mono', monospace;
+  color: #90CAF9;
+  width: 100%;
+  max-width: 280px;
+}
+.ip7-ai-panel-header {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(144,202,249,0.55);
+  margin-bottom: 8px;
+}
+.ip7-ai-panel-label {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: rgba(144,202,249,0.5);
+  margin-bottom: 4px;
+}
+.ip7-ai-panel .ip7-intent-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ip7-ai-panel .ip7-intent-chip > div {
+  background: rgba(66,165,245,0.15);
+  border: 1px solid rgba(66,165,245,0.35);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 10px;
+  color: #42A5F5;
+  letter-spacing: 0.04em;
+}
+.ip7-ai-panel .ip7-confidence {
+  color: rgba(144,202,249,0.7);
+  font-size: 9px;
+}
+.ip7-ai-panel .ip7-slot {
+  padding: 3px 0;
+  color: rgba(144,202,249,0.55);
+  font-size: 10px;
+}
+.ip7-ai-panel .ip7-slot.filled { color: #66BB6A; }
+.ip7-ai-panel .ip7-slot.active { color: #42A5F5; }
+
+/* ---- Shared phone wrapper ---- */
+.phone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  transform: scale(0.95);
+  transform-origin: center center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+/* ============================================================
+   NOKIA 3310 — 2000s era
+   ============================================================ */
+.phone-nokia {
+  width: 240px;
+  background: linear-gradient(160deg, #1C283B 0%, #0F1626 100%);
+  border-radius: 30px 30px 45px 45px;
+  padding: 16px 14px 24px;
+  box-shadow:
+    inset 0 4px 6px rgba(255,255,255,0.2),
+    inset 0 -4px 10px rgba(0,0,0,0.8),
+    0 12px 32px rgba(0,0,0,0.6),
+    0 4px 8px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+.phone-nokia::before {
+  content: '';
+  position: absolute;
+  top: 6px; left: 20px; right: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  border-radius: 2px;
+}
+
+.nokia-earpiece {
+  width: 50px;
+  height: 6px;
+  background: #0A0F1A;
+  border-radius: 3px;
+  margin: 0 auto 12px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.1);
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+}
+.nokia-earpiece-dot {
+  width: 3px; height: 3px;
+  background: #000;
+  border-radius: 50%;
+}
+
+/* Nokia LCD screen */
+.nokia-screen-frame {
+  background: linear-gradient(160deg, #D0D5D9, #A5ADB5);
+  border-radius: 12px 12px 36px 36px;
+  padding: 14px 14px 24px;
+  margin-bottom: 12px;
+  box-shadow: 
+    inset 0 2px 8px rgba(0,0,0,0.3), 
+    0 2px 4px rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+}
+.nokia-screen {
+  background: #83A070;
+  border-radius: 4px;
+  width: 170px;
+  height: 120px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 12px rgba(0,0,0,0.2);
+  border: 2px solid #555;
+}
+.nokia-screen-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.04),
+    rgba(0,0,0,0.04) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+.nokia-status-bar {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: #1A3A10;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+.nokia-content {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: #1A3A10;
+  line-height: 1.4;
+  word-break: break-word;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.nokia-input-bar {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A3A10;
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+  min-height: 20px;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* Nokia nav row */
+.nokia-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+  padding: 0 4px;
+}
+.nokia-soft-btn {
+  flex: 1;
+  height: 24px;
+  background: linear-gradient(160deg, #D8D8D8, #999);
+  border: none;
+  border-radius: 12px;
+  font-size: 10px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #666, 0 4px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #222;
+  font-weight: 700;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.nokia-soft-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #666; }
+
+.nokia-nav-center {
+  width: 52px; height: 36px;
+  flex: none;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #3A5580, #1A2B4C);
+  border: 1px solid #0F1626;
+  box-shadow: 0 3px 0 #0D1626, 0 4px 6px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+  font-size: 12px;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.nokia-nav-center:active { transform: translateY(2px); box-shadow: 0 1px 0 #0D1626; }
+
+/* Nokia keypad */
+.nokia-keypad {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 8px;
+}
+.nokia-keypad-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+.nokia-key {
+  flex: 1;
+  height: 34px;
+  background: linear-gradient(160deg, #D8D8D8, #999);
+  border: none;
+  border-radius: 17px;
+  cursor: pointer;
+  box-shadow:
+    0 3px 0 #666,
+    0 5px 8px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  transition: transform 0.08s, box-shadow 0.08s;
+  position: relative;
+  top: 0;
+}
+.nokia-key:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #666, 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5);
+  top: 2px;
+}
+.nokia-key-digit {
+  font-size: 14px;
+  font-weight: 900;
+  color: #1A1A1A;
+  line-height: 1;
+  font-family: Arial, sans-serif;
+}
+.nokia-key-letters {
+  font-size: 6px;
+  color: #444;
+  letter-spacing: 0.5px;
+  font-family: Arial, sans-serif;
+}
+.nokia-key-special .nokia-key-digit { font-size: 12px; }
+
+/* Call + end buttons */
+.nokia-call-row {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.nokia-call-btn {
+  width: 45px;
+  height: 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 3px 0 #666, 0 4px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+  transition: transform 0.08s, box-shadow 0.08s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nokia-call-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #666; }
+.nokia-call-btn.call { background: linear-gradient(160deg, #D8D8D8, #999); color: #2E7D32; font-weight: 900; }
+.nokia-call-btn.end  { background: linear-gradient(160deg, #D8D8D8, #999); color: #B71C1C; font-weight: 900; }
+
+/* ============================================================
+   BLACKBERRY CURVE — 2010s era
+   ============================================================ */
+.phone-blackberry {
+  width: 250px;
+  background: linear-gradient(160deg, #1A1A1A 0%, #111 100%);
+  border-radius: 20px;
+  padding: 12px 10px 18px;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.6),
+    0 2px 6px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  position: relative;
+}
+
+.bb-speaker {
+  width: 80px;
+  height: 10px;
+  background: #0A0A0A;
+  border-radius: 5px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 8px;
+}
+.bb-speaker-hole {
+  width: 3px; height: 3px;
+  background: #222;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bb-screen-frame {
+  background: #0D0D0D;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 10px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+}
+.bb-screen {
+  background: #000;
+  border-radius: 7px;
+  width: 222px;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* BB status/notification strip */
+.bb-screen-top {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid #1a2a4a;
+  flex-shrink: 0;
+}
+.bb-carrier { font-size: 10px; color: #7CB9E8; font-family: Arial, sans-serif; }
+.bb-time { font-size: 16px; font-weight: bold; color: #fff; line-height: 1; }
+.bb-screen-content {
+  flex: 1;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bb-call-status {
+  font-size: 11px;
+  color: #7CB9E8;
+  font-family: Arial, sans-serif;
+  margin-bottom: 6px;
+}
+.bb-ivr-text {
+  font-size: 12px;
+  color: #E8E8E8;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  overflow: hidden;
+  flex: 1;
+}
+.bb-user-speech {
+  font-size: 11px;
+  color: #7CB9E8;
+  font-family: Arial, sans-serif;
+  margin-top: 6px;
+  font-style: italic;
+  min-height: 16px;
+}
+
+/* BB nav row */
+.bb-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  margin-bottom: 8px;
+  gap: 4px;
+}
+.bb-nav-btn {
+  background: linear-gradient(160deg, #3A3A3A, #151515);
+  border: 1px solid #111;
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  cursor: pointer;
+  flex: 1;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 
+    0 2px 0 #000, 
+    0 4px 8px rgba(0,0,0,0.6), 
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.bb-nav-btn:active {
+  transform: translateY(2px);
+  box-shadow: 
+    0 0 0 #000, 
+    0 2px 4px rgba(0,0,0,0.6), 
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.bb-nav-btn:hover { background: linear-gradient(160deg, #444, #222); }
+.bb-trackpad {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #444, #1A1A1A);
+  border: 2px solid #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  cursor: pointer;
+  flex: none;
+}
+
+/* BB call buttons */
+.bb-call-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 4px;
+  margin-bottom: 8px;
+}
+.bb-call-btn {
+  flex: 1;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.bb-call-btn.call { background: #2E7D32; }
+.bb-call-btn.end  { background: #B71C1C; }
+
+/* BB mic button */
+.bb-mic-row {
+  display: flex;
+  justify-content: center;
+  padding: 0 4px;
+}
+.bb-mic-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bb-mic-btn.idle     { background: #2A2A2A; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+.bb-mic-btn.listening{ background: #B71C1C; box-shadow: 0 0 0 0 #f4433680; animation: mic-ring 1s infinite; }
+@keyframes mic-ring { 70%{box-shadow:0 0 0 12px rgba(244,67,54,0)} 100%{box-shadow:0 0 0 0 rgba(244,67,54,0)} }
+
+/* ============================================================
+   iPHONE 12 — 2020s era
+   ============================================================ */
+.phone-iphone12 {
+  width: 276px;
+  background: linear-gradient(160deg, #EBEBEB 0%, #C4C4C4 40%, #999999 100%);
+  border-radius: 40px;
+  padding: 8px 6px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.5),
+    0 4px 10px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -1px 0 rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.ip12-side-btn {
+  position: absolute;
+  right: -3px;
+  width: 3px;
+  background: linear-gradient(160deg, #CCC, #999);
+  border-radius: 2px;
+}
+.ip12-vol-up { top: 70px; height: 32px; left: -3px; }
+.ip12-vol-down { top: 112px; height: 32px; left: -3px; }
+.ip12-power { top: 100px; height: 56px; right: -3px; }
+
+.ip12-screen-frame {
+  background: #000;
+  border-radius: 34px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+.ip12-screen {
+  background: #F5F5F7;
+  width: 264px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Notch */
+.ip12-notch {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 24px;
+  background: #000;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.ip12-notch::before, .ip12-notch::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  width: 12px;
+  height: 12px;
+  background: transparent;
+}
+.ip12-notch::before {
+  left: -12px;
+  border-top-right-radius: 12px;
+  box-shadow: 6px -6px 0 6px #000;
+}
+.ip12-notch::after {
+  right: -12px;
+  border-top-left-radius: 12px;
+  box-shadow: -6px -6px 0 6px #000;
+}
+.ip12-notch-speaker {
+  width: 40px; height: 4px;
+  background: #222;
+  border-radius: 2px;
+}
+.ip12-notch-camera {
+  width: 8px; height: 8px;
+  background: radial-gradient(circle at 35% 35%, #1A1A1A, #000);
+  border-radius: 50%;
+  border: 1px solid #111;
+}
+
+.ip12-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 14px 2px;
+  background: transparent;
+  font-size: 11px;
+  font-family: -apple-system, sans-serif;
+  font-weight: 600;
+  color: #000;
+  flex-shrink: 0;
+  height: 28px;
+}
+.ip12-time { font-size: 12px; font-weight: 700; margin-left: 8px; }
+.ip12-icons { display: flex; gap: 4px; margin-right: 4px; }
+
+.ip7-call-bar {
+  background: #34C759;
+  color: #fff;
+  text-align: center;
+  font-size: 11px;
+  font-family: -apple-system, sans-serif;
+  padding: 4px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.ip7-chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #F5F5F7;
+}
+
+/* ============================================================
+   PIXEL — 2020s era
+   ============================================================ */
+.phone-pixel {
+  width: 276px;
+  background: linear-gradient(160deg, #3a3f45 0%, #202428 100%);
+  border-radius: 30px;
+  padding: 8px 6px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.5),
+    0 4px 10px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -1px 0 rgba(0,0,0,0.6);
+  position: relative;
+}
+.pixel-side-btn {
+  position: absolute;
+  right: -3px;
+  width: 3px;
+  background: linear-gradient(160deg, #555, #333);
+  border-radius: 2px;
+}
+.pixel-power { top: 120px; height: 40px; }
+.pixel-vol { top: 170px; height: 80px; }
+
+.pixel-screen-frame {
+  background: #000;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2px #111;
+}
+.pixel-screen {
+  background: #F8F9FA;
+  width: 264px;
+  height: 520px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+.pixel-hole-punch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 35% 35%, #1A1A1A, #000);
+  border-radius: 50%;
+  z-index: 10;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+}
+.pixel-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px 2px;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 500;
+  color: #000;
+  flex-shrink: 0;
+  height: 28px;
+}
+.pixel-time { font-size: 12px; margin-left: 2px; }
+.pixel-icons { display: flex; gap: 4px; }
+
+.ip7-bubble {
+  max-width: 85%;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-family: -apple-system, sans-serif;
+  line-height: 1.45;
+  animation: fadeIn 0.2s ease;
+}
+.ip7-bubble.ivr {
+  background: #E5E5EA;
+  color: #000;
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+}
+.ip7-bubble.user {
+  background: #007AFF;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+
+/* Intent + slot chips */
+.ip7-intent-bar {
+  padding: 8px 12px;
+  background: #fff;
+  border-top: 1px solid #E5E5EA;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.ip7-intent-label { font-size: 10px; font-family: -apple-system, sans-serif; color: #8E8E93; font-weight: 600; }
+.ip7-intent-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-family: -apple-system, sans-serif;
+  font-weight: 600;
+  background: #007AFF;
+  color: #fff;
+}
+.ip7-confidence { font-size: 10px; opacity: 0.75; }
+.ip7-slots { display: flex; gap: 5px; flex-wrap: wrap; }
+.ip7-slot {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-family: -apple-system, sans-serif;
+  font-weight: 600;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.ip7-slot.filled { background: #34C759; border-color: #34C759; color: #fff; }
+.ip7-slot.active { background: #FF9500; border-color: #FF9500; color: #fff; animation: pulse-slot 1s infinite; }
+@keyframes pulse-slot { 0%,100%{opacity:1} 50%{opacity:0.65} }
+
+.ip12-home-indicator {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+/* ip7 mic button (shown in chat area or bottom) */
+.ip7-mic-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+  align-self: center;
+  margin-top: 4px;
+}
+.ip7-mic-btn.idle     { background: #007AFF; box-shadow: 0 4px 12px rgba(0,122,255,0.4); color: #fff; }
+.ip7-mic-btn.listening{ background: #FF3B30; box-shadow: 0 4px 12px rgba(255,59,48,0.5); color: #fff; animation: mic-ring 1s infinite; }
+
+/* ============================================================
+   iPHONE 16 PRO — Now era
+   ============================================================ */
+.phone-iphone16 {
+  width: 282px;
+  background: linear-gradient(160deg, #9A9080 0%, #7A7068 40%, #6A6058 100%);
+  border-radius: 50px;
+  padding: 10px 8px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.5),
+    0 4px 10px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.2);
+  position: relative;
+}
+
+/* Side buttons */
+.ip16-side-btn {
+  position: absolute;
+  right: -4px;
+  width: 3px;
+  background: linear-gradient(160deg, #888, #666);
+  border-radius: 2px;
+}
+.ip16-vol-up { top: 70px; height: 32px; left: -4px; }
+.ip16-vol-down { top: 112px; height: 32px; left: -4px; }
+.ip16-action { top: 60px; height: 24px; left: -4px; }
+.ip16-power { top: 100px; height: 56px; right: -4px; }
+
+.ip16-screen-frame {
+  background: #000;
+  border-radius: 42px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+.ip16-screen {
+  width: 266px;
+  height: 520px;
+  background: #000;
+  border-radius: 42px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Dynamic Island */
+.ip16-dynamic-island {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000;
+  border-radius: 20px;
+  z-index: 10;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ip16-dynamic-island.small {
+  width: 100px; height: 30px;
+}
+.ip16-dynamic-island.expanded {
+  width: 220px; height: 60px;
+  padding: 8px 14px;
+}
+.ip16-island-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.ip16-island-icon { font-size: 16px; flex-shrink: 0; }
+.ip16-island-text { flex: 1; }
+.ip16-island-title { font-size: 11px; font-family: -apple-system, sans-serif; font-weight: 600; color: #fff; }
+.ip16-island-sub   { font-size: 9px; font-family: -apple-system, sans-serif; color: rgba(255,255,255,0.6); }
+.ip16-island-wave {
+  width: 40px; height: 20px;
+  flex-shrink: 0;
+}
+
+/* Nova Sonic waveform canvas */
+.ip16-waveform-canvas {
+  display: block;
+}
+
+.ip16-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px 0;
+  color: #fff;
+  flex-shrink: 0;
+  height: 44px;
+}
+.ip16-time { font-size: 15px; font-weight: 700; font-family: -apple-system, sans-serif; }
+.ip16-icons { font-size: 12px; opacity: 0.9; letter-spacing: 2px; }
+
+.ip16-call-info {
+  text-align: center;
+  color: #fff;
+  padding: 4px 0 10px;
+  flex-shrink: 0;
+}
+.ip16-call-title { font-size: 22px; font-weight: 300; font-family: -apple-system, sans-serif; }
+.ip16-call-duration { font-size: 13px; color: #34C759; font-family: -apple-system, sans-serif; margin-top: 2px; }
+
+/* Nova conversation area */
+.ip16-chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ip16-bubble {
+  max-width: 82%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-family: -apple-system, sans-serif;
+  line-height: 1.45;
+  animation: fadeIn 0.25s ease;
+}
+.ip16-bubble.ivr {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  backdrop-filter: blur(8px);
+}
+.ip16-bubble.user {
+  background: #007AFF;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+
+/* ip16 controls */
+.ip16-controls {
+  padding: 12px 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-shrink: 0;
+}
+.ip16-ctrl-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  gap: 2px;
+  transition: transform 0.15s;
+}
+.ip16-ctrl-btn:active { transform: scale(0.93); }
+.ip16-ctrl-btn span { font-size: 9px; font-family: -apple-system, sans-serif; color: rgba(255,255,255,0.7); }
+.ip16-ctrl-btn.mute    { background: rgba(255,255,255,0.15); color: #fff; }
+.ip16-ctrl-btn.speaker { background: rgba(255,255,255,0.15); color: #fff; }
+.ip16-ctrl-btn.end     { background: #FF3B30; color: #fff; }
+.ip16-ctrl-btn.mic-active { background: #FF3B30; color: #fff; box-shadow: 0 0 0 0 rgba(255,59,48,0.5); animation: mic-ring 1s infinite; }
+
+/* ip16 background gradient */
+.ip16-screen-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 20%, #1a2a4a 0%, #000 70%);
+  z-index: 0;
+}
+.ip16-screen > *:not(.ip16-screen-bg):not(.ip16-dynamic-island) { position: relative; z-index: 1; }
+
+/* BB QWERTY Keypad */
+.bb-keypad {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 4px;
+  margin-bottom: 8px;
+}
+.bb-key-row {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+.bb-key-row:nth-child(2) { padding: 0 6px; }
+.bb-key-row:nth-child(3) { padding: 0 12px; }
+
+.bb-key {
+  background: linear-gradient(160deg, #3A3A3A, #151515);
+  border: 1px solid #0A0A0A;
+  border-radius: 4px 4px 6px 6px;
+  color: #CCC;
+  font-size: 8px;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  width: 20px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.7), 
+    inset 0 1px 0 rgba(255,255,255,0.15);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.05s, box-shadow 0.05s;
+}
+.bb-key:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.bb-key.space { width: 90px; }
+.bb-key.sym { width: 34px; text-transform: lowercase; }
+
+
+/* ============================================================
+   iPHONE 7 2020 — iOS in-call controls
+   ============================================================ */
+.ip7-call-info-bar {
+  text-align: center;
+  padding: 6px 0 4px;
+  flex-shrink: 0;
+}
+.ip7-contact-name {
+  font-size: 20px;
+  font-weight: 300;
+  font-family: -apple-system, sans-serif;
+  color: #000;
+  line-height: 1.2;
+}
+.ip7-call-timer {
+  font-size: 13px;
+  color: #34C759;
+  font-family: -apple-system, sans-serif;
+  margin-top: 2px;
+}
+
+.ip7-precall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 0 20px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.ip7-big-call-btn {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  background: #34C759;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(52,199,89,0.45);
+  transition: transform 0.12s, box-shadow 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ip7-big-call-btn:active { transform: scale(0.92); box-shadow: 0 2px 8px rgba(52,199,89,0.35); }
+.ip7-precall-label {
+  font-size: 13px;
+  color: #555;
+  font-family: -apple-system, sans-serif;
+}
+
+.ip7-incall {
+  flex-direction: column;
+  padding: 8px 14px 14px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.ip7-ios-ctrl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.ip7-ios-ctrl-btn {
+  width: 62px; height: 62px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.07);
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin: 0 auto;
+}
+.ip7-ios-ctrl-btn:hover { background: rgba(0,0,0,0.12); }
+.ip7-ios-ctrl-btn:active { transform: scale(0.93); }
+.ip7-mic-ctrl.listening {
+  background: #FF3B30 !important;
+  animation: mic-ring 1s infinite;
+}
+.ip7-mic-ctrl.listening .ios-ctrl-label { color: #fff; }
+.ios-ctrl-icon  { font-size: 20px; }
+.ios-ctrl-label {
+  font-size: 10px;
+  font-family: -apple-system, sans-serif;
+  color: #333;
+  line-height: 1;
+}
+
+.ip7-ios-end-btn {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  background: #FF3B30;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(255,59,48,0.45);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.ip7-ios-end-btn:active { transform: scale(0.92); box-shadow: 0 2px 8px rgba(255,59,48,0.35); }
+
+.ip7-home-indicator {
+  width: 110px; height: 4px;
+  background: #999;
+  border-radius: 2px;
+  margin: 6px auto 2px;
+  opacity: 0.5;
+}
+
+/* ============================================================
+   iPHONE 16 FUTURE — 2030 era
+   ============================================================ */
+.phone-future {
+  filter: drop-shadow(0 0 24px rgba(0,212,255,0.25));
+}
+
+.future-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 10%, #00192E 0%, #000A14 60%, #000508 100%);
+  z-index: 0;
+}
+.phone-future .ip16-screen > *:not(.ip16-screen-bg):not(.ip16-dynamic-island) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Incoming call view ---- */
+.future-incoming {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.future-ring-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0 12px;
+}
+.future-ring-pulse {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(0,212,255,0.4);
+  animation: future-ring-expand 2.4s ease-out infinite;
+}
+.future-ring-pulse:nth-child(1) { width: 60px; height: 60px; animation-delay: 0s; }
+.future-ring-pulse.delay1      { width: 80px; height: 80px; animation-delay: 0.6s; }
+.future-ring-pulse.delay2      { width: 100px; height: 100px; animation-delay: 1.2s; }
+@keyframes future-ring-expand {
+  0%   { opacity: 0.7; transform: scale(0.7); }
+  100% { opacity: 0;   transform: scale(1.4); }
+}
+
+.future-caller-icon {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #003A5C, #001A2E);
+  border: 2px solid rgba(0,212,255,0.4);
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(0,212,255,0.2);
+}
+.future-caller-name {
+  font-size: 24px;
+  font-weight: 300;
+  font-family: -apple-system, sans-serif;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.future-caller-sub {
+  font-size: 13px;
+  color: rgba(0,212,255,0.7);
+  font-family: -apple-system, sans-serif;
+  text-align: center;
+  margin-bottom: 28px;
+}
+.future-answer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 16px;
+  margin-top: auto;
+}
+.future-answer-btn, .future-decline-btn {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.future-answer-btn {
+  background: #34C759;
+  box-shadow: 0 4px 16px rgba(52,199,89,0.5);
+}
+.future-answer-btn:active { transform: scale(0.92); }
+.future-decline-btn {
+  background: #FF3B30;
+  box-shadow: 0 4px 16px rgba(255,59,48,0.5);
+}
+.future-decline-btn:active { transform: scale(0.92); }
+
+/* ---- Active call view ---- */
+.future-active {
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.future-call-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 6px;
+  flex-shrink: 0;
+}
+.future-call-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  font-family: -apple-system, sans-serif;
+}
+.future-call-timer {
+  font-size: 13px;
+  color: rgba(0,212,255,0.8);
+  font-family: -apple-system, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Autonomous actions checklist ---- */
+.future-checklist {
+  margin: 4px 12px 6px;
+  padding: 10px 12px;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.future-checklist-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(0,212,255,0.6);
+  font-family: -apple-system, sans-serif;
+  margin-bottom: 6px;
+}
+.future-check-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 0;
+  font-size: 11px;
+  font-family: -apple-system, sans-serif;
+  transition: color 0.3s;
+}
+.future-check-item.pending { color: rgba(255,255,255,0.35); }
+.future-check-item.done    { color: rgba(255,255,255,0.9); }
+.future-check-item.ticking { animation: check-tick 0.5s ease; }
+@keyframes check-tick {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.04); color: #67E8F9; }
+  100% { transform: scale(1); }
+}
+.future-check-icon {
+  width: 16px;
+  font-size: 11px;
+  color: rgba(0,212,255,0.8);
+  flex-shrink: 0;
+  text-align: center;
+}
+.future-check-item.pending .future-check-icon { color: rgba(255,255,255,0.2); }
+.future-check-label { flex: 1; line-height: 1.3; }
+
+/* ---- Conversation bubbles ---- */
+.future-chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-height: 0;
+}
+.future-bubble {
+  max-width: 86%;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-family: -apple-system, sans-serif;
+  line-height: 1.45;
+  animation: fadeIn 0.2s ease;
+}
+.future-bubble.ivr {
+  background: rgba(0,212,255,0.12);
+  color: #fff;
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  border: 1px solid rgba(0,212,255,0.2);
+}
+.future-bubble.user {
+  background: rgba(0,122,255,0.6);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+
+/* ---- Response buttons ---- */
+.future-responses {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px 10px;
+  flex-shrink: 0;
+}
+.future-resp-btn {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,212,255,0.3);
+  background: rgba(0,212,255,0.08);
+  color: #C8F0FF;
+  font-size: 11px;
+  font-family: -apple-system, sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s;
+  line-height: 1.4;
+}
+.future-resp-btn:hover {
+  background: rgba(0,212,255,0.15);
+  border-color: rgba(0,212,255,0.5);
+}
+.future-resp-btn:active { transform: scale(0.98); }
+
+/* ---- End call row ---- */
+.future-end-row {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0 10px;
+  flex-shrink: 0;
+}

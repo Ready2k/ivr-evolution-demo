@@ -1,0 +1,10 @@
+{
+  "name": "ivr-evolution-demo",
+  "version": "1.0.0",
+  "description": "Interactive demo tracing IVR technology from 2000s DTMF to 2025 AI voice agents",
+  "scripts": {
+    "dev": "npx serve . --listen 8080",
+    "start": "npx serve . --listen 8080"
+  },
+  "license": "UNLICENSED"
+}

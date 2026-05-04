@@ -1,0 +1,230 @@
+/* ============================================================
+   IVR Evolution Demo — Era Colour Themes
+   Applied via class on <body>
+   ============================================================ */
+
+/* ---- 2000s — Retro terminal green ---- */
+body.era-2000 {
+  background: radial-gradient(ellipse at 20% 50%, #0D2010 0%, #080E06 60%, #050A04 100%);
+  color: #C8E6C9;
+  --era-accent: #4CAF50;
+  --era-accent2: #81C784;
+  --era-bg: #0A1A0A;
+  --panel-bg: rgba(0,40,0,0.4);
+  --panel-border: rgba(76,175,80,0.2);
+  --text-muted: rgba(200,230,201,0.5);
+}
+body.era-2000 .era-nav   { background: rgba(0,20,0,0.85); }
+body.era-2000 .era-header{ background: rgba(0,30,0,0.5); border-color: rgba(76,175,80,0.2); }
+body.era-2000 .era-btn.active {
+  background: rgba(76,175,80,0.2);
+  border-color: rgba(76,175,80,0.6);
+  color: #81C784;
+}
+body.era-2000 .era-badge { border-color: rgba(76,175,80,0.5); color: #81C784; }
+body.era-2000 .timeline-line { background: #4CAF50; }
+body.era-2000 .btn-primary { background: #4CAF50; color: #000; }
+body.era-2000 .settings-panel { background: #0D2010; border: 1px solid rgba(76,175,80,0.3); color: #C8E6C9; }
+body.era-2000 .settings-label input { color: #C8E6C9; }
+body.era-2000 .tech-info-bar { background: rgba(0,15,0,0.6); }
+body.era-2000 .conv-msg.ivr { background: rgba(76,175,80,0.1); border-color: rgba(76,175,80,0.25); }
+body.era-2000 #era-title { color: #81C784; }
+body.era-2000 .nokia-screen { background: #7B9B6A; }
+
+/* ---- 2010s — Dark enterprise blue ---- */
+body.era-2010 {
+  background: radial-gradient(ellipse at 30% 40%, #0D1A2E 0%, #070E1E 60%, #040810 100%);
+  color: #B3CBE8;
+  --era-accent: #1565C0;
+  --era-accent2: #42A5F5;
+  --panel-bg: rgba(0,20,50,0.4);
+  --panel-border: rgba(66,165,245,0.18);
+  --text-muted: rgba(179,203,232,0.5);
+}
+body.era-2010 .era-nav   { background: rgba(5,12,28,0.88); }
+body.era-2010 .era-header{ background: rgba(5,15,35,0.5); border-color: rgba(66,165,245,0.18); }
+body.era-2010 .era-btn.active {
+  background: rgba(21,101,192,0.3);
+  border-color: rgba(66,165,245,0.6);
+  color: #42A5F5;
+}
+body.era-2010 .era-badge { border-color: rgba(66,165,245,0.4); color: #42A5F5; }
+body.era-2010 .timeline-line { background: #1565C0; }
+body.era-2010 .btn-primary { background: #1565C0; color: #fff; }
+body.era-2010 .settings-panel { background: #0D1A2E; border: 1px solid rgba(66,165,245,0.25); color: #B3CBE8; }
+body.era-2010 .settings-label input { color: #B3CBE8; }
+body.era-2010 .tech-info-bar { background: rgba(4,10,22,0.6); }
+body.era-2010 .conv-msg.ivr { background: rgba(66,165,245,0.1); border-color: rgba(66,165,245,0.2); }
+body.era-2010 #era-title { color: #42A5F5; }
+
+/* ---- 2020s — Clean iOS light-ish ---- */
+body.era-2020 {
+  background: radial-gradient(ellipse at 60% 30%, #1C1C2E 0%, #12121A 60%, #0A0A12 100%);
+  color: #E8E8F0;
+  --era-accent: #007AFF;
+  --era-accent2: #5AC8FA;
+  --panel-bg: rgba(255,255,255,0.06);
+  --panel-border: rgba(255,255,255,0.1);
+  --text-muted: rgba(232,232,240,0.5);
+}
+body.era-2020 .era-nav   { background: rgba(20,20,35,0.88); }
+body.era-2020 .era-header{ background: rgba(24,24,40,0.5); border-color: rgba(255,255,255,0.08); }
+body.era-2020 .era-btn.active {
+  background: rgba(0,122,255,0.2);
+  border-color: rgba(0,122,255,0.6);
+  color: #5AC8FA;
+}
+body.era-2020 .era-badge { border-color: rgba(0,122,255,0.4); color: #5AC8FA; }
+body.era-2020 .timeline-line { background: #007AFF; }
+body.era-2020 .btn-primary { background: #007AFF; color: #fff; }
+body.era-2020 .settings-panel { background: #1C1C2E; border: 1px solid rgba(255,255,255,0.12); color: #E8E8F0; }
+body.era-2020 .settings-label input { color: #E8E8F0; }
+body.era-2020 .tech-info-bar { background: rgba(14,14,22,0.7); }
+body.era-2020 .conv-msg.ivr { background: rgba(0,122,255,0.1); border-color: rgba(0,122,255,0.2); }
+body.era-2020 #era-title { color: #5AC8FA; }
+
+/* ---- Now — Deep space premium ---- */
+body.era-now {
+  background: radial-gradient(ellipse at 50% 10%, #1A1033 0%, #0D0820 50%, #070510 100%);
+  color: #EEE8FF;
+  --era-accent: #A78BFA;
+  --era-accent2: #C4B5FD;
+  --panel-bg: rgba(167,139,250,0.07);
+  --panel-border: rgba(167,139,250,0.15);
+  --text-muted: rgba(238,232,255,0.5);
+}
+body.era-now .era-nav   { background: rgba(10,6,22,0.88); }
+body.era-now .era-header{ background: rgba(15,10,30,0.5); border-color: rgba(167,139,250,0.15); }
+body.era-now .era-btn.active {
+  background: rgba(167,139,250,0.15);
+  border-color: rgba(167,139,250,0.55);
+  color: #C4B5FD;
+}
+body.era-now .era-badge { border-color: rgba(167,139,250,0.4); color: #C4B5FD; }
+body.era-now .timeline-line { background: #A78BFA; }
+body.era-now .btn-primary { background: #7C3AED; color: #fff; }
+body.era-now .settings-panel { background: #100C20; border: 1px solid rgba(167,139,250,0.2); color: #EEE8FF; }
+body.era-now .settings-label input { color: #EEE8FF; }
+body.era-now .tech-info-bar { background: rgba(8,5,18,0.7); }
+body.era-now .conv-msg.ivr { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.2); }
+body.era-now #era-title { color: #C4B5FD; }
+
+/* ---- Era button colours (non-active) ---- */
+.era-btn { color: inherit; }
+.era-btn:hover {
+  background: var(--panel-bg);
+  border-color: var(--panel-border);
+}
+
+/* ---- 2030 — Electric cyan over deep navy ---- */
+body.era-2030 {
+  background: radial-gradient(ellipse at 40% 15%, #001A2E 0%, #000D1A 55%, #000508 100%);
+  color: #C8F0FF;
+  --era-accent: #00D4FF;
+  --era-accent2: #67E8F9;
+  --panel-bg: rgba(0,212,255,0.06);
+  --panel-border: rgba(0,212,255,0.15);
+  --text-muted: rgba(200,240,255,0.5);
+}
+body.era-2030 .era-nav   { background: rgba(0,8,18,0.9); }
+body.era-2030 .era-header{ background: rgba(0,10,22,0.5); border-color: rgba(0,212,255,0.15); }
+body.era-2030 .era-btn.active {
+  background: rgba(0,212,255,0.12);
+  border-color: rgba(0,212,255,0.55);
+  color: #67E8F9;
+}
+body.era-2030 .era-badge { border-color: rgba(0,212,255,0.4); color: #67E8F9; }
+body.era-2030 .timeline-line { background: #00D4FF; }
+body.era-2030 .btn-primary { background: #0284C7; color: #fff; }
+body.era-2030 .settings-panel { background: #001220; border: 1px solid rgba(0,212,255,0.2); color: #C8F0FF; }
+body.era-2030 .settings-label input { color: #C8F0FF; }
+body.era-2030 .tech-info-bar { background: rgba(0,6,14,0.7); }
+body.era-2030 .conv-msg.ivr { background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.2); }
+body.era-2030 #era-title { color: #67E8F9; }
+
+/* ============================================================
+   Phone Stage — Photorealistic background images
+   PNG sits as atmospheric backdrop; CSS phone floats above.
+   ::before applies dark vignette + subtle blur so the photo
+   reads as context, not competing UI.
+   ============================================================ */
+
+/* Promote phone-wrapper above ::before blur overlay (z-index 0).
+   Target phone-wrapper specifically — NOT > * — so .stage-callouts
+   (z-index: 10 !important) is not accidentally promoted above the phone. */
+body.era-2000 .phone-stage .phone-wrapper,
+body.era-2010 .phone-stage .phone-wrapper,
+body.era-2020 .phone-stage .phone-wrapper {
+  position: relative;
+  z-index: 15;
+}
+
+/* Shared: stronger drop-shadow makes CSS phone read as "floating" */
+body.era-2000 .phone-stage .phone,
+body.era-2010 .phone-stage .phone,
+body.era-2020 .phone-stage .phone {
+  filter:
+    drop-shadow(0 20px 50px rgba(0,0,0,0.7))
+    drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+}
+
+/* 2000s — Nokia 3310 backdrop */
+body.era-2000 .phone-stage {
+  background: url('../phones/2000s.png') center 30% / cover no-repeat,
+              var(--era-bg, #080E06);
+}
+body.era-2000 .phone-stage::before {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  background: radial-gradient(
+    ellipse 70% 80% at 50% 46%,
+    rgba(8,14,6,0.3) 0%,
+    rgba(8,14,6,0.85) 100%
+  );
+  backdrop-filter: blur(24px);
+  z-index: 0;
+}
+
+/* 2010s — iPhone 4S backdrop */
+body.era-2010 .phone-stage {
+  background: url('../phones/2010s.png') center 25% / cover no-repeat,
+              #070E1E;
+}
+body.era-2010 .phone-stage::before {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  background: radial-gradient(
+    ellipse 70% 80% at 50% 46%,
+    rgba(7,14,30,0.4) 0%,
+    rgba(7,14,30,0.85) 100%
+  );
+  backdrop-filter: blur(24px);
+  z-index: 0;
+}
+
+/* 2020s — Modern iPhone backdrop */
+body.era-2020 .phone-stage {
+  background: url('../phones/2020s.png') center 20% / cover no-repeat,
+              #0A0A12;
+}
+body.era-2020 .phone-stage::before {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  background: radial-gradient(
+    ellipse 70% 80% at 50% 46%,
+    rgba(10,10,18,0.4) 0%,
+    rgba(10,10,18,0.88) 100%
+  );
+  backdrop-filter: blur(24px);
+  z-index: 0;
+}
+
+/* ---- Animated era transition ---- */
+.era-transitioning .phone-wrapper {
+  opacity: 0;
+  transform: scale(0.92);
+}
+.phone-wrapper { transition: opacity 0.3s ease, transform 0.3s ease; }

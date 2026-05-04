@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVR Evolution: From Touch Tone to AI Agent</title>
+<link rel="stylesheet" href="css/main.css?v=13">
+  <link rel="stylesheet" href="css/phones.css?v=13">
+  <link rel="stylesheet" href="css/eras.css?v=13">
+</head>
+<body class="era-2000">
+
+  <!-- Presentation Mode Full-Screen Render Splash -->
+  <div id="render-overlay" class="render-overlay" hidden>
+    <img id="render-img" src="" alt="Hardware Render">
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="era-nav" id="era-nav">
+    <div class="nav-brand">
+      <span class="nav-icon">📞</span>
+      <div class="nav-brand-text">
+        <span class="nav-title">IVR Evolution</span>
+        <span class="nav-subtitle">From Touch Tone to AI Agent</span>
+      </div>
+    </div>
+    <div class="nav-timeline">
+      <button class="era-btn active" data-era="2000">
+        <span class="era-btn-year">2000s</span>
+        <span class="era-btn-label">Touch Tone</span>
+      </button>
+      <div class="timeline-line"></div>
+      <button class="era-btn" data-era="2010">
+        <span class="era-btn-year">2010s</span>
+        <span class="era-btn-label">Early NLU</span>
+      </button>
+      <div class="timeline-line"></div>
+      <button class="era-btn" data-era="2020">
+        <span class="era-btn-year">2020s</span>
+        <span class="era-btn-label">Conv. AI</span>
+      </button>
+      <div class="timeline-line"></div>
+      <button class="era-btn" data-era="now">
+        <span class="era-btn-year">2025</span>
+        <span class="era-btn-label">AI Agent</span>
+      </button>
+      <div class="timeline-line"></div>
+      <button class="era-btn era-btn-future" data-era="2030">
+        <span class="era-btn-year">2027+</span>
+        <span class="era-btn-label">What's Next</span>
+      </button>
+    </div>
+    <div class="nav-right" style="display:flex; gap:8px;">
+      <button class="theater-btn" id="theater-btn" title="Toggle Theater Mode">🎬</button>
+      <button class="settings-btn" id="settings-btn" title="Settings">⚙</button>
+    </div>
+  </nav>
+
+  <!-- Settings Panel -->
+  <div class="settings-overlay" id="settings-overlay" hidden></div>
+  <div class="settings-panel" id="settings-panel" hidden>
+    <div class="settings-header">
+      <h3>Configuration</h3>
+      <button class="settings-close" id="settings-close">✕</button>
+    </div>
+    <div class="settings-body">
+      <label class="settings-label">Backend WebSocket URL
+        <input type="text" id="cfg-ws-url" placeholder="ws://localhost:8080">
+      </label>
+      <label class="settings-label">AWS Access Key ID
+        <input type="text" id="cfg-aws-key" placeholder="Leave blank to use server credentials" autocomplete="off">
+      </label>
+      <label class="settings-label">AWS Secret Access Key
+        <input type="password" id="cfg-aws-secret" placeholder="Leave blank to use server credentials" autocomplete="off">
+      </label>
+      <label class="settings-label">AWS Session Token
+        <input type="text" id="cfg-aws-token" placeholder="Optional (for temporary credentials)" autocomplete="off">
+      </label>
+      <label class="settings-label">Bank Name
+        <input type="text" id="cfg-bank-name" placeholder="National Bank">
+      </label>
+    </div>
+    <div class="settings-footer">
+      <button class="btn-primary" id="settings-save">Save &amp; Apply</button>
+    </div>
+  </div>
+
+  <!-- Era Header -->
+  <header class="era-header" id="era-header">
+    <div class="era-header-top">
+      <div class="era-header-left">
+        <h1 class="era-title" id="era-title">2000s — Touch Tone Era</h1>
+        <p class="era-subtitle" id="era-subtitle">Navigate by pressing numbers. No voice. No context. Just menus.</p>
+      </div>
+      <div class="era-header-right">
+        <!-- Certainty ↔ Capability spectrum bar -->
+        <div class="tradeoff-section">
+          <div class="tradeoff-poles">
+            <span class="tradeoff-pole">🏎️ Deterministic</span>
+            <span class="tradeoff-pole right">🤖 Adaptive</span>
+          </div>
+          <div class="tradeoff-track">
+            <div class="tradeoff-fill" id="tradeoff-fill"></div>
+            <div class="tradeoff-thumb" id="tradeoff-thumb"></div>
+          </div>
+          <div class="tradeoff-caption" id="tradeoff-caption">On the Rails</div>
+        </div>
+        <!-- Where control lives -->
+        <div class="control-layer" id="control-layer">
+          <span class="ctrl-label">Control lives in:</span>
+          <span class="ctrl-icon" id="ctrl-icon">📋</span>
+          <span class="ctrl-name" id="ctrl-name">Menu Tree Config</span>
+          <span class="ctrl-desc" id="ctrl-desc">The track IS the config. Change = rebuild.</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <main class="main-layout">
+
+    <!-- Left: Scenario -->
+    <aside class="scenario-panel">
+      <div class="scenario-card">
+        <div class="scenario-emoji">😰</div>
+        <h3>Your Situation</h3>
+        <p>"Oh no, I've left my card at the supermarket and I'm at home now... what do I do??"</p>
+      </div>
+      <div class="challenge-card">
+        <h3>The Challenge</h3>
+        <p id="era-challenge">Navigate the touch-tone menu tree to report your lost card.</p>
+      </div>
+      <div class="hint-card" id="hint-card">
+        <h3>💡 Try this</h3>
+        <p id="era-hint">Press 2 to get to card services, then press 1 for lost cards.</p>
+      </div>
+      <!-- "Fails very consistently" panel — shown for 2000s/2010s/2020s -->
+      <div class="failmode-card" id="failmode-card">
+        <h3>💥 The Scalextric moment</h3>
+        <p id="failmode-text"></p>
+      </div>
+      <!-- Off-script prompts — shown for Now era only -->
+      <div class="offscript-card" id="offscript-card" style="display:none">
+        <h3>🎭 Go off-script</h3>
+        <p>Try these to show the Anki moment — the AI handles all of them:</p>
+        <div class="offscript-list" id="offscript-list"></div>
+      </div>
+    </aside>
+
+    <!-- Center: Phone -->
+    <section class="phone-stage">
+      <div class="stage-callouts" id="era-tech-badges"></div>
+      <div class="phone-wrapper" id="phone-wrapper">
+        <!-- Phone rendered by era JS -->
+      </div>
+      <div class="phone-status" id="phone-status">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">Press a key to begin the call</span>
+        <button class="reset-btn" id="reset-btn" title="Reset this era">↺ Reset</button>
+      </div>
+    </section>
+
+    <!-- Right: Conversation Log -->
+    <aside class="conversation-panel">
+      <div class="conv-header">
+        <span>Conversation Log</span>
+        <button class="conv-clear" id="conv-clear">Clear</button>
+      </div>
+      <div class="conv-messages" id="conv-messages">
+        <p class="conv-empty">Start the conversation to see the transcript here.</p>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Tech Info Footer -->
+  <footer class="tech-info-bar">
+    <span class="tech-label">Under the hood:</span>
+    <span id="tech-detail">DTMF tone signalling over PSTN · Pre-recorded prompts · No speech recognition whatsoever</span>
+  </footer>
+
+  <script src="config.js?v=13"></script>
+  <script src="js/audio-engine.js?v=13"></script>
+  <script src="js/era-2000.js?v=13"></script>
+  <script src="js/era-2010.js?v=13"></script>
+  <script src="js/era-2020.js?v=13"></script>
+  <script src="js/era-now.js?v=13"></script>
+  <script src="js/era-2030.js?v=13"></script>
+  <script src="js/main.js?v=13"></script>
+</body>
+</html>
