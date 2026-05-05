@@ -14,7 +14,7 @@
 
   let currentEraId  = null;
   let currentInstance = null;
-  let activeJourneyEra = '2010';
+  let activeJourneyEra = '2000';
 
   window.APP_CONFIG = {
     wsUrl:     CONFIG.backend.wsUrl,
@@ -222,6 +222,22 @@
   }
 
   // ---- Journey Editor ----
+  const MENU_TREE_LABELS = {
+    root:            'Initial greeting — language select',
+    welsh:           'Welsh unavailable message',
+    main:            'Main menu',
+    accounts:        'Account services menu',
+    balance_unavail: 'Balance unavailable',
+    trans_unavail:   'Transactions unavailable',
+    lost_menu:       'Lost card — cannot self-serve',
+    agent_connect:   'Hold — connecting to agent',
+    stolen:          'Card blocked (stolen)',
+    fraud:           'Connecting to fraud team',
+    loans:           'Loans & overdrafts',
+    hold:            'Hold queue (22-minute wait)',
+    goodbye:         'Goodbye'
+  };
+
   const SCRIPT_LABELS_2030 = {
     opening1:  'Opening — greeting',
     opening2:  'Opening — fraud detail & question',
@@ -244,6 +260,25 @@
     );
 
     const editor = document.getElementById('journey-editor');
+
+    // 2000s uses a menuTree object — edit prompts only, routing unchanged
+    if (cfg.menuTree) {
+      editor.innerHTML =
+        `<p class="journey-note">Edits update the spoken prompts. Menu routing (which key goes where) is unchanged.</p>` +
+        Object.entries(cfg.menuTree)
+          .filter(([, node]) => node.prompt)
+          .map(([key, node]) => {
+            const rows = Math.max(2, Math.ceil(node.prompt.length / 58));
+            return `<div class="journey-turn">
+              <div class="journey-turn-header">
+                <span class="journey-role-badge ai">IVR</span>
+                <span class="journey-flag branch">${MENU_TREE_LABELS[key] || key}</span>
+              </div>
+              <textarea class="journey-textarea" data-key="${key}" rows="${rows}">${node.prompt}</textarea>
+            </div>`;
+          }).join('');
+      return;
+    }
 
     // 2030 uses a keyed script object (branching flow, no demoScript array)
     if (cfg.script) {
@@ -289,7 +324,12 @@
     const cfg = CONFIG.eras[activeJourneyEra];
     if (!cfg) return;
 
-    if (cfg.script) {
+    if (cfg.menuTree) {
+      document.querySelectorAll('.journey-textarea').forEach(ta => {
+        const key = ta.dataset.key;
+        if (key && cfg.menuTree[key]) cfg.menuTree[key].prompt = ta.value;
+      });
+    } else if (cfg.script) {
       document.querySelectorAll('.journey-textarea').forEach(ta => {
         const key = ta.dataset.key;
         if (key && key in cfg.script) cfg.script[key] = ta.value;
