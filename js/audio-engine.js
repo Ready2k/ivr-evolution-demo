@@ -94,8 +94,8 @@ class AudioEngine {
     if (this.noiseGain) { this.noiseGain.disconnect(); this.noiseGain = null; }
   }
 
-  // ---- Ring tone ---- (two-tone UK ring pattern)
-  playRingTone(cycles = 3) {
+  // ---- Ring tone ---- (two-tone UK ring pattern or futuristic)
+  playRingTone(cycles = 3, type = 'standard') {
     this._ensureContext();
     return new Promise(resolve => {
       let c = 0;
@@ -103,19 +103,38 @@ class AudioEngine {
         if (c >= cycles) { resolve(); return; }
         c++;
         const now = this.ctx.currentTime;
-        [400, 450].forEach(freq => {
-          const o = this.ctx.createOscillator();
-          const g = this.ctx.createGain();
-          o.frequency.value = freq;
-          o.type = 'sine';
-          g.gain.setValueAtTime(0, now);
-          g.gain.linearRampToValueAtTime(0.2, now + 0.02);
-          g.gain.setValueAtTime(0.2, now + 0.38);
-          g.gain.linearRampToValueAtTime(0, now + 0.4);
-          o.connect(g); g.connect(this.ctx.destination);
-          o.start(now); o.stop(now + 0.4);
-        });
-        setTimeout(playOne, 800);
+        
+        if (type === 'futuristic') {
+          // More ethereal, multi-tonal ring (harmonic series)
+          [440, 660, 880, 1100].forEach((freq, i) => {
+            const o = this.ctx.createOscillator();
+            const g = this.ctx.createGain();
+            o.frequency.value = freq;
+            o.type = 'sine';
+            const start = now + (i * 0.04);
+            g.gain.setValueAtTime(0, start);
+            g.gain.linearRampToValueAtTime(0.08 / (i + 1), start + 0.1);
+            g.gain.exponentialRampToValueAtTime(0.001, start + 1.2);
+            o.connect(g); g.connect(this.ctx.destination);
+            o.start(start); o.stop(start + 1.2);
+          });
+          setTimeout(playOne, 2000);
+        } else {
+          // Standard UK ring
+          [400, 450].forEach(freq => {
+            const o = this.ctx.createOscillator();
+            const g = this.ctx.createGain();
+            o.frequency.value = freq;
+            o.type = 'sine';
+            g.gain.setValueAtTime(0, now);
+            g.gain.linearRampToValueAtTime(0.2, now + 0.02);
+            g.gain.setValueAtTime(0.2, now + 0.38);
+            g.gain.linearRampToValueAtTime(0, now + 0.4);
+            o.connect(g); g.connect(this.ctx.destination);
+            o.start(now); o.stop(now + 0.4);
+          });
+          setTimeout(playOne, 800);
+        }
       };
       playOne();
     });

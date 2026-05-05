@@ -19,6 +19,10 @@ class Era2010 {
     this._setStatus('idle', 'Tap Call to connect');
   }
 
+  start() {
+    this._startCall();
+  }
+
   destroy() {
     this._stopListening();
     audioEngine.stopSpeaking();
@@ -92,7 +96,8 @@ class Era2010 {
       this.state = 'ivr-speaking';
       this.step = 'welcome';
       this.failCount = 0;
-      if (this.cfg.demoMode) {
+      const isAuto = this.cfg.demoMode || window.APP_STATE?.autoplay;
+      if (isAuto) {
         this._startDemo();
       } else {
         this._playPrompt('welcome', () => this._awaitSpeech());

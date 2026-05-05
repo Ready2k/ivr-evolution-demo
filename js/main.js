@@ -22,6 +22,10 @@
     awsToken:  ''
   };
 
+  window.APP_STATE = {
+    autoplay: false
+  };
+
   // ---- Browser warning ----
   function checkBrowser() {
     const hasSR = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
@@ -108,6 +112,20 @@
       wrapper.innerHTML = '';
       currentInstance = meta.EraCls();
       currentInstance.init(wrapper, conv);
+
+      // Autoplay logic
+      const isTheater = document.body.classList.contains('theater-mode');
+      const isAutoplay = isTheater || window.APP_STATE.autoplay;
+
+      if (isAutoplay) {
+        // Wait 6 seconds (5s splash + 1s fade) if theater mode, otherwise start shortly
+        const delay = isTheater ? 6000 : 500;
+        setTimeout(() => {
+          if (typeof currentInstance?.start === 'function') {
+            currentInstance.start();
+          }
+        }, delay);
+      }
 
       // Presentation mode Hardware Render Splash
       const renderOverlay = document.getElementById('render-overlay');
@@ -220,6 +238,15 @@
     });
 
     document.getElementById('reset-btn').addEventListener('click', resetEra);
+
+    const autoplayToggle = document.getElementById('autoplay-toggle-chk');
+    autoplayToggle.addEventListener('change', () => {
+      window.APP_STATE.autoplay = autoplayToggle.checked;
+      if (window.APP_STATE.autoplay && currentInstance && typeof currentInstance.start === 'function') {
+        // If era is already in a call, don't restart, but if it has a specific start check, call it
+        currentInstance.start();
+      }
+    });
 
     // Arrow key navigation
     document.addEventListener('keydown', e => {

@@ -20,7 +20,12 @@ class Era2000 {
     this._setStatus('idle', 'Press Call ☎ or any key to begin');
   }
 
+  start() {
+    this._startCall();
+  }
+
   destroy() {
+    if (this._autoPlayTimer) clearTimeout(this._autoPlayTimer);
     audioEngine.stopSpeaking();
     audioEngine.stopNoise();
     window.speechSynthesis.cancel();
@@ -100,8 +105,34 @@ class Era2000 {
       if (this.state !== 'ringing') return;
       this.state = 'active';
       this._setContent(CONFIG.bank.phone);
+      this._setStatus('active', 'Connected');
       this._navigateTo('root');
+      
+      // Autoplay Automation: Start the sequence
+      if (document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay) {
+        this._autoPlaySequence();
+      }
     });
+  }
+
+  _autoPlaySequence() {
+    // Sequence: 1 (English), wait for main menu, 2 (Lost Cards), wait for lost menu, then it goes to agent
+    const sequence = [
+      { delay: 4500, key: '1' }, // Press 1 for English
+      { delay: 9000, key: '2' }  // Press 2 for Lost or Stolen cards
+    ];
+    
+    let step = 0;
+    const nextStep = () => {
+      if (step >= sequence.length) return;
+      const current = sequence[step];
+      this._autoPlayTimer = setTimeout(() => {
+        this._handleKey(current.key);
+        step++;
+        nextStep();
+      }, current.delay);
+    };
+    nextStep();
   }
 
   _endCall() {

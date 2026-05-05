@@ -21,6 +21,10 @@ class Era2020 {
     this._setStatus('idle', 'Tap the call button to connect');
   }
 
+  start() {
+    this._startCall();
+  }
+
   destroy() {
     this._stopListening();
     audioEngine.stopSpeaking();
@@ -130,8 +134,9 @@ class Era2020 {
     document.getElementById('ip7-timer').style.visibility = 'visible';
     document.getElementById('ip7-timer').textContent = 'Calling...';
     this._setStatus('speaking', 'Connecting...');
+    const isAuto = this.cfg.demoMode || window.APP_STATE?.autoplay;
 
-    if (this.cfg.demoMode) {
+    if (isAuto) {
       audioEngine.playRingTone(1).then(() => {
         if (this.state !== 'starting') return;
         this.state = 'active';

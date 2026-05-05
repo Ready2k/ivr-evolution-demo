@@ -154,9 +154,17 @@
         <!-- Phone rendered by era JS -->
       </div>
       <div class="phone-status" id="phone-status">
-        <span class="status-dot" id="status-dot"></span>
-        <span id="status-text">Press a key to begin the call</span>
-        <button class="reset-btn" id="reset-btn" title="Reset this era">↺ Reset</button>
+        <div class="status-left">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Press a key to begin the call</span>
+        </div>
+        <div class="status-right">
+          <label class="autoplay-toggle" title="Automatically play the experience">
+            <input type="checkbox" id="autoplay-toggle-chk">
+            <span>Auto Play</span>
+          </label>
+          <button class="reset-btn" id="reset-btn" title="Reset this era">↺ Reset</button>
+        </div>
       </div>
     </section>
 

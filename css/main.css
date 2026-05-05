@@ -457,14 +457,44 @@ body {
   z-index: 10 !important;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 16px;
   font-size: 12px;
   opacity: 0.85;
   background: var(--panel-bg);
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--panel-border);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(12px);
+  min-width: 300px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.autoplay-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+  user-select: none;
+}
+.autoplay-toggle:hover { opacity: 1; }
+.autoplay-toggle input {
+  cursor: pointer;
+  width: 13px; height: 13px;
+  accent-color: #EAB308;
 }
 .status-dot {
   width: 8px; height: 8px;
@@ -633,6 +663,7 @@ body.theater-mode .phone-stage {
   justify-content: center;
   align-items: center;
 }
+body.theater-mode .status-right { display: none !important; }
 
 /* Convert the right panel into a bottom grid-row prompter stream */
 body.theater-mode .conversation-panel {

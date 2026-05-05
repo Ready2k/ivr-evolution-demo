@@ -27,6 +27,10 @@ class EraNow {
     this._animateWave();
   }
 
+  start() {
+    this._connect();
+  }
+
   destroy() {
     this._disconnect();
     cancelAnimationFrame(this.waveAnimFrame);
@@ -90,7 +94,8 @@ class EraNow {
 
   async _connect() {
     // Demo mode: play pre-recorded script without a live WebSocket connection
-    if (this.cfg.demoMode) {
+    const isAuto = this.cfg.demoMode || window.APP_STATE?.autoplay;
+    if (isAuto) {
       this._startDemo();
       return;
     }

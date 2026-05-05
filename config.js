@@ -134,12 +134,12 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       misrecognitionPhrases: ["press one", "last guard", "cost card", "lost car", "most hard", "ghost card", "lost hard"],
 
       keywords: {
-        LOST_CARD:    ["lost", "card", "left", "missing", "forgot", "misplaced", "can't find", "cannot find", "debit", "supermarket"],
-        BALANCE:      ["balance", "money", "funds", "how much", "account", "statement"],
-        AGENT:        ["agent", "person", "human", "speak", "someone", "advisor", "help"],
-        YES:          ["yes", "yeah", "yep", "correct", "that's right", "affirmative"],
-        NO:           ["no", "nope", "wrong", "incorrect", "that's wrong"],
-        REPEAT:       ["repeat", "pardon", "again", "what", "sorry", "can you"]
+        LOST_CARD: ["lost", "card", "left", "missing", "forgot", "misplaced", "can't find", "cannot find", "debit", "supermarket"],
+        BALANCE: ["balance", "money", "funds", "how much", "account", "statement"],
+        AGENT: ["agent", "person", "human", "speak", "someone", "advisor", "help"],
+        YES: ["yes", "yeah", "yep", "correct", "that's right", "affirmative"],
+        NO: ["no", "nope", "wrong", "incorrect", "that's wrong"],
+        REPEAT: ["repeat", "pardon", "again", "what", "sorry", "can you"]
       },
 
       demoMode: true,
@@ -224,16 +224,16 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       // Set audioFile to a path (e.g. "./audio/2010/welcome.mp3") to use pre-recorded audio.
       // If null, falls back to Text-to-Speech.
       prompts: {
-        welcome:          { text: "Welcome to National Bank. You can say things like... 'lost card'... 'check my balance'... or 'speak to someone'. What can I help you with today?", audioFile: null },
-        lostCardQuery:    { text: "I think I heard you say 'lost card'. Is that correct? Please say yes or no.", audioFile: null },
-        lostCardStart:    { text: "OK. I can help you with that. Can you please say your eight digit account number?", audioFile: null },
-        accountGot:       { text: "Thank you. I've located your account. Can you please confirm the first line of your registered address?", audioFile: null },
-        addressGot:       { text: "Thank you. I'm now cancelling your card and ordering a replacement. Your new card will arrive within five to seven working days. Is there anything else I can help you with today?", audioFile: null },
-        didntCatch:       { text: "I'm sorry, I didn't quite catch that. Could you please repeat that more clearly?", audioFile: null },
-        misheard:         { text: "I heard '{HEARD}'. I'm sorry, I didn't understand. Please say 'lost card' to report a lost card, or 'balance' to check your account.", audioFile: null },
-        tooManyAttempts:  { text: "I'm having trouble understanding you. Let me connect you with an advisor. Please hold.", audioFile: null },
-        done:             { text: "Is there anything else I can help you with today?", audioFile: null },
-        goodbye:          { text: "Thank you for calling National Bank. Goodbye.", audioFile: null }
+        welcome: { text: "Welcome to National Bank. You can say things like... 'lost card'... 'check my balance'... or 'speak to someone'. What can I help you with today?", audioFile: null },
+        lostCardQuery: { text: "I think I heard you say 'lost card'. Is that correct? Please say yes or no.", audioFile: null },
+        lostCardStart: { text: "OK. I can help you with that. Can you please say your eight digit account number?", audioFile: null },
+        accountGot: { text: "Thank you. I've located your account. Can you please confirm the first line of your registered address?", audioFile: null },
+        addressGot: { text: "Thank you. I'm now cancelling your card and ordering a replacement. Your new card will arrive within five to seven working days. Is there anything else I can help you with today?", audioFile: null },
+        didntCatch: { text: "I'm sorry, I didn't quite catch that. Could you please repeat that more clearly?", audioFile: null },
+        misheard: { text: "I heard '{HEARD}'. I'm sorry, I didn't understand. Please say 'lost card' to report a lost card, or 'balance' to check your account.", audioFile: null },
+        tooManyAttempts: { text: "I'm having trouble understanding you. Let me connect you with an advisor. Please hold.", audioFile: null },
+        done: { text: "Is there anything else I can help you with today?", audioFile: null },
+        goodbye: { text: "Thank you for calling National Bank. Goodbye.", audioFile: null }
       }
     },
 
@@ -368,12 +368,12 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       ],
 
       prompts: {
-        welcome:         "Hi, I'm your National Bank virtual assistant. I can help with lost cards, balance queries, and more. How can I help you today?",
-        intentDetected:  "I understand you'd like to report a lost card. I can take care of that for you right now.",
-        notUnderstood:   "I'm not quite sure I understand. Could you try saying something like 'I've lost my card' or 'check my balance'?",
-        complete:        "Perfect. I've got everything I need. I'm cancelling your card ending in 4521 now and ordering a replacement. It will arrive at your registered address within 3 to 5 working days. You'll also receive a confirmation text message shortly. Is there anything else I can help you with?",
-        agentTransfer:   "Of course, let me connect you with one of our advisors now. Please hold for just a moment.",
-        goodbye:         "Thanks for calling National Bank. Have a great day. Goodbye."
+        welcome: "Hi, I'm your National Bank virtual assistant. I can help with lost cards, balance queries, and more. How can I help you today?",
+        intentDetected: "I understand you'd like to report a lost card. I can take care of that for you right now.",
+        notUnderstood: "I'm not quite sure I understand. Could you try saying something like 'I've lost my card' or 'check my balance'?",
+        complete: "Perfect. I've got everything I need. I'm cancelling your card ending in 4521 now and ordering a replacement. It will arrive at your registered address within 3 to 5 working days. You'll also receive a confirmation text message shortly. Is there anything else I can help you with?",
+        agentTransfer: "Of course, let me connect you with one of our advisors now. Please hold for just a moment.",
+        goodbye: "Thanks for calling National Bank. Have a great day. Goodbye."
       }
     },
 
@@ -430,11 +430,11 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       ],
       title: "2025 — AI Voice Agent",
       subtitle: "Real-time, empathetic, contextual. Like talking to a human.",
-      techBadges: ["Amazon Nova Sonic", "Full-Duplex Audio", "Real-time AI", "Tool Use", "Emotional Intelligence"],
+      techBadges: ["SST & TTS", "Full-Duplex Audio", "Real-time AI", "Tool Use", "Emotional Intelligence"],
       challenge: "Just talk naturally. Tell the AI exactly what happened — it will listen, understand, and help.",
       hint: "Just speak normally. No keywords, no menus. Say anything.",
       phone: "iphone16",
-      techDetail: "Amazon Nova Sonic v2 · Full-duplex streaming · Real-time tool orchestration · Empathetic response generation",
+      techDetail: "Speech to Text (SST) and Text to Speech (TTS) · Full-duplex streaming · Real-time tool orchestration · Empathetic response generation",
       tradeoff: {
         position: 93,
         caption: "Agentic — operates within boundaries we define, decides dynamically, same input ≠ same output"
@@ -457,11 +457,11 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       id: "2030",
       title: "2027+ — Proactive Agentic AI",
       subtitle: "The bank calls you. Actions already taken. You just confirm.",
-      techBadges: ["Gemini 1.5 Pro", "Gemini Voice", "AWS AgentCore", "Multi-Agent Orchestration", "Proactive Outreach"],
+      techBadges: ["Speech to Speech", "Humanised Voice", "AWS AgentCore", "Multi-Agent Orchestration", "Proactive Outreach"],
       challenge: "You don't have to do anything. The AI already resolved it — it's just calling to confirm.",
       hint: "Answer the call and watch what the AI has already done on your behalf.",
       phone: "iphone16",
-      techDetail: "Gemini 1.5 Pro orchestrated via AWS AgentCore · Multi-agent proactive monitoring · <200ms voice latency · Emotional intelligence grounding",
+      techDetail: "S2S orchestrated via AWS AgentCore · Multi-agent proactive monitoring · <200ms voice latency · Emotional intelligence grounding",
       tradeoff: {
         position: 99,
         caption: "Proactive Agent — acts before you call, resolves without you navigating anything"

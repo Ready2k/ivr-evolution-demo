@@ -28,11 +28,6 @@ class Era2030 {
     this.convPanel = convPanel;
     this._render();
     this._setStatus('idle', 'Incoming call — from National Bank AI');
-    
-    // Auto-ring after brief pause (wait for theater mode splash if active)
-    const isTheater = document.body.classList.contains('theater-mode');
-    const ringDelay = isTheater ? 5500 : 1200;
-    this.ringtoneTimer = setTimeout(() => this._startRinging(), ringDelay);
   }
 
   destroy() {
@@ -149,6 +144,10 @@ class Era2030 {
     }, 15000);
   }
 
+  start() {
+    this.ringtoneTimer = setTimeout(() => this._startRinging(), 1200);
+  }
+
   // ---- Flow ----
   _startRinging() {
     this.state = 'ringing';
@@ -160,8 +159,14 @@ class Era2030 {
     this._tickItem('detect');
     this._tickItem('hold');
 
-    audioEngine.playRingTone(5);
+    const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
+    audioEngine.playRingTone(isAuto ? 3 : 5, 'futuristic');
     this._log('system', '[ Incoming call from National Bank AI ]');
+
+    // Auto-answer in autoplay mode
+    if (isAuto) {
+      this.autoAnswerTimer = setTimeout(() => this._answer(), 6500); // answer after ~3 rings
+    }
   }
 
   _answer() {
@@ -184,10 +189,15 @@ class Era2030 {
         this._speak(
           "Your debit card was used at a petrol station in Glasgow at two forty-three this afternoon for forty-seven pounds eighty. Based on your spending patterns and the fact that your phone has been in London all day, this really doesn't look like you. I've placed a temporary hold on the card while I check with you. Were you in Glasgow this afternoon?",
           () => {
-            this._showResponses([
-              { label: "Yes, that was me",      action: () => this._stepItWasMe() },
-              { label: "No, that wasn't me",    action: () => this._stepNotMe() },
-            ]);
+            const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
+            if (isAuto) {
+              setTimeout(() => this._stepNotMe(), 2000);
+            } else {
+              this._showResponses([
+                { label: "Yes, that was me",      action: () => this._stepItWasMe() },
+                { label: "No, that wasn't me",    action: () => this._stepNotMe() },
+              ]);
+            }
           }
         );
       }
@@ -236,11 +246,16 @@ class Era2030 {
           this._speak(
             "I've already placed the order for your replacement card — it'll arrive at your home address tomorrow by first class. One more thing I've taken care of: I noticed you have a direct debit for eight hundred and fifty pounds going out tomorrow morning. I've made sure that won't be affected — I've temporarily routed it through your savings account so you won't miss a payment. Is there anything else you'd like me to look into while I have you?",
             () => {
-              this._showResponses([
-                { label: "That's brilliant, thank you",     action: () => this._stepDone() },
-                { label: "Has it been used anywhere else?", action: () => this._stepCheckMore() },
-                { label: "What about my Apple Pay?",        action: () => this._stepApplePay() },
-              ]);
+              const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
+              if (isAuto) {
+                setTimeout(() => this._stepCheckMore(), 2500);
+              } else {
+                this._showResponses([
+                  { label: "That's brilliant, thank you",     action: () => this._stepDone() },
+                  { label: "Has it been used anywhere else?", action: () => this._stepCheckMore() },
+                  { label: "What about my Apple Pay?",        action: () => this._stepApplePay() },
+                ]);
+              }
             }
           );
         }
@@ -264,10 +279,15 @@ class Era2030 {
       `I'll keep monitoring and will alert you immediately if I see anything else. ` +
       `Is there anything else you'd like me to do?`,
       () => {
-        this._showResponses([
-          { label: "That's everything, thanks", action: () => this._stepDone() },
-          { label: "What about my Apple Pay?",  action: () => this._stepApplePay() },
-        ]);
+        const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
+        if (isAuto) {
+          setTimeout(() => this._stepDone(), 2500);
+        } else {
+          this._showResponses([
+            { label: "That's everything, thanks", action: () => this._stepDone() },
+            { label: "What about my Apple Pay?",  action: () => this._stepApplePay() },
+          ]);
+        }
       }
     );
     this._log('ivr', 'Multi-agent: Fraud scan agent queried 72h transaction history');
@@ -310,6 +330,9 @@ class Era2030 {
   _stepDone() {
     this._clearResponses();
     this.state = 'done';
+    
+    this._log('user', "That's brilliant, thank you");
+    this._addBubble('user', "That's brilliant, thank you");
     
     // Live high-quality TTS
     audioEngine.speak("That's brilliant, thank you", 'customer', () => {
