@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVR Evolution: From Touch Tone to AI Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css?v=43">
   <link rel="stylesheet" href="css/phones.css?v=43">
   <link rel="stylesheet" href="css/eras.css?v=43">
 </head>
+
 <body class="era-2000">
 
   <!-- Presentation Mode Full-Screen Render Splash -->
   <div id="render-overlay" class="render-overlay" hidden>
+    <div id="render-title" class="render-title"></div>
     <img id="render-img" src="" alt="Hardware Render">
+    <div id="render-callouts" class="render-callouts"></div>
   </div>
 
   <!-- Navigation Bar -->
@@ -85,7 +92,8 @@
             <input type="text" id="cfg-aws-key" placeholder="Leave blank to use server credentials" autocomplete="off">
           </label>
           <label class="settings-label">AWS Secret Access Key
-            <input type="password" id="cfg-aws-secret" placeholder="Leave blank to use server credentials" autocomplete="off">
+            <input type="password" id="cfg-aws-secret" placeholder="Leave blank to use server credentials"
+              autocomplete="off">
           </label>
           <label class="settings-label">AWS Session Token
             <input type="text" id="cfg-aws-token" placeholder="Optional (for temporary credentials)" autocomplete="off">
@@ -213,7 +221,8 @@
   <!-- Tech Info Footer -->
   <footer class="tech-info-bar">
     <span class="tech-label">Under the hood:</span>
-    <span id="tech-detail">DTMF tone signalling over PSTN · Pre-recorded prompts · No speech recognition whatsoever</span>
+    <span id="tech-detail">DTMF tone signalling over PSTN · Pre-recorded prompts · No speech recognition
+      whatsoever</span>
   </footer>
 
   <script src="config.js?v=43"></script>
@@ -225,4 +234,5 @@
   <script src="js/era-2030.js?v=43"></script>
   <script src="js/main.js?v=43"></script>
 </body>
+
 </html>

@@ -75,8 +75,8 @@ class Era2010 {
     `;
 
     document.getElementById('bb-call-btn').onclick = () => this._startCall();
-    document.getElementById('bb-end-btn').onclick  = () => this._endCall();
-    document.getElementById('bb-mic-btn').onclick  = () => this._toggleMic();
+    document.getElementById('bb-end-btn').onclick = () => this._endCall();
+    document.getElementById('bb-mic-btn').onclick = () => this._toggleMic();
 
     setInterval(() => {
       const el = document.getElementById('bb-time');
@@ -173,7 +173,7 @@ class Era2010 {
   }
 
   _stopListening() {
-    if (this.recognition) { try { this.recognition.stop(); } catch {} this.recognition = null; }
+    if (this.recognition) { try { this.recognition.stop(); } catch { } this.recognition = null; }
     this._setMicBtn(false);
   }
 
@@ -346,9 +346,9 @@ class Era2010 {
     btn.className = `bb-mic-btn ${active ? 'listening' : 'idle'}`;
   }
   _setStatus(type, msg) {
-    const dot  = document.getElementById('status-dot');
+    const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
-    if (dot)  dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
+    if (dot) dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
     if (text) text.textContent = msg;
   }
   _log(role, text) {

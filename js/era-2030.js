@@ -14,12 +14,12 @@ class Era2030 {
 
     // Actions the AI has already taken — animate as it speaks
     this.checklist = [
-      { id: 'detect',  label: 'Fraudulent transaction flagged',        done: true,  showAt: 0 },
-      { id: 'hold',    label: 'Card placed on temporary hold',          done: true,  showAt: 0 },
-      { id: 'cancel',  label: 'Card permanently cancelled',             done: false, showAt: 1800 },
+      { id: 'detect', label: 'Fraudulent transaction flagged', done: true, showAt: 0 },
+      { id: 'hold', label: 'Card placed on temporary hold', done: true, showAt: 0 },
+      { id: 'cancel', label: 'Card permanently cancelled', done: false, showAt: 1800 },
       { id: 'dispute', label: 'Dispute raised — £47.80 refund pending', done: false, showAt: 4200 },
       { id: 'replace', label: 'Replacement card dispatched — tomorrow', done: false, showAt: 6500 },
-      { id: 'dd',      label: 'Direct debit protected via savings',     done: false, showAt: 9000 },
+      { id: 'dd', label: 'Direct debit protected via savings', done: false, showAt: 9000 },
     ];
   }
 
@@ -175,29 +175,29 @@ class Era2030 {
 
     // Transition to active call view
     document.getElementById('f-incoming').style.display = 'none';
-    document.getElementById('f-active').style.display  = 'flex';
+    document.getElementById('f-active').style.display = 'flex';
     this._renderChecklist();
     this._startTimer();
     this._setStatus('speaking', 'AI Agent speaking...');
 
     this._log('system', '[ Call answered ]');
-    
+
     // Use live high-quality TTS for the Gemini experience
     this._speak(this._s('opening1'), () => {
-        this._speak(this._s('opening2'),
-          () => {
-            const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
-            if (isAuto) {
-              setTimeout(() => this._stepNotMe(), 2000);
-            } else {
-              this._showResponses([
-                { label: "Yes, that was me",      action: () => this._stepItWasMe() },
-                { label: "No, that wasn't me",    action: () => this._stepNotMe() },
-              ]);
-            }
+      this._speak(this._s('opening2'),
+        () => {
+          const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
+          if (isAuto) {
+            setTimeout(() => this._stepNotMe(), 2000);
+          } else {
+            this._showResponses([
+              { label: "Yes, that was me", action: () => this._stepItWasMe() },
+              { label: "No, that wasn't me", action: () => this._stepNotMe() },
+            ]);
           }
-        );
-      }
+        }
+      );
+    }
     );
     this._log('ivr', 'Possible fraudulent transaction detected — confirming with customer');
   }
@@ -221,7 +221,7 @@ class Era2030 {
           this._tickItem('cancel');
           this._showResponses([
             { label: "Set up travel notifications", action: () => this._stepTravel() },
-            { label: "No, that's everything",       action: () => this._stepDone() },
+            { label: "No, that's everything", action: () => this._stepDone() },
           ]);
         }
       );
@@ -237,29 +237,29 @@ class Era2030 {
     audioEngine.speak("No, that wasn't me", 'customer', () => {
       // Then AI response
       this._speak(this._s('notMe1'), () => {
-          this._speak(this._s('notMe2'),
-            () => {
-              const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
-              if (isAuto) {
-                setTimeout(() => this._stepCheckMore(), 2500);
-              } else {
-                this._showResponses([
-                  { label: "That's brilliant, thank you",     action: () => this._stepDone() },
-                  { label: "Has it been used anywhere else?", action: () => this._stepCheckMore() },
-                  { label: "What about my Apple Pay?",        action: () => this._stepApplePay() },
-                ]);
-              }
+        this._speak(this._s('notMe2'),
+          () => {
+            const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
+            if (isAuto) {
+              setTimeout(() => this._stepCheckMore(), 2500);
+            } else {
+              this._showResponses([
+                { label: "That's brilliant, thank you", action: () => this._stepDone() },
+                { label: "Has it been used anywhere else?", action: () => this._stepCheckMore() },
+                { label: "What about my Apple Pay?", action: () => this._stepApplePay() },
+              ]);
             }
-          );
-        }
+          }
+        );
+      }
       );
     });
 
     // Tick checklist progressively as AI speaks
-    setTimeout(() => this._tickItem('cancel'),  1800);
-    setTimeout(() => this._tickItem('dispute'),  4200);
-    setTimeout(() => this._tickItem('replace'),  6500);
-    setTimeout(() => this._tickItem('dd'),       9000);
+    setTimeout(() => this._tickItem('cancel'), 1800);
+    setTimeout(() => this._tickItem('dispute'), 4200);
+    setTimeout(() => this._tickItem('replace'), 6500);
+    setTimeout(() => this._tickItem('dd'), 9000);
   }
 
   _stepCheckMore() {
@@ -275,7 +275,7 @@ class Era2030 {
           } else {
             this._showResponses([
               { label: "That's everything, thanks", action: () => this._stepDone() },
-              { label: "What about my Apple Pay?",  action: () => this._stepApplePay() },
+              { label: "What about my Apple Pay?", action: () => this._stepApplePay() },
             ]);
           }
         }
@@ -319,10 +319,10 @@ class Era2030 {
   _stepDone() {
     this._clearResponses();
     this.state = 'done';
-    
+
     this._log('user', "That's brilliant, thank you");
     this._addBubble('user', "That's brilliant, thank you");
-    
+
     // Live high-quality TTS
     audioEngine.speak("That's brilliant, thank you", 'customer', () => {
       this._speak(this._s('done'),
@@ -395,8 +395,8 @@ class Era2030 {
       secs++;
       const el = document.getElementById('f-timer');
       if (el) {
-        const m = String(Math.floor(secs/60)).padStart(2,'0');
-        const s = String(secs%60).padStart(2,'0');
+        const m = String(Math.floor(secs / 60)).padStart(2, '0');
+        const s = String(secs % 60).padStart(2, '0');
         el.textContent = `${m}:${s}`;
       }
     }, 1000);
@@ -448,9 +448,9 @@ class Era2030 {
     chat.scrollTop = chat.scrollHeight;
   }
   _setStatus(type, msg) {
-    const dot  = document.getElementById('status-dot');
+    const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
-    if (dot)  dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
+    if (dot) dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
     if (text) text.textContent = msg;
   }
   _log(role, text) {
@@ -464,6 +464,6 @@ class Era2030 {
     this.convPanel.appendChild(div);
     this.convPanel.scrollTop = this.convPanel.scrollHeight;
   }
-  _time() { return new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
-  _tod()  { const h = new Date().getHours(); return h<12?'morning':h<17?'afternoon':'evening'; }
+  _time() { return new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); }
+  _tod() { const h = new Date().getHours(); return h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening'; }
 }

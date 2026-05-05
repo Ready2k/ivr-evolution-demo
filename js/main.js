@@ -1,6 +1,6 @@
 // Main app controller — era switching, settings, browser warning, reset
 
-(function() {
+(function () {
 
   const ERA_ORDER = ['2000', '2010', '2020', 'now', '2030'];
 
@@ -8,19 +8,19 @@
     '2000': { bodyClass: 'era-2000', EraCls: () => new Era2000() },
     '2010': { bodyClass: 'era-2010', EraCls: () => new Era2010() },
     '2020': { bodyClass: 'era-2020', EraCls: () => new Era2020() },
-    'now':  { bodyClass: 'era-now',  EraCls: () => new EraNow()  },
+    'now': { bodyClass: 'era-now', EraCls: () => new EraNow() },
     '2030': { bodyClass: 'era-2030', EraCls: () => new Era2030() },
   };
 
-  let currentEraId  = null;
+  let currentEraId = null;
   let currentInstance = null;
   let activeJourneyEra = '2000';
 
   window.APP_CONFIG = {
-    wsUrl:     CONFIG.backend.wsUrl,
-    awsKey:    '',
+    wsUrl: CONFIG.backend.wsUrl,
+    awsKey: '',
     awsSecret: '',
-    awsToken:  ''
+    awsToken: ''
   };
 
   window.APP_STATE = {
@@ -55,7 +55,7 @@
     setTimeout(() => {
       currentEraId = eraId;
       const meta = ERA_META[eraId];
-      const cfg  = CONFIG.eras[eraId];
+      const cfg = CONFIG.eras[eraId];
 
       ERA_ORDER.forEach(id => document.body.classList.remove(ERA_META[id].bodyClass));
       document.body.classList.add(meta.bodyClass);
@@ -65,11 +65,11 @@
       );
 
       // Header text
-      document.getElementById('era-title').textContent    = cfg.title;
+      document.getElementById('era-title').textContent = cfg.title;
       document.getElementById('era-subtitle').textContent = cfg.subtitle;
       document.getElementById('era-challenge').textContent = cfg.challenge;
-      document.getElementById('era-hint').textContent     = cfg.hint;
-      document.getElementById('tech-detail').textContent  = cfg.techDetail || '';
+      document.getElementById('era-hint').textContent = cfg.hint;
+      document.getElementById('tech-detail').textContent = cfg.techDetail || '';
 
       // Tech badges
       document.getElementById('era-tech-badges').innerHTML =
@@ -91,17 +91,17 @@
       }
 
       // Fail mode vs off-script panel
-      const failCard  = document.getElementById('failmode-card');
+      const failCard = document.getElementById('failmode-card');
       const offscript = document.getElementById('offscript-card');
 
       if (eraId === 'now' && cfg.offScriptPrompts) {
-        failCard.style.display  = 'none';
+        failCard.style.display = 'none';
         offscript.style.display = 'block';
         document.getElementById('offscript-list').innerHTML =
           cfg.offScriptPrompts.map(p => `<div class="offscript-prompt">"${p}"</div>`).join('');
       } else {
         offscript.style.display = 'none';
-        failCard.style.display  = 'block';
+        failCard.style.display = 'block';
         const ft = document.getElementById('failmode-text');
         if (ft) ft.textContent = cfg.failMode || '';
       }
@@ -134,7 +134,7 @@
       const renderOverlay = document.getElementById('render-overlay');
       const renderImg = document.getElementById('render-img');
       const phoneStage = document.querySelector('.phone-stage');
-      
+
       const renders = {
         '2000': 'phones/2000s.png?v=17',
         '2010': 'phones/2010s.png?v=17',
@@ -145,23 +145,38 @@
 
       if (document.body.classList.contains('theater-mode') && renders[eraId]) {
         renderImg.src = renders[eraId];
-        
+
         // Reset animation
         renderImg.style.animation = 'none';
         renderImg.offsetHeight; // trigger reflow
         renderImg.style.animation = null;
-        
         renderOverlay.hidden = false;
         renderOverlay.classList.remove('fade-out');
         phoneStage.classList.add('render-active');
-        
+
+        // Callouts (annotations) — restricted to theater splash only
+        const calloutsEl = document.getElementById('render-callouts');
+        const titleEl = document.getElementById('render-title');
+
+        titleEl.textContent = cfg.title;
+        titleEl.style.animation = 'none';
+        titleEl.offsetHeight;
+        titleEl.style.animation = null;
+
+        calloutsEl.innerHTML = (cfg.callouts || []).map((c, i) =>
+          `<div class="era-annotation" style="--index: ${i}">${c}</div>`
+        ).join('');
+
         // Clear any previous timeout
         if (window._renderSplashTimeout) clearTimeout(window._renderSplashTimeout);
-        
+
         window._renderSplashTimeout = setTimeout(() => {
           renderOverlay.classList.add('fade-out');
           phoneStage.classList.remove('render-active');
-          setTimeout(() => renderOverlay.hidden = true, 1000);
+          setTimeout(() => {
+            renderOverlay.hidden = true;
+            titleEl.textContent = '';
+          }, 1000);
         }, 5000);
       } else {
         renderOverlay.hidden = true;
@@ -182,9 +197,9 @@
   // ---- Settings ----
   function openSettings() {
     document.getElementById('settings-overlay').hidden = false;
-    document.getElementById('settings-panel').hidden   = false;
-    document.getElementById('cfg-ws-url').value    = window.APP_CONFIG.wsUrl || '';
-    document.getElementById('cfg-aws-key').value   = window.APP_CONFIG.awsKey || '';
+    document.getElementById('settings-panel').hidden = false;
+    document.getElementById('cfg-ws-url').value = window.APP_CONFIG.wsUrl || '';
+    document.getElementById('cfg-aws-key').value = window.APP_CONFIG.awsKey || '';
     document.getElementById('cfg-bank-name').value = CONFIG.bank.name || '';
     // Always open on Settings tab
     _switchSettingsTab('config');
@@ -193,21 +208,21 @@
 
   function closeSettings() {
     document.getElementById('settings-overlay').hidden = true;
-    document.getElementById('settings-panel').hidden   = true;
+    document.getElementById('settings-panel').hidden = true;
   }
 
   function saveSettings() {
-    const wsUrl     = document.getElementById('cfg-ws-url').value.trim();
-    const awsKey    = document.getElementById('cfg-aws-key').value.trim();
+    const wsUrl = document.getElementById('cfg-ws-url').value.trim();
+    const awsKey = document.getElementById('cfg-aws-key').value.trim();
     const awsSecret = document.getElementById('cfg-aws-secret').value.trim();
-    const awsToken  = document.getElementById('cfg-aws-token').value.trim();
-    const bankName  = document.getElementById('cfg-bank-name').value.trim();
+    const awsToken = document.getElementById('cfg-aws-token').value.trim();
+    const bankName = document.getElementById('cfg-bank-name').value.trim();
 
-    if (wsUrl)     window.APP_CONFIG.wsUrl     = wsUrl;
-    if (awsKey)    window.APP_CONFIG.awsKey    = awsKey;
+    if (wsUrl) window.APP_CONFIG.wsUrl = wsUrl;
+    if (awsKey) window.APP_CONFIG.awsKey = awsKey;
     if (awsSecret) window.APP_CONFIG.awsSecret = awsSecret;
-    if (awsToken)  window.APP_CONFIG.awsToken  = awsToken;
-    if (bankName)  CONFIG.bank.name = bankName;
+    if (awsToken) window.APP_CONFIG.awsToken = awsToken;
+    if (bankName) CONFIG.bank.name = bankName;
 
     closeSettings();
     const era = currentEraId;
@@ -219,7 +234,7 @@
     document.querySelectorAll('.settings-tab').forEach(t =>
       t.classList.toggle('active', t.dataset.tab === tab)
     );
-    document.getElementById('tab-config').hidden  = (tab !== 'config');
+    document.getElementById('tab-config').hidden = (tab !== 'config');
     document.getElementById('tab-journey').hidden = (tab !== 'journey');
   }
 
@@ -227,11 +242,11 @@
 
   // Maps era ID → the voice key used in audioEngine.speak() for the AI side
   const ERA_VOICE_KEYS = {
-    '2000': { aiKey: '2000',   aiLabel: 'IVR Voice' },
-    '2010': { aiKey: '2010',   aiLabel: 'IVR Voice' },
-    '2020': { aiKey: '2020',   aiLabel: 'AI Voice'  },
-    'now':  { aiKey: 'agent',  aiLabel: 'AI Voice'  },
-    '2030': { aiKey: 'gemini', aiLabel: 'AI Voice'  }
+    '2000': { aiKey: '2000', aiLabel: 'IVR Voice' },
+    '2010': { aiKey: '2010', aiLabel: 'IVR Voice' },
+    '2020': { aiKey: '2020', aiLabel: 'AI Voice' },
+    'now': { aiKey: 'agent', aiLabel: 'AI Voice' },
+    '2030': { aiKey: 'gemini', aiLabel: 'AI Voice' }
   };
 
   function _buildVoiceHTML(eraId) {
@@ -257,8 +272,8 @@
     function _fillSelects() {
       const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
       if (!voices.length) return false;
-      const currentAI   = CONFIG.voices?.[meta.aiKey] || '';
-      const currentCust = CONFIG.voices?.customer     || '';
+      const currentAI = CONFIG.voices?.[meta.aiKey] || '';
+      const currentCust = CONFIG.voices?.customer || '';
 
       // Tier 1: Google server-side neural (best quality)
       // Tier 2: macOS Enhanced/Premium + well-known natural voices
@@ -279,9 +294,9 @@
           grp('Standard', voices.filter(v => _tier(v) === 3));
       };
 
-      const aiSel   = document.getElementById('voice-ai-select');
+      const aiSel = document.getElementById('voice-ai-select');
       const custSel = document.getElementById('voice-customer-select');
-      if (aiSel)   aiSel.innerHTML   = makeOpts(currentAI);
+      if (aiSel) aiSel.innerHTML = makeOpts(currentAI);
       if (custSel) custSel.innerHTML = makeOpts(currentCust);
       return true;
     }
@@ -294,38 +309,38 @@
       };
     }
 
-    const aiSel   = document.getElementById('voice-ai-select');
+    const aiSel = document.getElementById('voice-ai-select');
     const custSel = document.getElementById('voice-customer-select');
-    if (aiSel)   aiSel.addEventListener('change',   () => { CONFIG.voices[meta.aiKey] = aiSel.value || null; });
-    if (custSel) custSel.addEventListener('change', () => { CONFIG.voices.customer    = custSel.value || null; });
+    if (aiSel) aiSel.addEventListener('change', () => { CONFIG.voices[meta.aiKey] = aiSel.value || null; });
+    if (custSel) custSel.addEventListener('change', () => { CONFIG.voices.customer = custSel.value || null; });
   }
 
   const MENU_TREE_LABELS = {
-    root:            'Initial greeting — language select',
-    welsh:           'Welsh unavailable message',
-    main:            'Main menu',
-    accounts:        'Account services menu',
+    root: 'Initial greeting — language select',
+    welsh: 'Welsh unavailable message',
+    main: 'Main menu',
+    accounts: 'Account services menu',
     balance_unavail: 'Balance unavailable',
-    trans_unavail:   'Transactions unavailable',
-    lost_menu:       'Lost card — cannot self-serve',
-    agent_connect:   'Hold — connecting to agent',
-    stolen:          'Card blocked (stolen)',
-    fraud:           'Connecting to fraud team',
-    loans:           'Loans & overdrafts',
-    hold:            'Hold queue (22-minute wait)',
-    goodbye:         'Goodbye'
+    trans_unavail: 'Transactions unavailable',
+    lost_menu: 'Lost card — cannot self-serve',
+    agent_connect: 'Hold — connecting to agent',
+    stolen: 'Card blocked (stolen)',
+    fraud: 'Connecting to fraud team',
+    loans: 'Loans & overdrafts',
+    hold: 'Hold queue (22-minute wait)',
+    goodbye: 'Goodbye'
   };
 
   const SCRIPT_LABELS_2030 = {
-    opening1:  'Opening — greeting',
-    opening2:  'Opening — fraud detail & question',
-    itWasMe:   '"Yes, that was me" → response',
-    notMe1:    '"No, that wasn\'t me" → response (part 1)',
-    notMe2:    '"No, that wasn\'t me" → response (part 2)',
+    opening1: 'Opening — greeting',
+    opening2: 'Opening — fraud detail & question',
+    itWasMe: '"Yes, that was me" → response',
+    notMe1: '"No, that wasn\'t me" → response (part 1)',
+    notMe2: '"No, that wasn\'t me" → response (part 2)',
     checkMore: '"Has it been used elsewhere?" → response',
-    applePay:  '"What about Apple Pay?" → response',
-    travel:    '"Set up travel notifications" → response',
-    done:      'Farewell'
+    applePay: '"What about Apple Pay?" → response',
+    travel: '"Set up travel notifications" → response',
+    done: 'Farewell'
   };
 
   function buildJourneyEditor(eraId) {
@@ -395,9 +410,9 @@
         return `<div class="journey-turn">
           <div class="journey-turn-header">
             <span class="journey-role-badge ${step.role}">${step.role === 'ai' ? 'AI' : 'Customer'}</span>
-            ${step.mishear    ? '<span class="journey-flag mishear">mishear</span>'   : ''}
+            ${step.mishear ? '<span class="journey-flag mishear">mishear</span>' : ''}
             ${step.limitation ? '<span class="journey-flag limit">limitation</span>' : ''}
-            ${step.file       ? '<span class="journey-flag audio">audio</span>'      : ''}
+            ${step.file ? '<span class="journey-flag audio">audio</span>' : ''}
           </div>
           <textarea class="journey-textarea" data-idx="${i}" rows="${rows}">${step.text || ''}</textarea>
         </div>`;
@@ -441,7 +456,7 @@
     document.getElementById('theater-btn').addEventListener('click', () => {
       const isEnteringTheater = document.body.classList.toggle('theater-mode');
       document.getElementById('theater-btn').classList.toggle('active');
-      
+
       if (isEnteringTheater) {
         // Always start the presentation from the beginning with the Nokia intro
         switchEra('2000', true);
@@ -458,7 +473,7 @@
     );
 
     document.getElementById('advanced-toggle').addEventListener('click', () => {
-      const body  = document.getElementById('settings-advanced');
+      const body = document.getElementById('settings-advanced');
       const arrow = document.getElementById('advanced-arrow');
       body.hidden = !body.hidden;
       arrow.textContent = body.hidden ? '▸' : '▾';
@@ -499,7 +514,7 @@
     document.addEventListener('keydown', e => {
       const idx = ERA_ORDER.indexOf(currentEraId);
       if (e.key === 'ArrowRight' && idx < ERA_ORDER.length - 1) switchEra(ERA_ORDER[idx + 1]);
-      if (e.key === 'ArrowLeft'  && idx > 0)                    switchEra(ERA_ORDER[idx - 1]);
+      if (e.key === 'ArrowLeft' && idx > 0) switchEra(ERA_ORDER[idx - 1]);
       if (e.key === 'r' || e.key === 'R') resetEra();
     });
 

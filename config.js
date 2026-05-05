@@ -42,9 +42,17 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
 
     "2000": {
       id: "2000",
-      title: "2000s — Touch Tone Era",
+      title: "Touch Tone",
       subtitle: "Navigate by pressing numbers. No voice. No context. Just menus.",
       techBadges: ["DTMF Keypad", "PSTN", "IVR Menu Tree", "Pre-recorded Prompts"],
+      callouts: [
+        "Touch Tone menus",
+        "Keypad entry only",
+        "Traditional experience",
+        "IVR Menu Trees",
+        "Pre-recorded Prompts - difficult to change",
+        "Unintelligent"
+      ],
       challenge: "Navigate the touch-tone menu tree to report your lost card. No shortcuts, no voice — just patience.",
       hint: "Press 2 to reach the lost card section, then follow the prompts.",
       phone: "nokia",
@@ -120,9 +128,18 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
 
     "2010": {
       id: "2010",
-      title: "2010s — Early Speech Recognition",
+      title: "Early NLU",
       subtitle: "Say what you want... if the system can understand you.",
       techBadges: ["Basic ASR", "Keyword Spotting", "VXML 2.0", "~50 Word Vocabulary"],
+      callouts: [
+        "Basic ASR",
+        "Recognition challenges",
+        "Keyword Spotting",
+        "Limited dictionaries",
+        "VXML and GRMXL",
+        "Limited ~50 Word Vocabulary",
+        "Pre-recorded or TTS Prompts"
+      ],
       challenge: "Tell the system you've lost your card. Prepare to repeat yourself — early ASR wasn't great.",
       hint: "Say 'lost card' clearly. The system only understands specific keywords.",
       phone: "blackberry",
@@ -318,9 +335,17 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
           text: "Thanks for calling National Bank. Have a great day. Goodbye."
         }
       ],
-      title: "2020s — Conversational AI",
+      title: "Conversational AI",
       subtitle: "Intent detection, slot filling, structured dialogue. Getting closer.",
       techBadges: ["Amazon Lex", "Intent Classification", "Slot Filling", "NLU", "AWS Lambda"],
+      callouts: [
+        "NLU & Intent Detection",
+        "Slot Filling",
+        "Cloud-based ASR",
+        "Neural TTS",
+        "Omni-channel Support",
+        "Static Logic"
+      ],
       challenge: "Have a conversation — the AI understands intent but still follows a rigid script.",
       hint: "Just say you've lost your card. The system will detect the intent and ask for details.",
       phone: "iphone7",
@@ -438,9 +463,17 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
           text: "You're very welcome. You absolutely did the right thing calling us straight away. Please don't hesitate to call if you need anything else. Take care. Goodbye."
         }
       ],
-      title: "2026 — AI Voice Agent",
+      title: "AI Voice Agent",
       subtitle: "Real-time, empathetic, contextual. Like talking to a human.",
       techBadges: ["SST & TTS", "Full-Duplex Audio", "Real-time AI", "Tool Use", "Emotional Intelligence"],
+      callouts: [
+        "LLM Powered",
+        "True Reasoning",
+        "Empathetic Voice",
+        "Zero Latency",
+        "Full Context",
+        "Dynamic Actions"
+      ],
       challenge: "Just talk naturally. Tell the AI exactly what happened — it will listen, understand, and help.",
       hint: "Just speak normally. No keywords, no menus. Say anything.",
       phone: "iphone16",
@@ -465,9 +498,16 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
 
     "2030": {
       id: "2030",
-      title: "2027+ — Proactive Agentic AI",
+      title: "Proactive AI",
       subtitle: "The bank calls you. Actions already taken. You just confirm.",
       techBadges: ["Speech to Speech", "Humanised Voice", "AWS AgentCore", "Multi-Agent Orchestration", "Proactive Outreach"],
+      callouts: [
+        "Proactive Outreach",
+        "Multi-modal AI",
+        "Autonomous Resolution",
+        "Human-level Latency",
+        "Policy-driven Control"
+      ],
       challenge: "You don't have to do anything. The AI already resolved it — it's just calling to confirm.",
       hint: "Answer the call and watch what the AI has already done on your behalf.",
       phone: "iphone16",

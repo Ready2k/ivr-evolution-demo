@@ -71,12 +71,12 @@ class Era2000 {
   }
 
   _renderKeypad() {
-    const rows = [['1','2','3'],['4','5','6'],['7','8','9'],['*','0','#']];
-    const labels = {'1':'','2':'ABC','3':'DEF','4':'GHI','5':'JKL','6':'MNO','7':'PQRS','8':'TUV','9':'WXYZ','0':'+','*':'','#':''};
+    const rows = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9'], ['*', '0', '#']];
+    const labels = { '1': '', '2': 'ABC', '3': 'DEF', '4': 'GHI', '5': 'JKL', '6': 'MNO', '7': 'PQRS', '8': 'TUV', '9': 'WXYZ', '0': '+', '*': '', '#': '' };
     return rows.map(row => `
       <div class="nokia-keypad-row">
         ${row.map(k => `
-          <button class="nokia-key ${k==='*'||k==='#'?'nokia-key-special':''}" data-key="${k}">
+          <button class="nokia-key ${k === '*' || k === '#' ? 'nokia-key-special' : ''}" data-key="${k}">
             <span class="nokia-key-digit">${k}</span>
             ${labels[k] ? `<span class="nokia-key-letters">${labels[k]}</span>` : ''}
           </button>
@@ -87,7 +87,7 @@ class Era2000 {
 
   _attachListeners() {
     document.getElementById('nokia-call-btn').onclick = () => this._startCall();
-    document.getElementById('nokia-end-btn').onclick  = () => this._endCall();
+    document.getElementById('nokia-end-btn').onclick = () => this._endCall();
     document.getElementById('nokia-back-btn').onclick = () => this._goBack();
     document.querySelectorAll('.nokia-key').forEach(btn => {
       btn.addEventListener('click', () => this._handleKey(btn.dataset.key));
@@ -107,7 +107,7 @@ class Era2000 {
       this._setContent(CONFIG.bank.phone);
       this._setStatus('active', 'Connected');
       this._navigateTo('root');
-      
+
       // Autoplay Automation: Start the sequence
       if (document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay) {
         this._autoPlaySequence();
@@ -121,7 +121,7 @@ class Era2000 {
       { delay: 4500, key: '1' }, // Press 1 for English
       { delay: 9000, key: '2' }  // Press 2 for Lost or Stolen cards
     ];
-    
+
     let step = 0;
     const nextStep = () => {
       if (step >= sequence.length) return;
@@ -160,7 +160,7 @@ class Era2000 {
     if (this.state === 'done') return;
 
     audioEngine.playDTMF(key);
-    
+
     // Show digit on screen
     const inputEl = document.getElementById('nokia-input');
     if (inputEl && this.state !== 'input' && this.state !== 'agent_input') {
@@ -417,9 +417,9 @@ class Era2000 {
     return text.length > 110 ? text.substring(0, 107) + '...' : text;
   }
   _setStatus(type, msg) {
-    const dot  = document.getElementById('status-dot');
+    const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
-    if (dot)  dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
+    if (dot) dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
     if (text) text.textContent = msg;
   }
   _log(role, text) {

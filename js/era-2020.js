@@ -112,8 +112,8 @@ class Era2020 {
     this.container.appendChild(aiPanel);
 
     document.getElementById('ip7-call-btn').onclick = () => this._startCall();
-    document.getElementById('ip7-mic-btn').onclick   = () => this._toggleMic();
-    document.getElementById('ip7-end-btn').onclick   = () => this._endCall();
+    document.getElementById('ip7-mic-btn').onclick = () => this._toggleMic();
+    document.getElementById('ip7-end-btn').onclick = () => this._endCall();
 
     setInterval(() => {
       const el = document.getElementById('ip7-time');
@@ -130,7 +130,7 @@ class Era2020 {
     this.slotQueue = [...this.cfg.slots];
 
     document.getElementById('ip7-precall').style.display = 'none';
-    document.getElementById('ip7-incall').style.display  = 'flex';
+    document.getElementById('ip7-incall').style.display = 'flex';
     document.getElementById('ip7-timer').style.visibility = 'visible';
     document.getElementById('ip7-timer').textContent = 'Calling...';
     this._setStatus('speaking', 'Connecting...');
@@ -228,7 +228,7 @@ class Era2020 {
     this.state = 'idle';
 
     document.getElementById('ip7-precall').style.display = 'flex';
-    document.getElementById('ip7-incall').style.display  = 'none';
+    document.getElementById('ip7-incall').style.display = 'none';
     document.getElementById('ip7-timer').style.visibility = 'hidden';
     const aiPanel = document.getElementById('ip7-ai-panel');
     if (aiPanel) aiPanel.style.display = 'none';
@@ -300,7 +300,7 @@ class Era2020 {
   }
 
   _stopListening() {
-    if (this.recognition) { try { this.recognition.stop(); } catch {} this.recognition = null; }
+    if (this.recognition) { try { this.recognition.stop(); } catch { } this.recognition = null; }
     this._setMicBtn(false);
   }
 
@@ -377,10 +377,10 @@ class Era2020 {
     wrap.id = 'ip7-ext-options';
     wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;padding:4px 0;';
     const opts = [
-      { label: '💳  My Apple Pay is linked to this card',  fn: () => this._extApplePay() },
-      { label: '🔍  Has it been used anywhere else?',       fn: () => this._extOtherUse() },
-      { label: '💵  I need access to emergency cash',       fn: () => this._extEmergencyCash() },
-      { label: '✓   No, that\'s everything — thank you',   fn: () => this._endCall() },
+      { label: '💳  My Apple Pay is linked to this card', fn: () => this._extApplePay() },
+      { label: '🔍  Has it been used anywhere else?', fn: () => this._extOtherUse() },
+      { label: '💵  I need access to emergency cash', fn: () => this._extEmergencyCash() },
+      { label: '✓   No, that\'s everything — thank you', fn: () => this._endCall() },
     ];
     opts.forEach(o => {
       const btn = document.createElement('button');
@@ -524,9 +524,9 @@ class Era2020 {
     if (lbl) lbl.textContent = active ? 'listening…' : 'speak';
   }
   _setStatus(type, msg) {
-    const dot  = document.getElementById('status-dot');
+    const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
-    if (dot)  dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
+    if (dot) dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
     if (text) text.textContent = msg;
   }
   _log(role, text) {

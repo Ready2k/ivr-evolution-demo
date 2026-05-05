@@ -74,9 +74,9 @@ class EraNow {
         </div>
       </div>
     `;
-    document.getElementById('ip16-call-btn').onclick  = () => this._toggleCall();
-    document.getElementById('ip16-mute-btn').onclick  = () => this._toggleMute();
-    document.getElementById('ip16-speaker-btn').onclick = () => {};
+    document.getElementById('ip16-call-btn').onclick = () => this._toggleCall();
+    document.getElementById('ip16-mute-btn').onclick = () => this._toggleMute();
+    document.getElementById('ip16-speaker-btn').onclick = () => { };
     setInterval(() => {
       const el = document.getElementById('ip16-time');
       if (el) el.textContent = this._time();
@@ -101,11 +101,11 @@ class EraNow {
     }
 
     const appCfg = window.APP_CONFIG || {};
-    const wsUrl  = appCfg.wsUrl || CONFIG.backend.wsUrl;
+    const wsUrl = appCfg.wsUrl || CONFIG.backend.wsUrl;
 
     // Soft credential warning — show once but still attempt the call
     const hasClientCreds = !!(appCfg.awsKey && appCfg.awsSecret);
-    const isLocalhost    = wsUrl.includes('localhost') || wsUrl.includes('127.0.0.1');
+    const isLocalhost = wsUrl.includes('localhost') || wsUrl.includes('127.0.0.1');
     if (isLocalhost && !hasClientCreds && !this._credWarningShown) {
       this._credWarningShown = true;
       this._addBubble('ivr',
@@ -214,21 +214,23 @@ class EraNow {
     };
 
     // Inject credentials if provided via settings
-    if (appCfg.awsKey)    config.awsAccessKeyId     = appCfg.awsKey;
-    if (appCfg.awsSecret) config.awsSecretAccessKey  = appCfg.awsSecret;
-    if (appCfg.awsToken)  config.awsSessionToken     = appCfg.awsToken;
+    if (appCfg.awsKey) config.awsAccessKeyId = appCfg.awsKey;
+    if (appCfg.awsSecret) config.awsSecretAccessKey = appCfg.awsSecret;
+    if (appCfg.awsToken) config.awsSessionToken = appCfg.awsToken;
 
     this.ws.send(JSON.stringify({ type: 'sessionConfig', config }));
   }
 
   async _startMic() {
     try {
-      this.micStream = await navigator.mediaDevices.getUserMedia({ audio: {
-        sampleRate: 16000,
-        channelCount: 1,
-        echoCancellation: true,
-        noiseSuppression: true
-      }});
+      this.micStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          sampleRate: 16000,
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true
+        }
+      });
 
       this.audioCtx = new AudioContext({ sampleRate: 16000 });
       const source = this.audioCtx.createMediaStreamSource(this.micStream);
@@ -337,10 +339,10 @@ class EraNow {
     this.isConnected = false;
     this._stopCallTimer();
 
-    if (this.processor) { try { this.processor.disconnect(); } catch {} this.processor = null; }
-    if (this.micStream)  { this.micStream.getTracks().forEach(t => t.stop()); this.micStream = null; }
-    if (this.audioCtx)   { try { this.audioCtx.close(); } catch {} this.audioCtx = null; }
-    if (this.ws)         { try { this.ws.close(); } catch {} this.ws = null; }
+    if (this.processor) { try { this.processor.disconnect(); } catch { } this.processor = null; }
+    if (this.micStream) { this.micStream.getTracks().forEach(t => t.stop()); this.micStream = null; }
+    if (this.audioCtx) { try { this.audioCtx.close(); } catch { } this.audioCtx = null; }
+    if (this.ws) { try { this.ws.close(); } catch { } this.ws = null; }
 
     this.playbackQueue = [];
     this.isPlaying = false;
@@ -370,8 +372,8 @@ class EraNow {
     if (dur) dur.style.display = 'block';
     this.callTimer = setInterval(() => {
       this.callDuration++;
-      const m = String(Math.floor(this.callDuration / 60)).padStart(2,'0');
-      const s = String(this.callDuration % 60).padStart(2,'0');
+      const m = String(Math.floor(this.callDuration / 60)).padStart(2, '0');
+      const s = String(this.callDuration % 60).padStart(2, '0');
       const el = document.getElementById('ip16-duration');
       if (el) el.textContent = `${m}:${s}`;
     }, 1000);
@@ -416,13 +418,13 @@ class EraNow {
       this.wavePhase += 0.08;
       const amp = this.isConnected ? 5 : 0;
       if (amp === 0) return; // Empty pill if not connected
-      
+
       ctx.beginPath();
       ctx.strokeStyle = '#34C759';
       ctx.lineWidth = 1.5;
       for (let x = 0; x < w; x++) {
-        const y = h/2 + Math.sin(x * 0.3 + this.wavePhase) * amp
-                       + Math.sin(x * 0.15 + this.wavePhase * 0.7) * amp * 0.5;
+        const y = h / 2 + Math.sin(x * 0.3 + this.wavePhase) * amp
+          + Math.sin(x * 0.15 + this.wavePhase * 0.7) * amp * 0.5;
         x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
       ctx.stroke();
@@ -434,7 +436,7 @@ class EraNow {
   _setCallBtn(type, icon, label) {
     const btn = document.getElementById('ip16-call-btn');
     if (!btn) return;
-    btn.className = `ip16-ctrl-btn ${type === 'end' ? 'end' : 'call' }`;
+    btn.className = `ip16-ctrl-btn ${type === 'end' ? 'end' : 'call'}`;
     btn.innerHTML = `${icon}<span>${label}</span>`;
   }
   _addBubble(role, text) {
@@ -447,9 +449,9 @@ class EraNow {
     chat.scrollTop = chat.scrollHeight;
   }
   _setStatus(type, msg) {
-    const dot  = document.getElementById('status-dot');
+    const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
-    if (dot)  dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
+    if (dot) dot.className = 'status-dot' + (type !== 'idle' ? ' ' + type : '');
     if (text) text.textContent = msg;
   }
   _log(role, text) {

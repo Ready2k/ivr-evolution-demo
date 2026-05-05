@@ -32,7 +32,7 @@ class AudioEngine {
   stopAll() {
     this._generation++;
     window.speechSynthesis.cancel();
-    this._activeSources.forEach(src => { src.onended = null; try { src.stop(); } catch {} });
+    this._activeSources.forEach(src => { src.onended = null; try { src.stop(); } catch { } });
     this._activeSources = [];
     this.stopNoise();
   }
@@ -50,10 +50,10 @@ class AudioEngine {
   // Row frequencies: 697, 770, 852, 941 Hz
   // Column frequencies: 1209, 1336, 1477 Hz
   static DTMF = {
-    '1':[697,1209],'2':[697,1336],'3':[697,1477],
-    '4':[770,1209],'5':[770,1336],'6':[770,1477],
-    '7':[852,1209],'8':[852,1336],'9':[852,1477],
-    '*':[941,1209],'0':[941,1336],'#':[941,1477]
+    '1': [697, 1209], '2': [697, 1336], '3': [697, 1477],
+    '4': [770, 1209], '5': [770, 1336], '6': [770, 1477],
+    '7': [852, 1209], '8': [852, 1336], '9': [852, 1477],
+    '*': [941, 1209], '0': [941, 1336], '#': [941, 1477]
   };
 
   playDTMF(key, duration = 0.18, volume = 0.55) {
@@ -112,7 +112,7 @@ class AudioEngine {
   }
 
   stopNoise() {
-    if (this.noiseNode) { try { this.noiseNode.stop(); } catch {} this.noiseNode = null; }
+    if (this.noiseNode) { try { this.noiseNode.stop(); } catch { } this.noiseNode = null; }
     if (this.noiseGain) { this.noiseGain.disconnect(); this.noiseGain = null; }
   }
 
@@ -125,7 +125,7 @@ class AudioEngine {
         if (c >= cycles) { resolve(); return; }
         c++;
         const now = this.ctx.currentTime;
-        
+
         if (type === 'futuristic') {
           // More ethereal, multi-tonal ring (harmonic series)
           [440, 660, 880, 1100].forEach((freq, i) => {
@@ -179,25 +179,25 @@ class AudioEngine {
     // Gemini (2027+): The absolute best Google neural voices (server-side in Chrome)
     if (era === 'gemini') {
       return en.find(v => /google uk english female/i.test(v.name)) ||
-             en.find(v => /google us english female/i.test(v.name)) ||
-             en.find(v => /google/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-GB' && /serena|samantha/i.test(v.name)) ||
-             en[0];
+        en.find(v => /google us english female/i.test(v.name)) ||
+        en.find(v => /google/i.test(v.name)) ||
+        en.find(v => v.lang === 'en-GB' && /serena|samantha/i.test(v.name)) ||
+        en[0];
     }
 
     // Human agent (2025): UK English female (distinct from the now-male customer)
     if (era === 'agent') {
       return en.find(v => /google uk english female/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-GB' && /serena|kate|victoria/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-GB') ||
-             en[0];
+        en.find(v => v.lang === 'en-GB' && /serena|kate|victoria/i.test(v.name)) ||
+        en.find(v => v.lang === 'en-GB') ||
+        en[0];
     }
     // Customer (User): UK English male
     if (era === 'customer') {
       return en.find(v => /google uk english male/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-GB' && /daniel|oliver/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-GB') ||
-             en[0];
+        en.find(v => v.lang === 'en-GB' && /daniel|oliver/i.test(v.name)) ||
+        en.find(v => v.lang === 'en-GB') ||
+        en[0];
     }
     // 2000s: prefer robotic Microsoft voice
     if (era === '2000') {
@@ -206,16 +206,16 @@ class AudioEngine {
     // 2010s: system TTS quality — avoid Google neural voices (worse than 2020s Polly-level)
     if (era === '2010') {
       return en.find(v => v.lang === 'en-GB' && !/google/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-US' && !/google/i.test(v.name)) ||
-             en.find(v => !/google/i.test(v.name)) ||
-             en[0];
+        en.find(v => v.lang === 'en-US' && !/google/i.test(v.name)) ||
+        en.find(v => !/google/i.test(v.name)) ||
+        en[0];
     }
     // 2020s: Polly-equivalent quality — Samantha is the target level
     if (era === '2020') {
       return en.find(v => /samantha|ava|victoria/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-US' && !/google/i.test(v.name)) ||
-             en.find(v => !/google/i.test(v.name)) ||
-             en[0];
+        en.find(v => v.lang === 'en-US' && !/google/i.test(v.name)) ||
+        en.find(v => !/google/i.test(v.name)) ||
+        en[0];
     }
     return en[0];
   }
@@ -231,7 +231,7 @@ class AudioEngine {
       utter.rate = 1.02; utter.pitch = 0.95;
     } else {
       const cfg = CONFIG.eras[era]?.voice || {};
-      utter.rate  = cfg.rate  ?? 0.9;
+      utter.rate = cfg.rate ?? 0.9;
       utter.pitch = cfg.pitch ?? 1.0;
     }
     utter.volume = this.muted ? 0 : 0.9;
@@ -271,8 +271,8 @@ class AudioEngine {
       // Simple ascending 4-note motif: C4 E4 G4 C5, then descend G4 E4
       const motif = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
       const noteLen = 0.28;
-      const gap     = 0.06;
-      const barLen  = motif.length * (noteLen + gap);
+      const gap = 0.06;
+      const barLen = motif.length * (noteLen + gap);
 
       let t = this.ctx.currentTime + 0.05;
       const endT = t + durationMs / 1000;
@@ -320,7 +320,7 @@ class AudioEngine {
         };
         src.start();
       })
-      .catch(err => { if (this._generation === gen) (onError || onEnd || (() => {}))(err); });
+      .catch(err => { if (this._generation === gen) (onError || onEnd || (() => { }))(err); });
   }
 
   // Play audio file (for pre-recorded prompts), falls back to TTS
