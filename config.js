@@ -11,6 +11,16 @@ const CONFIG = {
   },
 
   // Nova Sonic backend (used for the "Now" era)
+  // Voice name overrides — null = auto-select heuristic, set to exact voice.name to pin
+  voices: {
+    customer: null,
+    '2000':   null,
+    '2010':   null,
+    '2020':   null,
+    'agent':  null,
+    'gemini': null
+  },
+
   backend: {
     wsUrl: "ws://localhost:8080",
     brainMode: "raw_nova",
@@ -428,7 +438,7 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
           text: "You're very welcome. You absolutely did the right thing calling us straight away. Please don't hesitate to call if you need anything else. Take care. Goodbye."
         }
       ],
-      title: "2025 — AI Voice Agent",
+      title: "2026 — AI Voice Agent",
       subtitle: "Real-time, empathetic, contextual. Like talking to a human.",
       techBadges: ["SST & TTS", "Full-Duplex Audio", "Real-time AI", "Tool Use", "Emotional Intelligence"],
       challenge: "Just talk naturally. Tell the AI exactly what happened — it will listen, understand, and help.",

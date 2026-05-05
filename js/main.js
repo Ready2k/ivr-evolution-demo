@@ -46,6 +46,7 @@
   function switchEra(eraId, force) {
     if (eraId === currentEraId && !force) return;
 
+    audioEngine.stopAll();
     if (currentInstance?.destroy) currentInstance.destroy();
     currentInstance = null;
 
@@ -223,6 +224,82 @@
   }
 
   // ---- Journey Editor ----
+
+  // Maps era ID → the voice key used in audioEngine.speak() for the AI side
+  const ERA_VOICE_KEYS = {
+    '2000': { aiKey: '2000',   aiLabel: 'IVR Voice' },
+    '2010': { aiKey: '2010',   aiLabel: 'IVR Voice' },
+    '2020': { aiKey: '2020',   aiLabel: 'AI Voice'  },
+    'now':  { aiKey: 'agent',  aiLabel: 'AI Voice'  },
+    '2030': { aiKey: 'gemini', aiLabel: 'AI Voice'  }
+  };
+
+  function _buildVoiceHTML(eraId) {
+    const meta = ERA_VOICE_KEYS[eraId];
+    if (!meta) return '';
+    return `
+      <div class="voice-section">
+        <label class="voice-label">
+          <span class="voice-role-label">${meta.aiLabel}</span>
+          <select class="voice-select" id="voice-ai-select"><option value="">— loading… —</option></select>
+        </label>
+        <label class="voice-label">
+          <span class="voice-role-label">Customer Voice</span>
+          <select class="voice-select" id="voice-customer-select"><option value="">— loading… —</option></select>
+        </label>
+      </div>`;
+  }
+
+  function _attachVoiceListeners(eraId) {
+    const meta = ERA_VOICE_KEYS[eraId];
+    if (!meta) return;
+
+    function _fillSelects() {
+      const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+      if (!voices.length) return false;
+      const currentAI   = CONFIG.voices?.[meta.aiKey] || '';
+      const currentCust = CONFIG.voices?.customer     || '';
+
+      // Tier 1: Google server-side neural (best quality)
+      // Tier 2: macOS Enhanced/Premium + well-known natural voices
+      // Tier 3: everything else
+      function _tier(v) {
+        if (/google/i.test(v.name)) return 1;
+        if (/enhanced|premium|samantha|daniel|karen|moira|serena|kate|victoria|ava|allison|susan|oliver|thomas|rishi/i.test(v.name)) return 2;
+        return 3;
+      }
+
+      const makeOpts = (current) => {
+        const opt = v => `<option value="${v.name}"${v.name === current ? ' selected' : ''}>${v.name}</option>`;
+        const grp = (label, vs) => vs.length
+          ? `<optgroup label="${label}">${vs.map(opt).join('')}</optgroup>` : '';
+        return `<option value="">— auto —</option>` +
+          grp('Neural — Best Quality', voices.filter(v => _tier(v) === 1)) +
+          grp('Natural', voices.filter(v => _tier(v) === 2)) +
+          grp('Standard', voices.filter(v => _tier(v) === 3));
+      };
+
+      const aiSel   = document.getElementById('voice-ai-select');
+      const custSel = document.getElementById('voice-customer-select');
+      if (aiSel)   aiSel.innerHTML   = makeOpts(currentAI);
+      if (custSel) custSel.innerHTML = makeOpts(currentCust);
+      return true;
+    }
+
+    if (!_fillSelects()) {
+      const prev = window.speechSynthesis.onvoiceschanged;
+      window.speechSynthesis.onvoiceschanged = () => {
+        _fillSelects();
+        if (typeof prev === 'function') prev();
+      };
+    }
+
+    const aiSel   = document.getElementById('voice-ai-select');
+    const custSel = document.getElementById('voice-customer-select');
+    if (aiSel)   aiSel.addEventListener('change',   () => { CONFIG.voices[meta.aiKey] = aiSel.value || null; });
+    if (custSel) custSel.addEventListener('change', () => { CONFIG.voices.customer    = custSel.value || null; });
+  }
+
   const MENU_TREE_LABELS = {
     root:            'Initial greeting — language select',
     welsh:           'Welsh unavailable message',
@@ -261,10 +338,12 @@
     );
 
     const editor = document.getElementById('journey-editor');
+    const voiceHTML = _buildVoiceHTML(eraId);
 
     // 2000s uses a menuTree object — edit prompts only, routing unchanged
     if (cfg.menuTree) {
       editor.innerHTML =
+        voiceHTML +
         `<p class="journey-note">Edits update the spoken prompts. Menu routing (which key goes where) is unchanged.</p>` +
         Object.entries(cfg.menuTree)
           .filter(([, node]) => node.prompt)
@@ -278,12 +357,14 @@
               <textarea class="journey-textarea" data-key="${key}" rows="${rows}">${node.prompt}</textarea>
             </div>`;
           }).join('');
+      _attachVoiceListeners(eraId);
       return;
     }
 
     // 2030 uses a keyed script object (branching flow, no demoScript array)
     if (cfg.script) {
       editor.innerHTML =
+        voiceHTML +
         `<p class="journey-note">Branching flow — all AI lines. {tod} = morning/afternoon/evening, {tod_part} = day/evening.</p>` +
         Object.entries(cfg.script).map(([key, text]) => {
           const rows = Math.max(2, Math.ceil(text.length / 58));
@@ -295,6 +376,7 @@
             <textarea class="journey-textarea" data-key="${key}" rows="${rows}">${text}</textarea>
           </div>`;
         }).join('');
+      _attachVoiceListeners(eraId);
       return;
     }
 
@@ -306,6 +388,7 @@
       : 'Text edits update both the transcript and spoken TTS audio.';
 
     editor.innerHTML =
+      voiceHTML +
       `<p class="journey-note">${note}</p>` +
       cfg.demoScript.map((step, i) => {
         const rows = Math.max(2, Math.ceil((step.text || '').length / 58));
@@ -319,6 +402,7 @@
           <textarea class="journey-textarea" data-idx="${i}" rows="${rows}">${step.text || ''}</textarea>
         </div>`;
       }).join('');
+    _attachVoiceListeners(eraId);
   }
 
   function saveJourneyEdits() {

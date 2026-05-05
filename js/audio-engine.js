@@ -9,6 +9,8 @@ class AudioEngine {
     this.voices = [];
     this._voicesLoaded = false;
     this.muted = false;
+    this._activeSources = [];
+    this._generation = 0;
     this._loadVoices();
   }
 
@@ -25,6 +27,14 @@ class AudioEngine {
   setMuted(muted) {
     this.muted = muted;
     if (this.masterGain) this.masterGain.gain.value = muted ? 0 : 1;
+  }
+
+  stopAll() {
+    this._generation++;
+    window.speechSynthesis.cancel();
+    this._activeSources.forEach(src => { src.onended = null; try { src.stop(); } catch {} });
+    this._activeSources = [];
+    this.stopNoise();
   }
 
   _loadVoices() {
@@ -159,6 +169,13 @@ class AudioEngine {
     const en = this.voices.filter(v => v.lang.startsWith('en'));
     if (!en.length) return null;
 
+    // Manual override from CONFIG.voices takes precedence
+    const overrideName = CONFIG.voices?.[era];
+    if (overrideName) {
+      const ov = en.find(v => v.name === overrideName);
+      if (ov) return ov;
+    }
+
     // Gemini (2027+): The absolute best Google neural voices (server-side in Chrome)
     if (era === 'gemini') {
       return en.find(v => /google uk english female/i.test(v.name)) ||
@@ -207,11 +224,11 @@ class AudioEngine {
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
     if (era === 'gemini') {
-      utter.rate = 0.98; utter.pitch = 1.02; // Slightly slower, more thoughtful
+      utter.rate = 0.98; utter.pitch = 1.02;
     } else if (era === 'agent') {
-      utter.rate = 1.0; utter.pitch = 1.1; // Bright, helpful female agent
+      utter.rate = 1.0; utter.pitch = 1.1;
     } else if (era === 'customer') {
-      utter.rate = 1.02; utter.pitch = 0.95; // Distinct male customer voice
+      utter.rate = 1.02; utter.pitch = 0.95;
     } else {
       const cfg = CONFIG.eras[era]?.voice || {};
       utter.rate  = cfg.rate  ?? 0.9;
@@ -220,7 +237,10 @@ class AudioEngine {
     utter.volume = this.muted ? 0 : 0.9;
     const v = this._pickVoice(era);
     if (v) utter.voice = v;
-    if (onEnd) utter.onend = onEnd;
+    if (onEnd) {
+      const gen = this._generation;
+      utter.onend = () => { if (this._generation === gen) onEnd(); };
+    }
     window.speechSynthesis.speak(utter);
     return utter;
   }
@@ -284,17 +304,23 @@ class AudioEngine {
     this._ensureContext();
     const ctx = this.ctx;
     const dest = this.masterGain;
+    const gen = this._generation;
     fetch(url)
       .then(r => r.arrayBuffer())
       .then(buf => ctx.decodeAudioData(buf))
       .then(decoded => {
+        if (this._generation !== gen) return;
         const src = ctx.createBufferSource();
         src.buffer = decoded;
         src.connect(dest);
-        src.onended = onEnd || null;
+        this._activeSources.push(src);
+        src.onended = () => {
+          this._activeSources = this._activeSources.filter(s => s !== src);
+          if (this._generation === gen && onEnd) onEnd();
+        };
         src.start();
       })
-      .catch(onError || onEnd || (() => {}));
+      .catch(err => { if (this._generation === gen) (onError || onEnd || (() => {}))(err); });
   }
 
   // Play audio file (for pre-recorded prompts), falls back to TTS
