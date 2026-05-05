@@ -3,16 +3,28 @@
 class AudioEngine {
   constructor() {
     this.ctx = null;
+    this.masterGain = null;
     this.noiseNode = null;
     this.noiseGain = null;
     this.voices = [];
     this._voicesLoaded = false;
+    this.muted = false;
     this._loadVoices();
   }
 
   _ensureContext() {
-    if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (!this.ctx) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.masterGain = this.ctx.createGain();
+      this.masterGain.gain.value = this.muted ? 0 : 1;
+      this.masterGain.connect(this.ctx.destination);
+    }
     if (this.ctx.state === 'suspended') this.ctx.resume();
+  }
+
+  setMuted(muted) {
+    this.muted = muted;
+    if (this.masterGain) this.masterGain.gain.value = muted ? 0 : 1;
   }
 
   _loadVoices() {
@@ -49,7 +61,7 @@ class AudioEngine {
       gain.gain.setValueAtTime(volume, now + duration - 0.01);
       gain.gain.linearRampToValueAtTime(0, now + duration);
       osc.connect(gain);
-      gain.connect(this.ctx.destination);
+      gain.connect(this.masterGain);
       osc.start(now);
       osc.stop(now + duration);
     });
@@ -85,7 +97,7 @@ class AudioEngine {
     this.noiseNode.connect(hp);
     hp.connect(lp);
     lp.connect(this.noiseGain);
-    this.noiseGain.connect(this.ctx.destination);
+    this.noiseGain.connect(this.masterGain);
     this.noiseNode.start();
   }
 
@@ -115,7 +127,7 @@ class AudioEngine {
             g.gain.setValueAtTime(0, start);
             g.gain.linearRampToValueAtTime(0.08 / (i + 1), start + 0.1);
             g.gain.exponentialRampToValueAtTime(0.001, start + 1.2);
-            o.connect(g); g.connect(this.ctx.destination);
+            o.connect(g); g.connect(this.masterGain);
             o.start(start); o.stop(start + 1.2);
           });
           setTimeout(playOne, 2000);
@@ -130,7 +142,7 @@ class AudioEngine {
             g.gain.linearRampToValueAtTime(0.2, now + 0.02);
             g.gain.setValueAtTime(0.2, now + 0.38);
             g.gain.linearRampToValueAtTime(0, now + 0.4);
-            o.connect(g); g.connect(this.ctx.destination);
+            o.connect(g); g.connect(this.masterGain);
             o.start(now); o.stop(now + 0.4);
           });
           setTimeout(playOne, 800);
@@ -205,7 +217,7 @@ class AudioEngine {
       utter.rate  = cfg.rate  ?? 0.9;
       utter.pitch = cfg.pitch ?? 1.0;
     }
-    utter.volume = 0.9;
+    utter.volume = this.muted ? 0 : 0.9;
     const v = this._pickVoice(era);
     if (v) utter.voice = v;
     if (onEnd) utter.onend = onEnd;
@@ -234,7 +246,7 @@ class AudioEngine {
       const comp = this.ctx.createDynamicsCompressor();
       comp.ratio.value = 8; comp.threshold.value = -18;
 
-      master.connect(hp); hp.connect(lp); lp.connect(comp); comp.connect(this.ctx.destination);
+      master.connect(hp); hp.connect(lp); lp.connect(comp); comp.connect(this.masterGain);
 
       // Simple ascending 4-note motif: C4 E4 G4 C5, then descend G4 E4
       const motif = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
@@ -271,13 +283,14 @@ class AudioEngine {
   playFile(url, onEnd, onError) {
     this._ensureContext();
     const ctx = this.ctx;
+    const dest = this.masterGain;
     fetch(url)
       .then(r => r.arrayBuffer())
       .then(buf => ctx.decodeAudioData(buf))
       .then(decoded => {
         const src = ctx.createBufferSource();
         src.buffer = decoded;
-        src.connect(ctx.destination);
+        src.connect(dest);
         src.onended = onEnd || null;
         src.start();
       })

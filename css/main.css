@@ -644,6 +644,7 @@ body {
   letter-spacing: 0.3px;
 }
 .reset-btn:hover { opacity: 1; background: var(--panel-bg); }
+.reset-btn.active { opacity: 1; background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: #f87171; }
 
 /* Hidden utility */
 [hidden] { display: none !important; }

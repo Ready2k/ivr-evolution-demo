@@ -24,7 +24,8 @@
   };
 
   window.APP_STATE = {
-    autoplay: false
+    autoplay: false,
+    muted: false
   };
 
   // ---- Browser warning ----
@@ -388,6 +389,15 @@
     document.getElementById('conv-clear').addEventListener('click', () => {
       document.getElementById('conv-messages').innerHTML =
         '<p class="conv-empty">Start the conversation to see the transcript here.</p>';
+    });
+
+    document.getElementById('mute-btn').addEventListener('click', () => {
+      const muted = !window.APP_STATE.muted;
+      window.APP_STATE.muted = muted;
+      audioEngine.setMuted(muted);
+      const btn = document.getElementById('mute-btn');
+      btn.textContent = muted ? '🔇 Unmute' : '🔊 Mute';
+      btn.classList.toggle('active', muted);
     });
 
     document.getElementById('reset-btn').addEventListener('click', resetEra);
