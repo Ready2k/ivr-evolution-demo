@@ -13,10 +13,10 @@ mkdir -p audio/now
 AI_VOICE="Daniel"
 USER_VOICE="Serena"
 
-# Check Serena is installed; fall back to Kate
+# Check Serena is installed; fall back to Flo (best available)
 if ! say -v Serena "" 2>/dev/null; then
-  USER_VOICE="Kate"
-  echo "Note: Serena not found — using Kate for customer voice"
+  USER_VOICE="Flo"
+  echo "Note: Serena not found — using Flo for customer voice"
 fi
 
 speak() {

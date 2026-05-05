@@ -128,18 +128,26 @@ class AudioEngine {
     const en = this.voices.filter(v => v.lang.startsWith('en'));
     if (!en.length) return null;
 
-    // Human agent: warm UK English female (Amy/Kate/Google UK English Female)
-    if (era === 'agent') {
+    // Gemini (2027+): The absolute best Google neural voices (server-side in Chrome)
+    if (era === 'gemini') {
       return en.find(v => /google uk english female/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-GB' && /kate|serena|moira/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-GB') ||
-             en.find(v => /samantha|ava|karen/i.test(v.name)) ||
+             en.find(v => /google us english female/i.test(v.name)) ||
+             en.find(v => /google/i.test(v.name)) ||
+             en.find(v => v.lang === 'en-GB' && /serena|samantha/i.test(v.name)) ||
              en[0];
     }
-    // Customer (2025 demo): UK English male, distinct from the agent
+
+    // Human agent (2025): UK English female (distinct from the now-male customer)
+    if (era === 'agent') {
+      return en.find(v => /google uk english female/i.test(v.name)) ||
+             en.find(v => v.lang === 'en-GB' && /serena|kate|victoria/i.test(v.name)) ||
+             en.find(v => v.lang === 'en-GB') ||
+             en[0];
+    }
+    // Customer (User): UK English male
     if (era === 'customer') {
       return en.find(v => /google uk english male/i.test(v.name)) ||
-             en.find(v => v.lang === 'en-GB' && /daniel|arthur|oliver/i.test(v.name)) ||
+             en.find(v => v.lang === 'en-GB' && /daniel|oliver/i.test(v.name)) ||
              en.find(v => v.lang === 'en-GB') ||
              en[0];
     }
@@ -167,10 +175,12 @@ class AudioEngine {
   speak(text, era = '2000', onEnd) {
     window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    if (era === 'agent') {
-      utter.rate = 1.0; utter.pitch = 1.12;
+    if (era === 'gemini') {
+      utter.rate = 0.98; utter.pitch = 1.02; // Slightly slower, more thoughtful
+    } else if (era === 'agent') {
+      utter.rate = 1.0; utter.pitch = 1.1; // Bright, helpful female agent
     } else if (era === 'customer') {
-      utter.rate = 1.05; utter.pitch = 0.92;
+      utter.rate = 1.02; utter.pitch = 0.95; // Distinct male customer voice
     } else {
       const cfg = CONFIG.eras[era]?.voice || {};
       utter.rate  = cfg.rate  ?? 0.9;
@@ -238,12 +248,27 @@ class AudioEngine {
     });
   }
 
+  // Play a WAV/audio file via Web Audio API (no autoplay restrictions)
+  playFile(url, onEnd, onError) {
+    this._ensureContext();
+    const ctx = this.ctx;
+    fetch(url)
+      .then(r => r.arrayBuffer())
+      .then(buf => ctx.decodeAudioData(buf))
+      .then(decoded => {
+        const src = ctx.createBufferSource();
+        src.buffer = decoded;
+        src.connect(ctx.destination);
+        src.onended = onEnd || null;
+        src.start();
+      })
+      .catch(onError || onEnd || (() => {}));
+  }
+
   // Play audio file (for pre-recorded prompts), falls back to TTS
   playPrompt(promptObj, era, onEnd) {
     if (promptObj.audioFile) {
-      const audio = new Audio(promptObj.audioFile);
-      audio.onended = onEnd;
-      audio.play().catch(() => this.speak(promptObj.text, era, onEnd));
+      this.playFile(promptObj.audioFile, onEnd, () => this.speak(promptObj.text, era, onEnd));
     } else {
       this.speak(promptObj.text, era, onEnd);
     }

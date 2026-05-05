@@ -59,7 +59,7 @@ class EraNow {
               <button class="ip16-ctrl-btn mute" id="ip16-mute-btn">
                 🎙<span>Mute</span>
               </button>
-              <button class="ip16-ctrl-btn end" id="ip16-call-btn">
+              <button class="ip16-ctrl-btn call" id="ip16-call-btn">
                 📞<span>Call</span>
               </button>
               <button class="ip16-ctrl-btn speaker" id="ip16-speaker-btn">
@@ -145,18 +145,20 @@ class EraNow {
     }
   }
 
-  // ---- Demo mode (pre-recorded audio, no WebSocket needed) ----
+  // ---- Demo mode (Google neural TTS, no WebSocket needed) ----
   _startDemo() {
     this._setCallBtn('end', '🔴', 'End');
     this._setStatus('speaking', 'Connecting...');
     this._expandIsland('🔴', CONFIG.bank.name, 'Connecting...');
     setTimeout(() => {
-      this.isConnected = true;
-      this._startCallTimer();
-      this._setStatus('active', 'Connected — AI is listening');
-      this._expandIsland('🔴', CONFIG.bank.name, 'Active call');
-      this._log('system', 'Demo mode — pre-recorded audio');
-      this._playDemoStep(0);
+      if (!this.isConnected) {
+        this.isConnected = true;
+        this._startCallTimer();
+        this._setStatus('active', 'Connected — AI is listening');
+        this._expandIsland('🔴', CONFIG.bank.name, 'Active call');
+        this._log('system', 'Demo mode');
+        this._playDemoStep(0);
+      }
     }, 1200);
   }
 
@@ -182,7 +184,8 @@ class EraNow {
       this._log('user', line.text);
     }
 
-    const next = () => setTimeout(() => this._playDemoStep(idx + 1), isAI ? 600 : 300);
+    const baseDelay = line.pauseAfter != null ? line.pauseAfter : (isAI ? 600 : 300);
+    const next = () => setTimeout(() => this._playDemoStep(idx + 1), baseDelay);
 
     if (isAI) {
       audioEngine.speak(line.text, 'agent', next);

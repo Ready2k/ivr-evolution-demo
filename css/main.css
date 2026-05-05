@@ -620,10 +620,10 @@ body {
    ============================================================ */
 body.theater-mode .scenario-panel { display: none !important; }
 body.theater-mode .tech-info-bar { opacity: 0 !important; pointer-events: none !important; height: 0 !important; padding: 0 !important; margin: 0 !important; }
-body.theater-mode .era-header { opacity: 0 !important; pointer-events: none !important; }
-body.theater-mode .main-layout { 
-  grid-template-columns: 1fr; 
-  grid-template-rows: 1fr 180px; 
+body.theater-mode .era-header { display: none !important; }
+body.theater-mode .main-layout {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 180px;
 }
 
 body.theater-mode .phone-stage {
@@ -635,7 +635,7 @@ body.theater-mode .phone-stage {
 }
 
 /* Convert the right panel into a bottom grid-row prompter stream */
-body.theater-mode .conv-panel {
+body.theater-mode .conversation-panel {
   position: relative !important;
   grid-column: 1;
   grid-row: 2;
@@ -661,7 +661,7 @@ body.theater-mode .conv-panel {
   padding-bottom: 20px;
 }
 body.theater-mode .conv-header { display: none !important; }
-body.theater-mode .conv-body {
+body.theater-mode .conv-messages {
   width: 100%;
   max-width: 800px;
   padding: 0 20px;

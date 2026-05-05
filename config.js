@@ -49,7 +49,7 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         desc: "The track IS the config file. A new journey = a rebuild."
       },
       failMode: "Press 9 from the main menu — experience a 22-minute hold queue. That's the only alternative.",
-      audio: { noiseLevel: 0.06, crackleLevel: 0.04 },
+      audio: { noiseLevel: 0, crackleLevel: 0 },
       voice: { rate: 0.82, pitch: 0.72 },
 
       menuTree: {
@@ -127,7 +127,7 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         desc: "A whitelist of ~50 words. Everything else is treated as noise."
       },
       failMode: "Say the full sentence naturally: \"I've left my card at the supermarket and I'm at home now\" — watch it fail to recognise a perfectly clear sentence.",
-      audio: { noiseLevel: 0.02, crackleLevel: 0.01 },
+      audio: { noiseLevel: 0, crackleLevel: 0 },
       voice: { rate: 0.9, pitch: 0.88 },
 
       misrecognitionChance: 0.25,
@@ -185,6 +185,26 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         {
           role: "user",
           text: "42 Maple Street."
+        },
+        {
+          role: "ai",
+          text: "I'm sorry, I didn't catch that. Could you please repeat your address again, more slowly and clearly?",
+          mishear: true,
+          pauseBefore: { ms: 900, status: "Matching address…" }
+        },
+        {
+          role: "user",
+          text: "Forty... two... Maple... Street."
+        },
+        {
+          role: "ai",
+          text: "I'm still having difficulty recognising your address. Please say each part separately. Say the house number first, then the street name only.",
+          mishear: true,
+          pauseBefore: { ms: 900, status: "Matching address…" }
+        },
+        {
+          role: "user",
+          text: "Four. Two. Maple."
         },
         {
           role: "ai",
@@ -379,7 +399,8 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         {
           role: "user",
           file: "./audio/now/04-user.wav",
-          text: "Yes, it's the fourteenth of March, nineteen eighty-nine."
+          text: "Yes, it's the fourteenth of March, nineteen eighty-nine.",
+          pauseAfter: 2000
         },
         {
           role: "ai",
@@ -436,11 +457,11 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       id: "2030",
       title: "2027+ — Proactive Agentic AI",
       subtitle: "The bank calls you. Actions already taken. You just confirm.",
-      techBadges: ["AWS AgentCore", "Multi-Agent Orchestration", "Proactive Outreach", "Ambient Monitoring", "Autonomous Action"],
+      techBadges: ["Gemini 1.5 Pro", "Gemini Voice", "AWS AgentCore", "Multi-Agent Orchestration", "Proactive Outreach"],
       challenge: "You don't have to do anything. The AI already resolved it — it's just calling to confirm.",
       hint: "Answer the call and watch what the AI has already done on your behalf.",
       phone: "iphone16",
-      techDetail: "AWS AgentCore multi-agent (2025) · Ambient transaction monitoring · Sub-250ms voice + action latency · Fraud, card, payments and wallet agents orchestrated in parallel",
+      techDetail: "Gemini 1.5 Pro orchestrated via AWS AgentCore · Multi-agent proactive monitoring · <200ms voice latency · Emotional intelligence grounding",
       tradeoff: {
         position: 99,
         caption: "Proactive Agent — acts before you call, resolves without you navigating anything"

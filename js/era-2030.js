@@ -55,23 +55,58 @@ class Era2030 {
 
             <!-- Incoming call state -->
             <div class="future-incoming" id="f-incoming">
-              <div class="ip16-status-bar" style="position:relative;z-index:2">
-                <span class="ip16-time" id="f-time">${this._time()}</span>
-                <span class="ip16-icons">●●● WiFi 🔋</span>
+
+              <!-- Dynamic Island (evolved — slightly wider in 2027) -->
+              <div class="f-dynamic-island">
+                <div class="f-island-pill">
+                  <div class="f-island-dot"></div>
+                  <div class="f-island-dot" style="animation-delay:0.5s"></div>
+                  <div class="f-island-dot" style="animation-delay:1s"></div>
+                </div>
               </div>
-              <div class="future-ring-wrap" id="f-ring-wrap">
-                <div class="future-ring-pulse"></div>
-                <div class="future-ring-pulse delay1"></div>
-                <div class="future-ring-pulse delay2"></div>
-                <div class="future-caller-icon">🏦</div>
+
+              <!-- Transparent status bar -->
+              <div class="f-status-bar">
+                <span id="f-time">${this._time()}</span>
+                <span class="f-status-icons">●●● WiFi 🔋</span>
               </div>
-              <div class="future-caller-name">National Bank</div>
-              <div class="future-caller-sub" id="f-caller-sub">AI Assistant calling...</div>
+
+              <!-- Caller section -->
+              <div class="f-caller-area">
+                <div class="future-ring-wrap" id="f-ring-wrap">
+                  <div class="future-ring-pulse"></div>
+                  <div class="future-ring-pulse delay1"></div>
+                  <div class="future-ring-pulse delay2"></div>
+                  <div class="future-caller-icon">🏦</div>
+                </div>
+                <div class="f-incoming-tag">Incoming Call</div>
+                <div class="future-caller-name">National Bank</div>
+                <div class="future-caller-sub" id="f-caller-sub">AI Assistant calling...</div>
+              </div>
+
+              <!-- What the AI has already done — shown before the call is even answered -->
+              <div class="f-ai-preview">
+                <div class="f-ai-preview-title">AI has already handled</div>
+                <div class="f-ai-preview-row"><span class="f-ai-check">✓</span>Suspicious transaction flagged</div>
+                <div class="f-ai-preview-row"><span class="f-ai-check">✓</span>Card placed on temporary hold</div>
+              </div>
+
+              <!-- Answer / Decline with iOS-style labels -->
               <div class="future-answer-row" id="f-answer-row" style="display:none">
-                <button class="future-decline-btn" id="f-decline-btn">📵</button>
-                <div style="flex:1"></div>
-                <button class="future-answer-btn" id="f-answer-btn">📞</button>
+                <div class="f-call-action">
+                  <button class="future-decline-btn" id="f-decline-btn">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="white" style="display:block;transform:rotate(135deg)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                  </button>
+                  <span class="f-action-label">Decline</span>
+                </div>
+                <div class="f-call-action">
+                  <button class="future-answer-btn" id="f-answer-btn">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="white" style="display:block"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                  </button>
+                  <span class="f-action-label">Accept</span>
+                </div>
               </div>
+
             </div>
 
             <!-- Active call state -->
@@ -141,20 +176,22 @@ class Era2030 {
     this._setStatus('speaking', 'AI Agent speaking...');
 
     this._log('system', '[ Call answered ]');
+    
+    // Use live high-quality TTS for the Gemini experience
     this._speak(
-      `Hi there — good ${this._tod()}. This is your National Bank AI assistant. I hope I'm not disturbing you. ` +
-      `I'm calling because I spotted something unusual on your account about twenty minutes ago. ` +
-      `Your debit card was used at a petrol station in Glasgow at two forty-three this afternoon for forty-seven pounds eighty. ` +
-      `Based on your spending patterns and the fact that your phone has been in London all day, this really doesn't look like you. ` +
-      `I've placed a temporary hold on the card while I check with you. Were you in Glasgow this afternoon?`,
+      "Hi there — good " + this._tod() + ". This is your National Bank AI assistant. I hope I'm not disturbing you. I'm calling because I spotted something unusual on your account about twenty minutes ago.",
       () => {
-        this._showResponses([
-          { label: "Yes, that was me",      action: () => this._stepItWasMe() },
-          { label: "No, that wasn't me",    action: () => this._stepNotMe() },
-        ]);
+        this._speak(
+          "Your debit card was used at a petrol station in Glasgow at two forty-three this afternoon for forty-seven pounds eighty. Based on your spending patterns and the fact that your phone has been in London all day, this really doesn't look like you. I've placed a temporary hold on the card while I check with you. Were you in Glasgow this afternoon?",
+          () => {
+            this._showResponses([
+              { label: "Yes, that was me",      action: () => this._stepItWasMe() },
+              { label: "No, that wasn't me",    action: () => this._stepNotMe() },
+            ]);
+          }
+        );
       }
     );
-    this._addBubble('ivr', 'Were you in Glasgow this afternoon?');
     this._log('ivr', 'Possible fraudulent transaction detected — confirming with customer');
   }
 
@@ -189,21 +226,26 @@ class Era2030 {
     this._clearResponses();
     this._log('user', "No, that wasn't me");
     this._addBubble('user', "No, that wasn't me");
-    this._speak(
-      `That's what I suspected — thank you for confirming. Right, I've permanently cancelled that card now. ` +
-      `I've also automatically raised a dispute for the forty-seven pounds eighty — you'll see a full refund credited within twenty-four hours. ` +
-      `I've already placed the order for your replacement card — it'll arrive at your home address tomorrow by first class. ` +
-      `One more thing I've taken care of: I noticed you have a direct debit for eight hundred and fifty pounds going out tomorrow morning. ` +
-      `I've made sure that won't be affected — I've temporarily routed it through your savings account so you won't miss a payment. ` +
-      `Is there anything else you'd like me to look into while I have you?`,
-      () => {
-        this._showResponses([
-          { label: "That's brilliant, thank you",     action: () => this._stepDone() },
-          { label: "Has it been used anywhere else?", action: () => this._stepCheckMore() },
-          { label: "What about my Apple Pay?",        action: () => this._stepApplePay() },
-        ]);
-      }
-    );
+
+    // Use live high-quality TTS for the user as well
+    audioEngine.speak("No, that wasn't me", 'customer', () => {
+      // Then AI response
+      this._speak(
+        "That's what I suspected — thank you for confirming. Right, I've permanently cancelled that card now. I've also automatically raised a dispute for the forty-seven pounds eighty — you'll see a full refund credited within twenty-four hours.",
+        () => {
+          this._speak(
+            "I've already placed the order for your replacement card — it'll arrive at your home address tomorrow by first class. One more thing I've taken care of: I noticed you have a direct debit for eight hundred and fifty pounds going out tomorrow morning. I've made sure that won't be affected — I've temporarily routed it through your savings account so you won't miss a payment. Is there anything else you'd like me to look into while I have you?",
+            () => {
+              this._showResponses([
+                { label: "That's brilliant, thank you",     action: () => this._stepDone() },
+                { label: "Has it been used anywhere else?", action: () => this._stepCheckMore() },
+                { label: "What about my Apple Pay?",        action: () => this._stepApplePay() },
+              ]);
+            }
+          );
+        }
+      );
+    });
 
     // Tick checklist progressively as AI speaks
     setTimeout(() => this._tickItem('cancel'),  1800);
@@ -268,14 +310,17 @@ class Era2030 {
   _stepDone() {
     this._clearResponses();
     this.state = 'done';
-    this._speak(
-      `Perfect. I've sent a full summary of everything to your registered email, and you'll get a text shortly with your replacement card tracking link. ` +
-      `Your account is secure. Sorry for the brief interruption — you have a lovely ${this._tod() === 'morning' ? 'day' : 'evening'}. Goodbye.`,
-      () => {
-        this._stopTimer();
-        this._setStatus('idle', 'Call complete — everything resolved');
-      }
-    );
+    
+    // Live high-quality TTS
+    audioEngine.speak("That's brilliant, thank you", 'customer', () => {
+      this._speak(
+        "Perfect. I've sent a full summary of everything to your registered email, and you'll get a text shortly with your replacement card tracking link. Your account is secure. Sorry for the brief interruption — you have a lovely " + (this._tod() === 'morning' ? 'day' : 'evening') + ". Goodbye.",
+        () => {
+          this._stopTimer();
+          this._setStatus('idle', 'Call complete — everything resolved');
+        }
+      );
+    });
     this._log('system', 'All actions completed — call ended');
   }
 
@@ -349,7 +394,32 @@ class Era2030 {
 
   // ---- Helpers ----
   _speak(text, onEnd) {
-    audioEngine.speak(text, 'agent', onEnd);
+    this._streamBubble('ivr', text);
+    audioEngine.speak(text, 'gemini', onEnd);
+  }
+  _speakFile(file, text, onEnd) {
+    this._streamBubble('ivr', text);
+    audioEngine.playFile(file, onEnd, () => {
+      // Fallback to TTS if file fails
+      audioEngine.speak(text, 'gemini', onEnd);
+    });
+  }
+  _streamBubble(role, text) {
+    const chat = document.getElementById('f-chat');
+    if (!chat) return;
+    const div = document.createElement('div');
+    div.className = `future-bubble ${role}`;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    const words = text.split(' ');
+    let i = 0;
+    const tick = () => {
+      if (i >= words.length) return;
+      div.textContent += (i > 0 ? ' ' : '') + words[i++];
+      chat.scrollTop = chat.scrollHeight;
+      setTimeout(tick, 72);
+    };
+    tick();
   }
   _addBubble(role, text) {
     const chat = document.getElementById('f-chat');
