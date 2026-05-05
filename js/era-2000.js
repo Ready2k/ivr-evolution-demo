@@ -307,12 +307,21 @@ class Era2000 {
           this._log('ivr', '[Agent Amy joined the call]');
           const tod = this._timeOfDay();
           this._agentSpeak(
-            `Good ${tod}, thank you so much for holding. My name is Amy and I'm from the National Bank lost card team. I can see you've been transferred because you need to report a lost card. Not to worry — I can take care of that for you right now. I just need to take a couple of details. Could you please enter your 8-digit account number followed by the hash key?`,
+            `Good ${tod}, thank you so much for holding. My name is Amy and I'm from the National Bank lost card team. I see you've been transferred because you need to report a lost card. Not to worry — I can take care of that for you right now. I just need to take a couple of details. Could you please tell me your 8-digit account number?`,
             () => {
-              this.state = 'agent_input';
-              this.agentStep = 'get_account';
-              this._setInput('_');
-              this._setStatus('listening', 'Enter 8-digit account number, then #');
+              if (this._isAuto()) {
+                setTimeout(() => {
+                  this._userSpeak("Yes, of course. My account number is 4 4 1 2 8 8 3 0.", () => {
+                    this.inputBuffer = '44128830';
+                    this._submitAgentInput();
+                  });
+                }, 1500);
+              } else {
+                this.state = 'agent_input';
+                this.agentStep = 'get_account';
+                this._setInput('_');
+                this._setStatus('listening', 'Enter 8-digit account number, then #');
+              }
             }
           );
         });
@@ -330,11 +339,20 @@ class Era2000 {
     if (this.agentStep === 'get_account') {
       this.agentStep = 'get_dob';
       this._agentSpeak(
-        "Thank you. And could I take your 6-digit date of birth please — day, month, year — followed by the hash key?",
+        "Thank you. And could I take your date of birth please?",
         () => {
-          this.state = 'agent_input';
-          this._setInput('_');
-          this._setStatus('listening', 'Enter date of birth (DDMMYY), then #');
+          if (this._isAuto()) {
+            setTimeout(() => {
+              this._userSpeak("My date of birth is the 12th of May, 1978.", () => {
+                this.inputBuffer = '120578';
+                this._submitAgentInput();
+              });
+            }, 1500);
+          } else {
+            this.state = 'agent_input';
+            this._setInput('_');
+            this._setStatus('listening', 'Enter date of birth (DDMMYY), then #');
+          }
         }
       );
     } else if (this.agentStep === 'get_dob') {
@@ -350,6 +368,19 @@ class Era2000 {
   }
 
   // ---- Speech helpers ----
+  _isAuto() {
+    return document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
+  }
+
+  _userSpeak(text, onEnd) {
+    this._log('user', text);
+    this._setStatus('speaking', 'You speaking...');
+    audioEngine.speak(text, 'customer', () => {
+      this._setStatus('active', 'Listening...');
+      if (onEnd) onEnd();
+    });
+  }
+
   _agentSpeak(text, onEnd) {
     this._log('ivr', `[Amy] ${text}`);
     this._setStatus('speaking', 'Agent speaking...');

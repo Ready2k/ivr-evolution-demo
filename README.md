@@ -19,10 +19,9 @@ The demo follows a single scenario across five eras: a customer who has left the
 ## Quick Start
 
 ```bash
-./start.sh
+./start.sh       # Starts server at http://localhost:8081, opens Chrome
+./stop.sh        # Stops the server
 ```
-
-Opens Chrome at `http://localhost:8081`. That's it.
 
 Alternatively:
 
@@ -55,6 +54,7 @@ Firefox and Safari lack the Web Speech API. The 2010s and 2020s eras will not fu
 - **Click** the era buttons in the top navigation bar
 - **Arrow keys** `←` / `→` to move between eras
 - **`R`** to reset the current era
+- **Auto Play** checkbox (next to Reset): automatically steps through the era's scripted conversation without interaction
 
 ### Theater Mode
 
@@ -130,9 +130,16 @@ The 2020s and 2025 demo audio is pre-recorded using macOS `say`. To regenerate (
 ```bash
 ./generate-audio-2020.sh   # 7 IVR clips → audio/2020/
 ./generate-audio-now.sh    # 9 AI + customer clips → audio/now/
+./generate-audio-2030.sh   # 7 proactive-AI clips → audio/2030/
 ```
 
-Requires macOS with the **Samantha** (2020s) and **Daniel** (2025 AI) voices installed. The 2025 customer voice uses **Serena** with a fallback to **Kate**.
+Requires macOS with these voices installed:
+
+| Script | AI voice | Customer voice | Fallback |
+|--------|----------|----------------|----------|
+| `generate-audio-2020.sh` | Samantha | — | — |
+| `generate-audio-now.sh` | Daniel | Serena | Flo |
+| `generate-audio-2030.sh` | Reed | Flo | Daniel / Daniel |
 
 ---
 
@@ -155,9 +162,12 @@ Requires macOS with the **Samantha** (2020s) and **Daniel** (2025 AI) voices ins
 │   └── main.js             # Era switching, settings, keyboard shortcuts
 ├── audio/
 │   ├── 2020/               # Pre-recorded IVR prompts (WAV)
-│   └── now/                # Pre-recorded AI agent + customer lines (WAV)
+│   ├── now/                # Pre-recorded AI agent + customer lines (WAV)
+│   └── 2030/               # Pre-recorded proactive-AI + customer lines (WAV)
 ├── phones/                 # Phone hardware render images (PNG)
 ├── generate-audio-2020.sh  # Regenerate 2020s audio (macOS)
 ├── generate-audio-now.sh   # Regenerate Now era audio (macOS)
-└── start.sh                # Launch script
+├── generate-audio-2030.sh  # Regenerate 2027+ era audio (macOS)
+├── start.sh                # Launch script (port 8081, opens Chrome)
+└── stop.sh                 # Stop script (kills port 8081)
 ```

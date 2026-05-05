@@ -14,6 +14,7 @@
 
   let currentEraId  = null;
   let currentInstance = null;
+  let activeJourneyEra = '2010';
 
   window.APP_CONFIG = {
     wsUrl:     CONFIG.backend.wsUrl,
@@ -180,9 +181,12 @@
   function openSettings() {
     document.getElementById('settings-overlay').hidden = false;
     document.getElementById('settings-panel').hidden   = false;
-    document.getElementById('cfg-ws-url').value   = window.APP_CONFIG.wsUrl || '';
-    document.getElementById('cfg-aws-key').value  = window.APP_CONFIG.awsKey || '';
+    document.getElementById('cfg-ws-url').value    = window.APP_CONFIG.wsUrl || '';
+    document.getElementById('cfg-aws-key').value   = window.APP_CONFIG.awsKey || '';
     document.getElementById('cfg-bank-name').value = CONFIG.bank.name || '';
+    // Always open on Settings tab
+    _switchSettingsTab('config');
+    buildJourneyEditor(activeJourneyEra);
   }
 
   function closeSettings() {
@@ -209,6 +213,98 @@
     switchEra(era);
   }
 
+  function _switchSettingsTab(tab) {
+    document.querySelectorAll('.settings-tab').forEach(t =>
+      t.classList.toggle('active', t.dataset.tab === tab)
+    );
+    document.getElementById('tab-config').hidden  = (tab !== 'config');
+    document.getElementById('tab-journey').hidden = (tab !== 'journey');
+  }
+
+  // ---- Journey Editor ----
+  const SCRIPT_LABELS_2030 = {
+    opening1:  'Opening — greeting',
+    opening2:  'Opening — fraud detail & question',
+    itWasMe:   '"Yes, that was me" → response',
+    notMe1:    '"No, that wasn\'t me" → response (part 1)',
+    notMe2:    '"No, that wasn\'t me" → response (part 2)',
+    checkMore: '"Has it been used elsewhere?" → response',
+    applePay:  '"What about Apple Pay?" → response',
+    travel:    '"Set up travel notifications" → response',
+    done:      'Farewell'
+  };
+
+  function buildJourneyEditor(eraId) {
+    activeJourneyEra = eraId;
+    const cfg = CONFIG.eras[eraId];
+    if (!cfg) return;
+
+    document.querySelectorAll('.journey-era-tab').forEach(btn =>
+      btn.classList.toggle('active', btn.dataset.era === eraId)
+    );
+
+    const editor = document.getElementById('journey-editor');
+
+    // 2030 uses a keyed script object (branching flow, no demoScript array)
+    if (cfg.script) {
+      editor.innerHTML =
+        `<p class="journey-note">Branching flow — all AI lines. {tod} = morning/afternoon/evening, {tod_part} = day/evening.</p>` +
+        Object.entries(cfg.script).map(([key, text]) => {
+          const rows = Math.max(2, Math.ceil(text.length / 58));
+          return `<div class="journey-turn">
+            <div class="journey-turn-header">
+              <span class="journey-role-badge ai">AI</span>
+              <span class="journey-flag branch">${SCRIPT_LABELS_2030[key] || key}</span>
+            </div>
+            <textarea class="journey-textarea" data-key="${key}" rows="${rows}">${text}</textarea>
+          </div>`;
+        }).join('');
+      return;
+    }
+
+    if (!cfg.demoScript) return;
+
+    const hasAudio = cfg.demoScript.some(s => s.file);
+    const note = hasAudio
+      ? 'Pre-recorded audio plays as-is. Text edits update the transcript display only.'
+      : 'Text edits update both the transcript and spoken TTS audio.';
+
+    editor.innerHTML =
+      `<p class="journey-note">${note}</p>` +
+      cfg.demoScript.map((step, i) => {
+        const rows = Math.max(2, Math.ceil((step.text || '').length / 58));
+        return `<div class="journey-turn">
+          <div class="journey-turn-header">
+            <span class="journey-role-badge ${step.role}">${step.role === 'ai' ? 'AI' : 'Customer'}</span>
+            ${step.mishear    ? '<span class="journey-flag mishear">mishear</span>'   : ''}
+            ${step.limitation ? '<span class="journey-flag limit">limitation</span>' : ''}
+            ${step.file       ? '<span class="journey-flag audio">audio</span>'      : ''}
+          </div>
+          <textarea class="journey-textarea" data-idx="${i}" rows="${rows}">${step.text || ''}</textarea>
+        </div>`;
+      }).join('');
+  }
+
+  function saveJourneyEdits() {
+    const cfg = CONFIG.eras[activeJourneyEra];
+    if (!cfg) return;
+
+    if (cfg.script) {
+      document.querySelectorAll('.journey-textarea').forEach(ta => {
+        const key = ta.dataset.key;
+        if (key && key in cfg.script) cfg.script[key] = ta.value;
+      });
+    } else if (cfg.demoScript) {
+      document.querySelectorAll('.journey-textarea').forEach(ta => {
+        const idx = parseInt(ta.dataset.idx);
+        if (!isNaN(idx) && cfg.demoScript[idx]) cfg.demoScript[idx].text = ta.value;
+      });
+    }
+
+    closeSettings();
+    if (currentEraId === activeJourneyEra) switchEra(activeJourneyEra, true);
+  }
+
   // ---- Bootstrap ----
   document.addEventListener('DOMContentLoaded', () => {
     checkBrowser();
@@ -231,6 +327,23 @@
     document.getElementById('settings-close').addEventListener('click', closeSettings);
     document.getElementById('settings-overlay').addEventListener('click', closeSettings);
     document.getElementById('settings-save').addEventListener('click', saveSettings);
+
+    document.querySelectorAll('.settings-tab').forEach(btn =>
+      btn.addEventListener('click', () => _switchSettingsTab(btn.dataset.tab))
+    );
+
+    document.getElementById('advanced-toggle').addEventListener('click', () => {
+      const body  = document.getElementById('settings-advanced');
+      const arrow = document.getElementById('advanced-arrow');
+      body.hidden = !body.hidden;
+      arrow.textContent = body.hidden ? '▸' : '▾';
+    });
+
+    document.querySelectorAll('.journey-era-tab').forEach(btn =>
+      btn.addEventListener('click', () => buildJourneyEditor(btn.dataset.era))
+    );
+
+    document.getElementById('journey-save').addEventListener('click', saveJourneyEdits);
 
     document.getElementById('conv-clear').addEventListener('click', () => {
       document.getElementById('conv-messages').innerHTML =

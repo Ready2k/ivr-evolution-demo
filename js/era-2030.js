@@ -183,11 +183,8 @@ class Era2030 {
     this._log('system', '[ Call answered ]');
     
     // Use live high-quality TTS for the Gemini experience
-    this._speak(
-      "Hi there — good " + this._tod() + ". This is your National Bank AI assistant. I hope I'm not disturbing you. I'm calling because I spotted something unusual on your account about twenty minutes ago.",
-      () => {
-        this._speak(
-          "Your debit card was used at a petrol station in Glasgow at two forty-three this afternoon for forty-seven pounds eighty. Based on your spending patterns and the fact that your phone has been in London all day, this really doesn't look like you. I've placed a temporary hold on the card while I check with you. Were you in Glasgow this afternoon?",
+    this._speak(this._s('opening1'), () => {
+        this._speak(this._s('opening2'),
           () => {
             const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
             if (isAuto) {
@@ -218,18 +215,17 @@ class Era2030 {
     this._clearResponses();
     this._log('user', "Yes, that was me");
     this._addBubble('user', "Yes, that was me");
-    this._speak(
-      `Not a problem at all — I'll remove the hold on your card now. ` +
-      `If you'd like me to set up a travel notification so I don't flag future transactions in unusual locations, just say the word. ` +
-      `Is there anything else I can help with?`,
-      () => {
-        this._tickItem('cancel');
-        this._showResponses([
-          { label: "Set up travel notifications", action: () => this._stepTravel() },
-          { label: "No, that's everything",       action: () => this._stepDone() },
-        ]);
-      }
-    );
+    audioEngine.speak("Yes, that was me", 'customer', () => {
+      this._speak(this._s('itWasMe'),
+        () => {
+          this._tickItem('cancel');
+          this._showResponses([
+            { label: "Set up travel notifications", action: () => this._stepTravel() },
+            { label: "No, that's everything",       action: () => this._stepDone() },
+          ]);
+        }
+      );
+    });
   }
 
   _stepNotMe() {
@@ -240,11 +236,8 @@ class Era2030 {
     // Use live high-quality TTS for the user as well
     audioEngine.speak("No, that wasn't me", 'customer', () => {
       // Then AI response
-      this._speak(
-        "That's what I suspected — thank you for confirming. Right, I've permanently cancelled that card now. I've also automatically raised a dispute for the forty-seven pounds eighty — you'll see a full refund credited within twenty-four hours.",
-        () => {
-          this._speak(
-            "I've already placed the order for your replacement card — it'll arrive at your home address tomorrow by first class. One more thing I've taken care of: I noticed you have a direct debit for eight hundred and fifty pounds going out tomorrow morning. I've made sure that won't be affected — I've temporarily routed it through your savings account so you won't miss a payment. Is there anything else you'd like me to look into while I have you?",
+      this._speak(this._s('notMe1'), () => {
+          this._speak(this._s('notMe2'),
             () => {
               const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
               if (isAuto) {
@@ -273,23 +266,21 @@ class Era2030 {
     this._clearResponses();
     this._log('user', "Has it been used anywhere else?");
     this._addBubble('user', "Has it been used anywhere else?");
-    this._speak(
-      `Good question — I've already scanned your last 72 hours of transactions. ` +
-      `The Glasgow transaction was the only anomalous one. All other activity matches your typical patterns. ` +
-      `I'll keep monitoring and will alert you immediately if I see anything else. ` +
-      `Is there anything else you'd like me to do?`,
-      () => {
-        const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
-        if (isAuto) {
-          setTimeout(() => this._stepDone(), 2500);
-        } else {
-          this._showResponses([
-            { label: "That's everything, thanks", action: () => this._stepDone() },
-            { label: "What about my Apple Pay?",  action: () => this._stepApplePay() },
-          ]);
+    audioEngine.speak("Has it been used anywhere else?", 'customer', () => {
+      this._speak(this._s('checkMore'),
+        () => {
+          const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
+          if (isAuto) {
+            setTimeout(() => this._stepDone(), 2500);
+          } else {
+            this._showResponses([
+              { label: "That's everything, thanks", action: () => this._stepDone() },
+              { label: "What about my Apple Pay?",  action: () => this._stepApplePay() },
+            ]);
+          }
         }
-      }
-    );
+      );
+    });
     this._log('ivr', 'Multi-agent: Fraud scan agent queried 72h transaction history');
   }
 
@@ -297,16 +288,15 @@ class Era2030 {
     this._clearResponses();
     this._log('user', "What about my Apple Pay?");
     this._addBubble('user', "What about my Apple Pay?");
-    this._speak(
-      `Already done — I suspended your Apple Pay and Google Pay links for the cancelled card at the same time I cancelled it. ` +
-      `Your new card will automatically relink to both when it arrives and you tap to activate it. ` +
-      `You won't need to do anything manually. Is there anything else?`,
-      () => {
-        this._showResponses([
-          { label: "No, that's perfect", action: () => this._stepDone() },
-        ]);
-      }
-    );
+    audioEngine.speak("What about my Apple Pay?", 'customer', () => {
+      this._speak(this._s('applePay'),
+        () => {
+          this._showResponses([
+            { label: "No, that's perfect", action: () => this._stepDone() },
+          ]);
+        }
+      );
+    });
     this._log('ivr', 'Multi-agent: Digital wallet agent suspended Apple Pay / Google Pay automatically');
   }
 
@@ -314,17 +304,16 @@ class Era2030 {
     this._clearResponses();
     this._log('user', "Set up travel notifications");
     this._addBubble('user', "Yes please");
-    this._speak(
-      `Done — I've enabled travel mode on your account. ` +
-      `From now on I'll check with you before flagging international transactions. ` +
-      `You can manage this anytime in your app. Anything else?`,
-      () => {
-        this._tickItem('cancel');
-        this._showResponses([
-          { label: "No, that's everything", action: () => this._stepDone() },
-        ]);
-      }
-    );
+    audioEngine.speak("Yes please", 'customer', () => {
+      this._speak(this._s('travel'),
+        () => {
+          this._tickItem('cancel');
+          this._showResponses([
+            { label: "No, that's everything", action: () => this._stepDone() },
+          ]);
+        }
+      );
+    });
   }
 
   _stepDone() {
@@ -336,8 +325,7 @@ class Era2030 {
     
     // Live high-quality TTS
     audioEngine.speak("That's brilliant, thank you", 'customer', () => {
-      this._speak(
-        "Perfect. I've sent a full summary of everything to your registered email, and you'll get a text shortly with your replacement card tracking link. Your account is secure. Sorry for the brief interruption — you have a lovely " + (this._tod() === 'morning' ? 'day' : 'evening') + ". Goodbye.",
+      this._speak(this._s('done'),
         () => {
           this._stopTimer();
           this._setStatus('idle', 'Call complete — everything resolved');
@@ -416,6 +404,12 @@ class Era2030 {
   _stopTimer() { clearInterval(this._timerInterval); }
 
   // ---- Helpers ----
+  _s(key) {
+    return (this.cfg.script?.[key] || '')
+      .replace(/\{tod\}/g, this._tod())
+      .replace(/\{tod_part\}/g, this._tod() === 'morning' ? 'day' : 'evening');
+  }
+
   _speak(text, onEnd) {
     this._streamBubble('ivr', text);
     audioEngine.speak(text, 'gemini', onEnd);

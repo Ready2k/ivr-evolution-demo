@@ -471,7 +471,19 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         name: "Policy Engine + Action Boundaries",
         desc: "You define what the AI can do autonomously. Control is in governance, not the conversation."
       },
-      failMode: "The trade-off: in exchange for this capability, outcomes are probabilistic. The AI might occasionally act on a false positive — which is why the policy engine and human confirmation loop still exist."
+      failMode: "The trade-off: in exchange for this capability, outcomes are probabilistic. The AI might occasionally act on a false positive — which is why the policy engine and human confirmation loop still exist.",
+
+      script: {
+        opening1:  "Hi there — good {tod}. This is your National Bank AI assistant. I hope I'm not disturbing you. I'm calling because I spotted something unusual on your account about twenty minutes ago.",
+        opening2:  "Your debit card was used at a petrol station in Glasgow at two forty-three this afternoon for forty-seven pounds eighty. Based on your spending patterns and the fact that your phone has been in London all day, this really doesn't look like you. I've placed a temporary hold on the card while I check with you. Were you in Glasgow this afternoon?",
+        itWasMe:   "Not a problem at all — I'll remove the hold on your card now. If you'd like me to set up a travel notification so I don't flag future transactions in unusual locations, just say the word. Is there anything else I can help with?",
+        notMe1:    "That's what I suspected — thank you for confirming. Right, I've permanently cancelled that card now. I've also automatically raised a dispute for the forty-seven pounds eighty — you'll see a full refund credited within twenty-four hours.",
+        notMe2:    "I've already placed the order for your replacement card — it'll arrive at your home address tomorrow by first class. One more thing I've taken care of: I noticed you have a direct debit for eight hundred and fifty pounds going out tomorrow morning. I've made sure that won't be affected — I've temporarily routed it through your savings account so you won't miss a payment. Is there anything else you'd like me to look into while I have you?",
+        checkMore: "Good question — I've already scanned your last 72 hours of transactions. The Glasgow transaction was the only anomalous one. All other activity matches your typical patterns. I'll keep monitoring and will alert you immediately if I see anything else. Is there anything else you'd like me to do?",
+        applePay:  "Already done — I suspended your Apple Pay and Google Pay links for the cancelled card at the same time I cancelled it. Your new card will automatically relink to both when it arrives and you tap to activate it. You won't need to do anything manually. Is there anything else?",
+        travel:    "Done — I've enabled travel mode on your account. From now on I'll check with you before flagging international transactions. You can manage this anytime in your app. Anything else?",
+        done:      "Perfect. I've sent a full summary of everything to your registered email, and you'll get a text shortly with your replacement card tracking link. Your account is secure. Sorry for the brief interruption — you have a lovely {tod_part}. Goodbye."
+      }
     }
 
   }
