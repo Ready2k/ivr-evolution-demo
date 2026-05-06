@@ -182,7 +182,7 @@ class Era2000 {
       if (key === '2') {
         this.state = 'done';
         this._agentSpeak(
-          "Brilliant, thank you so much for calling National Bank. I hope you have a lovely rest of your day. Take care now, goodbye!",
+          `Brilliant, thank you so much for calling ${CONFIG.bank.name}. I hope you have a lovely rest of your day. Take care now, goodbye!`,
           () => { audioEngine.stopNoise(); this._setStatus('idle', 'Call complete'); }
         );
       } else {
@@ -307,7 +307,7 @@ class Era2000 {
           this._log('ivr', '[Agent Amy joined the call]');
           const tod = this._timeOfDay();
           this._agentSpeak(
-            `Good ${tod}, thank you so much for holding. My name is Amy and I'm from the National Bank lost card team. I see you've been transferred because you need to report a lost card. Not to worry — I can take care of that for you right now. I just need to take a couple of details. Could you please tell me your 8-digit account number?`,
+            `Good ${tod}, thank you so much for holding. My name is Amy and I'm from the ${CONFIG.bank.name} lost card team. I see you've been transferred because you need to report a lost card. Not to worry — I can take care of that for you right now. I just need to take a couple of details. Could you please tell me your 8-digit account number?`,
             () => {
               if (this._isAuto()) {
                 setTimeout(() => {

@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=43">
-  <link rel="stylesheet" href="css/phones.css?v=43">
-  <link rel="stylesheet" href="css/eras.css?v=43">
+  <link rel="stylesheet" href="css/main.css?v=53">
+  <link rel="stylesheet" href="css/phones.css?v=53">
+  <link rel="stylesheet" href="css/eras.css?v=53">
 </head>
 
 <body class="era-2000">
@@ -57,9 +57,15 @@
         <span class="era-btn-label">What's Next</span>
       </button>
     </div>
-    <div class="nav-right" style="display:flex; gap:8px;">
+    <div class="nav-right" style="display:flex; gap:8px; align-items:center;">
+      <div id="theater-controls" class="theater-controls">
+        <button id="tc-stop" class="tc-btn" title="Stop">⏹</button>
+        <button id="tc-play-pause" class="tc-btn" title="Pause">⏸</button>
+        <button id="tc-mute" class="tc-btn" title="Mute audio">🔊</button>
+        <span class="tc-divider"></span>
+      </div>
       <button class="theater-btn" id="theater-btn" title="Toggle Theater Mode">🎬</button>
-      <button class="settings-btn" id="settings-btn" title="Settings">⚙</button>
+      <button class="settings-btn" id="settings-btn" title="Settings">⚙️</button>
     </div>
   </nav>
 
@@ -225,14 +231,14 @@
       whatsoever</span>
   </footer>
 
-  <script src="config.js?v=43"></script>
-  <script src="js/audio-engine.js?v=43"></script>
-  <script src="js/era-2000.js?v=43"></script>
-  <script src="js/era-2010.js?v=43"></script>
-  <script src="js/era-2020.js?v=43"></script>
-  <script src="js/era-now.js?v=43"></script>
-  <script src="js/era-2030.js?v=43"></script>
-  <script src="js/main.js?v=43"></script>
+  <script src="config.js?v=53"></script>
+  <script src="js/audio-engine.js?v=53"></script>
+  <script src="js/era-2000.js?v=53"></script>
+  <script src="js/era-2010.js?v=53"></script>
+  <script src="js/era-2020.js?v=53"></script>
+  <script src="js/era-now.js?v=53"></script>
+  <script src="js/era-2030.js?v=53"></script>
+  <script src="js/main.js?v=53"></script>
 </body>
 
 </html>

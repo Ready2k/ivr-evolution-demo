@@ -46,12 +46,12 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       subtitle: "Navigate by pressing numbers. No voice. No context. Just menus.",
       techBadges: ["DTMF Keypad", "PSTN", "IVR Menu Tree", "Pre-recorded Prompts"],
       callouts: [
-        "Touch Tone menus",
-        "Keypad entry only",
-        "Traditional experience",
-        "IVR Menu Trees",
-        "Pre-recorded Prompts - difficult to change",
-        "Unintelligent"
+        "DTMF / Touch-Tone",
+        "Fixed Menu Trees",
+        "No Speech Recognition",
+        "PSTN Network",
+        "Pre-recorded Prompts",
+        "No Context Memory"
       ],
       challenge: "Navigate the touch-tone menu tree to report your lost card. No shortcuts, no voice — just patience.",
       hint: "Press 2 to reach the lost card section, then follow the prompts.",
@@ -133,11 +133,11 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       techBadges: ["Basic ASR", "Keyword Spotting", "VXML 2.0", "~50 Word Vocabulary"],
       callouts: [
         "Basic ASR",
-        "Recognition challenges",
+        "Recognition Challenges",
         "Keyword Spotting",
-        "Limited dictionaries",
-        "VXML and GRMXL",
-        "Limited ~50 Word Vocabulary",
+        "Limited Dictionaries",
+        "VoiceXML / GRXML",
+        "~50 Word Vocabulary",
         "Pre-recorded or TTS Prompts"
       ],
       challenge: "Tell the system you've lost your card. Prepare to repeat yourself — early ASR wasn't great.",
@@ -270,7 +270,6 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       demoScript: [
         {
           role: "ai",
-          file: "./audio/2020/01-ivr.wav",
           text: "Hi, I'm your National Bank virtual assistant. I can help with lost or stolen cards, balance queries, and more. How can I help you today?"
         },
         {
@@ -280,7 +279,6 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         },
         {
           role: "ai",
-          file: "./audio/2020/02-ivr.wav",
           text: "I've detected that you'd like to report a lost card. I can take care of that for you right away. Could you please tell me your account number, or the last four digits of your card?"
         },
         {
@@ -290,7 +288,6 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         },
         {
           role: "ai",
-          file: "./audio/2020/03-ivr.wav",
           text: "Thank you. For security purposes, could you confirm your date of birth?",
           pauseBefore: { ms: 2000, status: "Verifying account details…" }
         },
@@ -301,7 +298,6 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         },
         {
           role: "ai",
-          file: "./audio/2020/04-ivr.wav",
           text: "And the first line of your registered address?"
         },
         {
@@ -311,7 +307,6 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         },
         {
           role: "ai",
-          file: "./audio/2020/05-ivr.wav",
           text: "Perfect. I've got all the details I need. I'm cancelling your card ending in 4521 now and ordering a replacement, which will arrive within 3 to 5 working days. Is there anything else I can help you with?",
           pauseBefore: { ms: 2800, status: "Cancelling card and ordering replacement…" }
         },
@@ -321,7 +316,6 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         },
         {
           role: "ai",
-          file: "./audio/2020/06-ivr.wav",
           text: "I understand your concern. Unfortunately, removing Apple Pay tokens isn't available through this automated service — that process requires a separate step in your Wallet app. Your physical card has been cancelled, but the digital token may still be active. I'd recommend removing it manually, or I can transfer you to our digital banking team.",
           limitation: true
         },
@@ -331,7 +325,6 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         },
         {
           role: "ai",
-          file: "./audio/2020/07-ivr.wav",
           text: "Thanks for calling National Bank. Have a great day. Goodbye."
         }
       ],
@@ -418,48 +411,39 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
       demoScript: [
         {
           role: "ai",
-          file: "./audio/now/01-ai.wav",
           text: "Hello, thanks for calling National Bank. I'm your AI assistant. I can see this is about your account — how can I help you today?"
         },
         {
           role: "user",
-          file: "./audio/now/02-user.wav",
           text: "Hi, yes. I've just got home and realised I left my debit card at the supermarket checkout. I'm really worried someone might use it."
         },
         {
           role: "ai",
-          file: "./audio/now/03-ai.wav",
           text: "Oh I completely understand — that's such a stressful thing to happen. Don't worry, I'm going to get this sorted for you right now. I just need to quickly verify your identity. Can you confirm your date of birth for me?"
         },
         {
           role: "user",
-          file: "./audio/now/04-user.wav",
           text: "Yes, it's the fourteenth of March, nineteen eighty-nine.",
           pauseAfter: 2000
         },
         {
           role: "ai",
-          file: "./audio/now/05-ai.wav",
           text: "Perfect. And the first line of your address?"
         },
         {
           role: "user",
-          file: "./audio/now/06-user.wav",
           text: "42 Maple Street."
         },
         {
           role: "ai",
-          file: "./audio/now/07-ai.wav",
           text: "Brilliant, thank you. I've confirmed your identity. I'm cancelling your card right now… done. Your card is completely blocked and you're fully protected against any unauthorised transactions. I've also ordered you a replacement which will arrive within 3 to 5 working days. And while you're waiting, you can still make payments using the National Bank app or Apple Pay — they're both already linked to your account, so you won't be without access."
         },
         {
           role: "user",
-          file: "./audio/now/08-user.wav",
           text: "Oh, that's brilliant. What a relief. Thank you so much."
         },
         {
           role: "ai",
-          file: "./audio/now/09-ai.wav",
           text: "You're very welcome. You absolutely did the right thing calling us straight away. Please don't hesitate to call if you need anything else. Take care. Goodbye."
         }
       ],
@@ -470,8 +454,8 @@ If they sound distressed, acknowledge it. This is a real person in a stressful m
         "LLM Powered",
         "True Reasoning",
         "Empathetic Voice",
-        "Zero Latency",
-        "Full Context",
+        "Near-Zero Latency",
+        "Full Context Window",
         "Dynamic Actions"
       ],
       challenge: "Just talk naturally. Tell the AI exactly what happened — it will listen, understand, and help.",

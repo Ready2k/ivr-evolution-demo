@@ -27,7 +27,11 @@ class Era2030 {
     this.container = container;
     this.convPanel = convPanel;
     this._render();
-    this._setStatus('idle', 'Incoming call — from National Bank AI');
+    this._setStatus('idle', `Incoming call — from ${CONFIG.bank.name} AI`);
+    // Always start ringing — the incoming call IS the 2027+ experience.
+    // Delay matches theater splash (6s) or gives a brief pause otherwise.
+    const isTheater = document.body.classList.contains('theater-mode');
+    setTimeout(() => this.start(), isTheater ? 6500 : 1500);
   }
 
   destroy() {
@@ -47,6 +51,16 @@ class Era2030 {
         <div class="ip16-screen-frame">
           <div class="ip16-screen" id="f-screen">
             <div class="ip16-screen-bg future-bg"></div>
+
+            <!-- Push notification (shown after decline) -->
+            <div class="f-push-notif" id="f-push-notif" style="display:none">
+              <div class="f-push-icon">🏦</div>
+              <div class="f-push-body">
+                <div class="f-push-app">${CONFIG.bank.name} AI</div>
+                <div class="f-push-msg">Missed call — tap to call back</div>
+              </div>
+              <div class="f-push-arrow">›</div>
+            </div>
 
             <!-- Incoming call state -->
             <div class="future-incoming" id="f-incoming">
@@ -75,7 +89,7 @@ class Era2030 {
                   <div class="future-caller-icon">🏦</div>
                 </div>
                 <div class="f-incoming-tag">Incoming Call</div>
-                <div class="future-caller-name">National Bank</div>
+                <div class="future-caller-name">${CONFIG.bank.name}</div>
                 <div class="future-caller-sub" id="f-caller-sub">AI Assistant calling...</div>
               </div>
 
@@ -107,7 +121,7 @@ class Era2030 {
             <!-- Active call state -->
             <div class="future-active" id="f-active" style="display:none">
               <div class="future-call-bar">
-                <span class="future-call-name">National Bank AI</span>
+                <span class="future-call-name">${CONFIG.bank.name} AI</span>
                 <span class="future-call-timer" id="f-timer">00:00</span>
               </div>
 
@@ -145,13 +159,15 @@ class Era2030 {
   }
 
   start() {
+    if (this._started) return;
+    this._started = true;
     this.ringtoneTimer = setTimeout(() => this._startRinging(), 1200);
   }
 
   // ---- Flow ----
   _startRinging() {
     this.state = 'ringing';
-    this._setStatus('speaking', 'Incoming call — National Bank AI');
+    this._setStatus('speaking', `Incoming call — ${CONFIG.bank.name} AI`);
     document.getElementById('f-caller-sub').textContent = 'AI Assistant — Incoming Call';
     document.getElementById('f-answer-row').style.display = 'flex';
 
@@ -161,7 +177,7 @@ class Era2030 {
 
     const isAuto = document.body.classList.contains('theater-mode') || window.APP_STATE?.autoplay;
     audioEngine.playRingTone(isAuto ? 3 : 5, 'futuristic');
-    this._log('system', '[ Incoming call from National Bank AI ]');
+    this._log('system', `[ Incoming call from ${CONFIG.bank.name} AI ]`);
 
     // Auto-answer in autoplay mode
     if (isAuto) {
@@ -209,6 +225,25 @@ class Era2030 {
     document.getElementById('f-caller-sub').textContent = 'Call declined — AI will try again later';
     this._setStatus('idle', 'Call declined');
     this._log('system', '[ Call declined — AI will retry via push notification ]');
+    setTimeout(() => this._showPushNotif(), 3000);
+  }
+
+  _showPushNotif() {
+    const notif = document.getElementById('f-push-notif');
+    if (!notif) return;
+    notif.style.display = 'flex';
+    notif.addEventListener('click', () => this._restart(), { once: true });
+  }
+
+  _restart() {
+    const notif = document.getElementById('f-push-notif');
+    if (notif) notif.style.display = 'none';
+    this._started = false;
+    this.state = 'idle';
+    document.getElementById('f-answer-row').style.display = 'none';
+    document.getElementById('f-caller-sub').textContent = 'AI Assistant calling...';
+    this._log('system', '[ Customer tapped notification — calling back ]');
+    this.start();
   }
 
   _stepItWasMe() {
@@ -459,7 +494,7 @@ class Era2030 {
     if (empty) empty.remove();
     const div = document.createElement('div');
     div.className = `conv-msg ${role}`;
-    const label = role === 'ivr' ? 'National Bank AI' : role === 'user' ? 'You' : 'System';
+    const label = role === 'ivr' ? CONFIG.bank.name + ' AI' : role === 'user' ? 'You' : 'System';
     div.innerHTML = `<div class="conv-msg-label">${label}</div>${text}`;
     this.convPanel.appendChild(div);
     this.convPanel.scrollTop = this.convPanel.scrollHeight;

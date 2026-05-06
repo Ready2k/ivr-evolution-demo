@@ -5,7 +5,7 @@
 
 /* ---- 2020s AI analysis panel (outside phone, presenter-facing) ---- */
 .ip7-ai-panel {
-  margin-top: 14px;
+  margin-top: 72px;
   padding: 12px 14px;
   background: rgba(0,20,50,0.55);
   border: 1px solid rgba(66,165,245,0.25);
@@ -996,7 +996,7 @@
   background: #FFFFFF; /* Clean white background */
   z-index: 0;
 }
-.ip16-screen > *:not(.ip16-screen-bg):not(.ip16-dynamic-island) { position: relative; z-index: 1; }
+.ip16-screen > *:not(.ip16-screen-bg):not(.ip16-dynamic-island):not(.f-push-notif) { position: relative; z-index: 1; }
 
 /* BB QWERTY Keypad */
 .bb-keypad {
@@ -1174,7 +1174,7 @@
   0% { filter: hue-rotate(0deg) brightness(1); }
   100% { filter: hue-rotate(30deg) brightness(1.2); }
 }
-.phone-future .ip16-screen > *:not(.ip16-screen-bg):not(.ip16-dynamic-island) {
+.phone-future .ip16-screen > *:not(.ip16-screen-bg):not(.ip16-dynamic-island):not(.f-push-notif) {
   position: relative;
   z-index: 1;
 }
@@ -1530,6 +1530,69 @@
   border-color: rgba(0,212,255,0.5);
 }
 .future-resp-btn:active { transform: scale(0.98); }
+
+/* ---- Push notification banner ---- */
+.f-push-notif {
+  position: absolute;
+  top: 115px;
+  left: 10px;
+  right: 10px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  border-radius: 14px;
+  background: rgba(30, 30, 32, 0.95);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  animation: pushSlideIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  transition: transform 0.12s, opacity 0.12s;
+}
+.f-push-notif:active { transform: scale(0.97); opacity: 0.85; }
+@keyframes pushSlideIn {
+  from { transform: translateY(-80px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.f-push-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 122, 255, 0.85);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.f-push-body {
+  flex: 1;
+  min-width: 0;
+}
+.f-push-app {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: -apple-system, sans-serif;
+  margin-bottom: 2px;
+}
+.f-push-msg {
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  font-family: -apple-system, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.f-push-arrow {
+  font-size: 20px;
+  color: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+}
 
 /* ---- End call row ---- */
 .future-end-row {

@@ -138,13 +138,15 @@ body {
   border-radius: 8px;
   width: 36px;
   height: 36px;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: all 0.2s;
   flex-shrink: 0;
+  color: inherit;
+  opacity: 0.85;
 }
 
 .settings-btn:hover {
@@ -174,6 +176,57 @@ body {
 .theater-btn.active {
   background: #EAB308;
   border-color: #EAB308;
+}
+
+/* ---- Theater media controls ---- */
+.theater-controls {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+body.theater-mode .theater-controls {
+  display: flex;
+}
+
+.tc-btn {
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.tc-btn:hover {
+  background: var(--panel-bg);
+}
+
+.tc-btn.tc-paused {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.4);
+  color: #fbbf24;
+}
+
+.tc-btn.tc-muted {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #f87171;
+}
+
+.tc-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--panel-border);
+  margin: 0 4px;
+  flex-shrink: 0;
 }
 
 /* ---- Settings Panel ---- */
@@ -441,7 +494,7 @@ body {
 }
 
 .era-annotation:nth-child(7) {
-  top: 12%;
+  bottom: 18%;
   right: 28%;
 }
 

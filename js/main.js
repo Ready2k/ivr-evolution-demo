@@ -25,7 +25,8 @@
 
   window.APP_STATE = {
     autoplay: false,
-    muted: false
+    muted: false,
+    paused: false
   };
 
   // ---- Browser warning ----
@@ -42,10 +43,21 @@
     }
   }
 
+  // ---- Theater pause/resume ----
+  function _clearPauseState() {
+    if (!window.APP_STATE.paused) return;
+    window.speechSynthesis.resume();
+    if (audioEngine.ctx) audioEngine.ctx.resume();
+    window.APP_STATE.paused = false;
+    const btn = document.getElementById('tc-play-pause');
+    if (btn) { btn.textContent = '⏸'; btn.title = 'Pause'; btn.classList.remove('tc-paused'); }
+  }
+
   // ---- Era switching ----
   function switchEra(eraId, force) {
     if (eraId === currentEraId && !force) return;
 
+    _clearPauseState();
     audioEngine.stopAll();
     if (currentInstance?.destroy) currentInstance.destroy();
     currentInstance = null;
@@ -194,6 +206,26 @@
     switchEra(currentEraId, true);
   }
 
+  // ---- Bank name replacement ----
+  function _applyBankNameToScripts(oldName, newName) {
+    if (!oldName || !newName || oldName === newName) return;
+    function walk(obj) {
+      if (!obj || typeof obj !== 'object') return;
+      for (const key of Object.keys(obj)) {
+        const val = obj[key];
+        if (typeof val === 'string') {
+          obj[key] = val.split(oldName).join(newName);
+        } else if (typeof val === 'object' && val !== null && typeof val !== 'function') {
+          walk(val);
+        }
+      }
+    }
+    Object.values(CONFIG.eras).forEach(era => walk(era));
+    if (CONFIG.backend.systemPrompt) {
+      CONFIG.backend.systemPrompt = CONFIG.backend.systemPrompt.split(oldName).join(newName);
+    }
+  }
+
   // ---- Settings ----
   function openSettings() {
     document.getElementById('settings-overlay').hidden = false;
@@ -222,7 +254,11 @@
     if (awsKey) window.APP_CONFIG.awsKey = awsKey;
     if (awsSecret) window.APP_CONFIG.awsSecret = awsSecret;
     if (awsToken) window.APP_CONFIG.awsToken = awsToken;
-    if (bankName) CONFIG.bank.name = bankName;
+    if (bankName && bankName !== CONFIG.bank.name) {
+      _applyBankNameToScripts(CONFIG.bank.name, bankName);
+      CONFIG.bank.name = bankName;
+      CONFIG.bank.shortName = bankName.split(' ')[0];
+    }
 
     closeSettings();
     const era = currentEraId;
@@ -460,7 +496,49 @@
       if (isEnteringTheater) {
         // Always start the presentation from the beginning with the Nokia intro
         switchEra('2000', true);
+      } else {
+        // Exiting theater mode — clear any paused state
+        _clearPauseState();
       }
+    });
+
+    // ---- Theater media controls ----
+    document.getElementById('tc-stop').addEventListener('click', () => {
+      _clearPauseState();
+      audioEngine.stopAll();
+    });
+
+    document.getElementById('tc-play-pause').addEventListener('click', () => {
+      const btn = document.getElementById('tc-play-pause');
+      if (!window.APP_STATE.paused) {
+        window.speechSynthesis.pause();
+        if (audioEngine.ctx) audioEngine.ctx.suspend();
+        window.APP_STATE.paused = true;
+        btn.textContent = '▶';
+        btn.title = 'Resume';
+        btn.classList.add('tc-paused');
+      } else {
+        window.speechSynthesis.resume();
+        if (audioEngine.ctx) audioEngine.ctx.resume();
+        window.APP_STATE.paused = false;
+        btn.textContent = '⏸';
+        btn.title = 'Pause';
+        btn.classList.remove('tc-paused');
+      }
+    });
+
+    document.getElementById('tc-mute').addEventListener('click', () => {
+      const muted = !window.APP_STATE.muted;
+      window.APP_STATE.muted = muted;
+      audioEngine.setMuted(muted);
+      const tcBtn = document.getElementById('tc-mute');
+      tcBtn.textContent = muted ? '🔇' : '🔊';
+      tcBtn.title = muted ? 'Unmute audio' : 'Mute audio';
+      tcBtn.classList.toggle('tc-muted', muted);
+      // Keep the main mute button in sync
+      const mainMuteBtn = document.getElementById('mute-btn');
+      mainMuteBtn.textContent = muted ? '🔇 Unmute' : '🔊 Mute';
+      mainMuteBtn.classList.toggle('active', muted);
     });
 
     document.getElementById('settings-btn').addEventListener('click', openSettings);

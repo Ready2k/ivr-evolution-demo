@@ -180,18 +180,21 @@ class Era2020 {
 
         const done = () => { this._setStatus('active', 'Listening...'); next(); };
 
-        // Try pre-recorded WAV first; fall back to Samantha TTS if file missing
-        let ivrFallbackUsed = false;
-        const ivrFallback = () => {
-          if (ivrFallbackUsed) return;
-          ivrFallbackUsed = true;
+        // Play pre-recorded WAV if available, otherwise use TTS directly
+        if (line.file) {
+          let ivrFallbackUsed = false;
+          const ivrFallback = () => {
+            if (ivrFallbackUsed) return;
+            ivrFallbackUsed = true;
+            audioEngine.speak(line.text, '2020', done);
+          };
+          const audio = new Audio(line.file);
+          audio.onended = done;
+          audio.onerror = ivrFallback;
+          audio.play().catch(ivrFallback);
+        } else {
           audioEngine.speak(line.text, '2020', done);
-        };
-
-        const audio = new Audio(line.file);
-        audio.onended = done;
-        audio.onerror = ivrFallback;
-        audio.play().catch(ivrFallback);
+        }
       };
 
       if (line.pauseBefore) {
